@@ -20,7 +20,17 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 
-module decoder(
+module decoder #( parameter integer WIDTH = 4)
+(
+    input  logic [$clog2(WIDTH)-1:0] sel,
+    //input  logic                     en,
+    output logic [WIDTH-1:0]         out
+);
 
-    );
+    always_comb begin
+        out = '0;
+        //if (en)
+            out[sel] = 1'b1;
+    end
+
 endmodule
