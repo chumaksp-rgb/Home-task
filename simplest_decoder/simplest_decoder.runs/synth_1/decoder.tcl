@@ -4,7 +4,7 @@
 
 set TIME_start [clock seconds] 
 namespace eval ::optrace {
-  variable script "D:/PROJECTS/FPGA_PROJECTS/Home-task/simplest_decoder/simplest_decoder.runs/synth_1/decoder.tcl"
+  variable script "C:/PROJECTS_FPGA/Home_tasks/HT1/simplest_decoder/simplest_decoder.runs/synth_1/decoder.tcl"
   variable category "vivado_synth"
 }
 
@@ -63,15 +63,15 @@ create_project -in_memory -part xc7z020clg400-1
 set_param project.singleFileAddWarning.threshold 0
 set_param project.compositeFile.enableAutoGeneration 0
 set_param synth.vivado.isSynthRun true
-set_property webtalk.parent_dir D:/PROJECTS/FPGA_PROJECTS/Home-task/simplest_decoder/simplest_decoder.cache/wt [current_project]
-set_property parent.project_path D:/PROJECTS/FPGA_PROJECTS/Home-task/simplest_decoder/simplest_decoder.xpr [current_project]
+set_property webtalk.parent_dir C:/PROJECTS_FPGA/Home_tasks/HT1/simplest_decoder/simplest_decoder.cache/wt [current_project]
+set_property parent.project_path C:/PROJECTS_FPGA/Home_tasks/HT1/simplest_decoder/simplest_decoder.xpr [current_project]
 set_property default_lib xil_defaultlib [current_project]
 set_property target_language Verilog [current_project]
-set_property ip_output_repo d:/PROJECTS/FPGA_PROJECTS/Home-task/simplest_decoder/simplest_decoder.cache/ip [current_project]
+set_property ip_output_repo c:/PROJECTS_FPGA/Home_tasks/HT1/simplest_decoder/simplest_decoder.cache/ip [current_project]
 set_property ip_cache_permissions {read write} [current_project]
 OPTRACE "Creating in-memory project" END { }
 OPTRACE "Adding files" START { }
-read_verilog -library xil_defaultlib -sv D:/PROJECTS/FPGA_PROJECTS/Home-task/simplest_decoder/simplest_decoder.srcs/sources_1/new/decoder.v
+read_verilog -library xil_defaultlib -sv C:/PROJECTS_FPGA/Home_tasks/HT1/simplest_decoder/simplest_decoder.srcs/sources_1/new/decoder.v
 OPTRACE "Adding files" END { }
 # Mark all dcp files as not used in implementation to prevent them from being
 # stitched into the results of this synthesis run. Any black boxes in the
@@ -81,12 +81,12 @@ OPTRACE "Adding files" END { }
 foreach dcp [get_files -quiet -all -filter file_type=="Design\ Checkpoint"] {
   set_property used_in_implementation false $dcp
 }
-read_xdc D:/PROJECTS/FPGA_PROJECTS/PYNQ-Z1_C.xdc
-set_property used_in_implementation false [get_files D:/PROJECTS/FPGA_PROJECTS/PYNQ-Z1_C.xdc]
+read_xdc C:/PROJECTS_FPGA/PYNQ-Z1_C.xdc
+set_property used_in_implementation false [get_files C:/PROJECTS_FPGA/PYNQ-Z1_C.xdc]
 
 set_param ips.enableIPCacheLiteLoad 1
 
-read_checkpoint -auto_incremental -incremental D:/PROJECTS/FPGA_PROJECTS/Home-task/simplest_decoder/simplest_decoder.srcs/utils_1/imports/synth_1/decoder.dcp
+read_checkpoint -auto_incremental -incremental C:/PROJECTS_FPGA/Home_tasks/HT1/simplest_decoder/simplest_decoder.srcs/utils_1/imports/synth_1/decoder.dcp
 close [open __synthesis_is_running__ w]
 
 OPTRACE "synth_design" START { }

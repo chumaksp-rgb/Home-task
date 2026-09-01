@@ -3,22 +3,22 @@
 # SW Build 6299465 on Fri Nov 14 19:35:11 GMT 2025
 # IP Build 6300035 on Fri Nov 14 10:48:45 MST 2025
 # SharedData Build 6298862 on Thu Nov 13 04:50:51 MST 2025
-# Start of session at: Mon Aug 31 18:52:58 2026
-# Process ID         : 25628
-# Current directory  : D:/PROJECTS/FPGA_PROJECTS/Home-task/simplest_decoder/simplest_decoder.runs/synth_1
+# Start of session at: Tue Sep  1 16:05:20 2026
+# Process ID         : 26196
+# Current directory  : C:/PROJECTS_FPGA/Home_tasks/HT1/simplest_decoder/simplest_decoder.runs/synth_1
 # Command line       : vivado.exe -log decoder.vds -product Vivado -mode batch -messageDb vivado.pb -notrace -source decoder.tcl
-# Log file           : D:/PROJECTS/FPGA_PROJECTS/Home-task/simplest_decoder/simplest_decoder.runs/synth_1/decoder.vds
-# Journal file       : D:/PROJECTS/FPGA_PROJECTS/Home-task/simplest_decoder/simplest_decoder.runs/synth_1\vivado.jou
-# Running On         : SLON_ACER
+# Log file           : C:/PROJECTS_FPGA/Home_tasks/HT1/simplest_decoder/simplest_decoder.runs/synth_1/decoder.vds
+# Journal file       : C:/PROJECTS_FPGA/Home_tasks/HT1/simplest_decoder/simplest_decoder.runs/synth_1\vivado.jou
+# Running On         : SERHII_WORK
 # Platform           : Windows Server 2016 or Windows 10
 # Operating System   : 26200
-# Processor Detail   : 11th Gen Intel(R) Core(TM) i5-11400H @ 2.70GHz
-# CPU Frequency      : 2688 MHz
-# CPU Physical cores : 6
-# CPU Logical cores  : 12
-# Host memory        : 16931 MB
-# Swap memory        : 13958 MB
-# Total Virtual      : 30890 MB
-# Available Virtual  : 6612 MB
+# Processor Detail   : Intel(R) Core(TM) i7-14700
+# CPU Frequency      : 2112 MHz
+# CPU Physical cores : 20
+# CPU Logical cores  : 28
+# Host memory        : 16851 MB
+# Swap memory        : 23831 MB
+# Total Virtual      : 40683 MB
+# Available Virtual  : 16847 MB
 #-----------------------------------------------------------
 source decoder.tcl -notrace

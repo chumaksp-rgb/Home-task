@@ -25,7 +25,7 @@ else
 fi
 export LD_LIBRARY_PATH
 
-HD_PWD='D:/PROJECTS/FPGA_PROJECTS/Home-task/simplest_decoder/simplest_decoder.runs/synth_1'
+HD_PWD='C:/PROJECTS_FPGA/Home_tasks/HT1/simplest_decoder/simplest_decoder.runs/synth_1'
 cd "$HD_PWD"
 
 HD_LOG=runme.log
