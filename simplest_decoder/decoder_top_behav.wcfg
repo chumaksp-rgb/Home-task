@@ -3,42 +3,34 @@
    <wave_state>
    </wave_state>
    <db_ref_list>
-      <db_ref path="decoder_top_behav.wdb" id="1">
+      <db_ref path="counter4_behav.wdb" id="1">
          <top_modules>
-            <top_module name="decoder_top" />
+            <top_module name="counter4" />
             <top_module name="glbl" />
          </top_modules>
       </db_ref>
    </db_ref_list>
    <zoom_setting>
       <ZoomStartTime time="0.000 ns"></ZoomStartTime>
-      <ZoomEndTime time="194.601 ns"></ZoomEndTime>
-      <Cursor1Time time="180.000 ns"></Cursor1Time>
+      <ZoomEndTime time="230.000 ns"></ZoomEndTime>
+      <Cursor1Time time="230.000 ns"></Cursor1Time>
    </zoom_setting>
    <column_width_setting>
       <NameColumnWidth column_width="340"></NameColumnWidth>
-      <ValueColumnWidth column_width="155"></ValueColumnWidth>
+      <ValueColumnWidth column_width="150"></ValueColumnWidth>
    </column_width_setting>
-   <WVObjectSize size="4" />
-   <wvobject fp_name="/decoder_top/sel4" type="array">
-      <obj_property name="ElementShortName">sel4[1:0]</obj_property>
-      <obj_property name="ObjectShortName">sel4[1:0]</obj_property>
-      <obj_property name="isExpanded"></obj_property>
+   <WVObjectSize size="3" />
+   <wvobject fp_name="/counter4/clk" type="logic">
+      <obj_property name="ElementShortName">clk</obj_property>
+      <obj_property name="ObjectShortName">clk</obj_property>
    </wvobject>
-   <wvobject fp_name="/decoder_top/out4" type="array">
-      <obj_property name="ElementShortName">out4[3:0]</obj_property>
-      <obj_property name="ObjectShortName">out4[3:0]</obj_property>
-      <obj_property name="isExpanded"></obj_property>
+   <wvobject fp_name="/counter4/rst" type="logic">
+      <obj_property name="ElementShortName">rst</obj_property>
+      <obj_property name="ObjectShortName">rst</obj_property>
    </wvobject>
-   <wvobject fp_name="/decoder_top/sel8" type="array">
-      <obj_property name="ElementShortName">sel8[2:0]</obj_property>
-      <obj_property name="ObjectShortName">sel8[2:0]</obj_property>
-      <obj_property name="isExpanded"></obj_property>
-   </wvobject>
-   <wvobject fp_name="/decoder_top/out8" type="array">
-      <obj_property name="ElementShortName">out8[7:0]</obj_property>
-      <obj_property name="ObjectShortName">out8[7:0]</obj_property>
-      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   <wvobject fp_name="/counter4/led" type="array">
+      <obj_property name="ElementShortName">led[3:0]</obj_property>
+      <obj_property name="ObjectShortName">led[3:0]</obj_property>
       <obj_property name="isExpanded"></obj_property>
    </wvobject>
 </wave_config>
