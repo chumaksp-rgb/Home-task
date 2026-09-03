@@ -41,6 +41,7 @@ module counter_tb;
     // ---- 4. Checks ----
     integer errors = 0; // total number of errors
 
+
     task automatic check_count(input [3:0] expected, input string name);
         if (count === expected)
             $display("PASS: %s  count=%0d", name, count);
@@ -49,6 +50,8 @@ module counter_tb;
             errors = errors + 1;
         end
     endtask
+    
+    
     initial begin
         // Initial stste
         rst     = 1'b0;
@@ -57,6 +60,57 @@ module counter_tb;
         en      = 1'b0;
         up_down = 1'b1;
 
+    // === Test 1: LOAD ===
+        rst = 1'b1;
+        @(posedge clk);
+        #1 rst = 1'b0;
+
+        load    = 1'b1;
+        data_in = 4'd10;
+        @(posedge clk);
+        #1;
+        load = 1'b0;
+        check_count(4'd10, "LOAD");
+
+        // === Test 2: COUNT UP ===
+        en      = 1'b1;
+        up_down = 1'b1;
+        repeat (3) @(posedge clk);
+        #1;
+        check_count(4'd13, "COUNT UP");
+
+        repeat (3) @(posedge clk);
+        #1;
+        check_count(4'd0, "COUNT UP OVERFLOW");
+
+        // === Test 3: HOLD ===
+        en = 1'b0;
+        repeat (2) @(posedge clk);
+        #1;
+        check_count(4'd0, "HOLD");
+
+        // === Test 4: COUNT DOWN ===
+        en      = 1'b1;
+        up_down = 1'b0;
+        @(posedge clk);
+        #1;
+        check_count(4'd15, "COUNT DOWN UNDERFLOW");
+
+        // === Test 5: LOAD priority over EN ===
+        load    = 1'b1;
+        data_in = 4'd5;
+        en      = 1'b1;
+        up_down = 1'b1;
+        @(posedge clk);
+        #1;
+        check_count(4'd5, "LOAD PRIORITY");
+
+        // ---- Summary ----
+        if (errors == 0) $display("=== All tests passed ===");
+        else             $display("=== Errors: %0d ===", errors);
+
+$stop;
+// **************************** manual chek var. **********************
         // === Test 1:  (LOAD) ===
 
         // 1.Reset for 1 clock tick

@@ -41,14 +41,6 @@ module counter_tb;
     // ---- 4. Checks ----
     integer errors = 0; // total number of errors
 
-    task automatic check_count(input [3:0] expected, input string name);
-        if (count === expected)
-            $display("PASS: %s  count=%0d", name, count);
-        else begin
-            $display("FAIL: %s  count=%0d (expected %0d)", name, count, expected);
-            errors = errors + 1;
-        end
-    endtask
     initial begin
         // Initial stste
         rst     = 1'b0;
