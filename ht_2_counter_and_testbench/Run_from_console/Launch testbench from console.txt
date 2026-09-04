@@ -1,0 +1,16 @@
+
+// Запуск из Power Shell
+cmd /k "C:\AMDDesignTools\2025.2\Vivado\settings64.bat"
+
+//Дальше cd в каталог с исходниками и те же команды.
+
+
+xvlog counter.v
+xvlog --sv counter_tb.sv 
+xelab counter_tb -s sim_tb 
+xsim sim_tb -R
+
+
+
+
+

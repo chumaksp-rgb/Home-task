@@ -41,6 +41,17 @@ module counter_tb;
     // ---- 4. Checks ----
     integer errors = 0; // total number of errors
 
+
+    task automatic check_count(input [3:0] expected, input string name);
+        if (count === expected)
+            $display("PASS: %s  count=%0d", name, count);
+        else begin
+            $display("FAIL: %s  count=%0d (expected %0d)", name, count, expected);
+            errors = errors + 1;
+        end
+    endtask
+    
+    
     initial begin
         // Initial stste
         rst     = 1'b0;
@@ -49,6 +60,74 @@ module counter_tb;
         en      = 1'b0;
         up_down = 1'b1;
 
+        #5;// delay to observe x state
+    // === Test 1: LOAD ===
+        rst = 1'b1;
+        @(posedge clk);
+        //#1;
+        rst = 1'b0;
+
+        load    = 1'b1;
+        data_in = 4'd10;
+        @(posedge clk);
+        #1;
+        load = 1'b0;
+        check_count(4'd10, "LOAD");
+//$stop; // stop at 16 ns
+        // === Test 2: COUNT UP ===
+        en      = 1'b1;
+        up_down = 1'b1;
+        repeat (3) @(posedge clk);
+        #1;
+        check_count(4'd13, "COUNT UP");
+//$stop;  // stop at 46ns
+        repeat (3) @(posedge clk);
+        #1;
+        check_count(4'd0, "COUNT UP OVERFLOW");
+//$stop; // stop at 76 ns 
+        // === Test 3: HOLD ===
+        en = 1'b0;
+        repeat (2) @(posedge clk);
+        #1;
+        check_count(4'd0, "HOLD");
+//$stop;
+        // === Test 4: COUNT DOWN ===
+        en      = 1'b1;
+        up_down = 1'b0;
+        @(posedge clk);
+        #1;
+        check_count(4'd15, "COUNT DOWN UNDERFLOW");
+//$stop;
+        // === Test 5: LOAD priority over EN ===
+        load    = 1'b1;
+        data_in = 4'd5;
+        en      = 1'b1;
+        up_down = 1'b1;
+        @(posedge clk);
+        #1;
+        check_count(4'd5, "LOAD PRIORITY");
+
+        // === Test 6: COUNT DOWN W/O OVERFLOW ===
+        up_down = 1'b0;
+        load    = 1'b1;
+        data_in = 4'd8;
+        @(posedge clk);
+        #1;
+        load    = 1'b0;
+        @(posedge clk);
+        #1; 
+        check_count(4'd7, "COUNT DOWN W/O OVERFLOW");      
+         
+        // ---- Summary ----
+        if (errors == 0) $display("=== All tests passed ===");
+        else             $display("=== Errors: %0d ===", errors);
+
+$stop;
+
+// ********************************************************************
+// **************************** manual chek var. **********************
+// ********************************************************************
+    
         // === Test 1:  (LOAD) ===
 
         // 1.Reset for 1 clock tick
@@ -168,6 +247,6 @@ module counter_tb;
                    
         #15; 
         $finish;
-    end 
+    end // end of initial block
    
 endmodule

@@ -2,5 +2,5 @@
 2020.2
 Nov 14 2025
 19:37:27
-C:/PROJECTS_FPGA/Home_tasks/HT1/ht_2_counter_and_testbench/Run_from_console/counter.v,1788423170,verilog,,C:/PROJECTS_FPGA/Home_tasks/HT1/ht_2_counter_and_testbench/Run_from_console/counter_tb.v,,counter,,,,,,,,
-C:/PROJECTS_FPGA/Home_tasks/HT1/ht_2_counter_and_testbench/Run_from_console/counter_tb.v,1788435082,verilog,,,,counter_tb,,,,,,,,
+C:/PROJECTS_FPGA/Home_tasks/HT1/ht_2_counter_and_testbench/Run_from_console/counter.v,1788423170,verilog,,,,counter,,,,,,,,
+C:/PROJECTS_FPGA/Home_tasks/HT1/ht_2_counter_and_testbench/Run_from_console/counter_tb.sv,1788506757,systemVerilog,,,,counter_tb,,,,,,,,
