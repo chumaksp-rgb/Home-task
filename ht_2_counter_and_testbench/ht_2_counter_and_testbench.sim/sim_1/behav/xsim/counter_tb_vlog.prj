@@ -3,7 +3,7 @@ verilog xil_defaultlib  --include "../../../../../../../../AMDDesignTools/2025.2
 "../../../../ht_2_counter_and_testbench.srcs/sources_1/new/counter.v" \
 
 sv xil_defaultlib  --include "../../../../../../../../AMDDesignTools/2025.2/Vivado/data/rsb/busdef" \
-"../../../../ht_2_counter_and_testbench.srcs/sim_1/new/counter_tb .sv" \
+"../../../../ht_2_counter_and_testbench.srcs/sim_1/new/counter_tb.sv" \
 
 # compile glbl module
 verilog xil_defaultlib "glbl.v"
