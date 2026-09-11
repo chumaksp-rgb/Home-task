@@ -68,6 +68,9 @@ module tb_lock_controller;
         else
             $display("[%0t ns] FAIL: unlocked_led expected 1, got %0b", $time, unlocked_led);
 
+        check_transition(4'd0, UNLOCKED, "wrong digit while UNLOCKED");
+        check_transition(EXP0, UNLOCKED, "code digit while UNLOCKED");
+        
         // ---- Reset before the error scenario ----
         rst = 1; digit_in = 4'd0;
         @(posedge clk); #1;
@@ -78,6 +81,7 @@ module tb_lock_controller;
         check_transition(EXP0 + 1, LOCKED,  "digit2 WRONG -> back to LOCKED");
 
         $display("[%0t ns] Simulation finished", $time);
+        #5; // delay in order to see last state LOCKED after wrong digit input
         $finish;
     end
 
