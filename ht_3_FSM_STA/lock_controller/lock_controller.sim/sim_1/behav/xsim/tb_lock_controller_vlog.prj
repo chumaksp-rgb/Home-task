@@ -1,0 +1,11 @@
+# compile verilog/system verilog design source files
+sv xil_defaultlib  --include "../../../../../../../../../AMDDesignTools/2025.2/Vivado/data/rsb/busdef" \
+"../../../../lock_controller.srcs/sources_1/new/lock_pkg.sv" \
+"../../../../lock_controller.srcs/sources_1/new/lock_controller.sv" \
+"../../../../lock_controller.srcs/sim_1/new/tb_lock_controller.sv" \
+
+# compile glbl module
+verilog xil_defaultlib "glbl.v"
+
+# Do not sort compile order
+nosort
