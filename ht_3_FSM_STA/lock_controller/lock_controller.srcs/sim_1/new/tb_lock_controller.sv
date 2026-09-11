@@ -25,6 +25,8 @@ module tb_lock_controller;
         .digit_in(digit_in), .unlocked_led(unlocked_led)
     );
 
+    int errors =0;// errors counter
+    
     //expected values
     localparam logic [3:0] EXP0 = 4'd5; //1 digit
     localparam logic [3:0] EXP1 = 4'd3; //2 digit
@@ -44,9 +46,11 @@ module tb_lock_controller;
         @(posedge clk); #1;
         if (dut.state === expected_state)
             $display("[%0t ns] PASS: %-28s -> state=%s", $time, step_name, dut.state.name());
-        else
+        else begin
+        errors++;
             $display("[%0t ns] FAIL: %-28s -> expected %s, got %s",
                       $time, step_name, expected_state.name(), dut.state.name());
+         end
     endtask
 
     initial begin
@@ -63,6 +67,7 @@ module tb_lock_controller;
         check_transition(EXP0, WAIT_D2,  "digit1 correct");
         check_transition(EXP1, WAIT_D3,  "digit2 correct");
         check_transition(EXP2, UNLOCKED, "digit3 correct");
+        
         if (unlocked_led === 1'b1)
             $display("[%0t ns] PASS: unlocked_led=1 after correct sequence", $time);
         else
@@ -70,17 +75,32 @@ module tb_lock_controller;
 
         check_transition(4'd0, UNLOCKED, "wrong digit while UNLOCKED");
         check_transition(EXP0, UNLOCKED, "code digit while UNLOCKED");
-        
+     
+ 
         // ---- Reset before the error scenario ----
         rst = 1; digit_in = 4'd0;
         @(posedge clk); #1;
         rst = 0;
-
-        // ---- Scenario 2: error on the second digit -> back to LOCKED ----
+//$stop; 
+           // ---- Scenario 2: error on the first digit ----
+        check_transition(4'd9, LOCKED, "digit1 WRONG -> stays LOCKED");
+//$stop;
+        // ---- Scenario 3: error on the second digit -> back to LOCKED ----
         check_transition(EXP0,     WAIT_D2, "digit1 correct");
-        check_transition(EXP0 + 1, LOCKED,  "digit2 WRONG -> back to LOCKED");
+        check_transition(4'd9, LOCKED,  "digit2 WRONG -> back to LOCKED");
+//$stop;        
+        // ---- Scenario 4: error on the third digit ----
+        check_transition(EXP0, WAIT_D2, "digit1 correct");
+        check_transition(EXP1, WAIT_D3, "digit2 correct");
+        check_transition(4'd9, LOCKED,  "digit3 WRONG -> back to LOCKED");
+           
+
+
+
 
         $display("[%0t ns] Simulation finished", $time);
+       if (errors == 0) $display("=== All checks passed ===");
+            else     $display("=== FAILED: %0d error(s) ===", errors);
         #5; // delay in order to see last state LOCKED after wrong digit input
         $finish;
     end
