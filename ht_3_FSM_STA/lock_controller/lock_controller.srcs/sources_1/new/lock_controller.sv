@@ -1,9 +1,14 @@
 `timescale 1ns / 1ps
 //////////////////////////////////////////////////////////////////////////////////
-// Company: 
+// Company:
 // Engineer: SERHII CHUMAK
-// 
+//
 // Create Date: 11.09.2026 10:20:47
+//
+// Change: added digit_valid. The FSM now advances only on a one-cycle strobe,
+// not on every clock edge. Without it, holding a button for a few milliseconds
+// would feed the same digit over a million times and the FSM would bounce
+// between states. Three-process structure is unchanged.
 //////////////////////////////////////////////////////////////////////////////////
 
 import lock_pkg::*;
@@ -11,8 +16,9 @@ import lock_pkg::*;
 
 module lock_controller (
     input  logic       clk,
-    input  logic       rst,        // asynchronous reset, active high
-    input  logic [3:0] digit_in,
+    input  logic       rst,          // asynchronous reset, active high
+    input  logic [3:0] digit_in,     // debounced digit
+    input  logic       digit_valid,  // 1 clock pulse: a NEW digit is present
     output logic       unlocked_led
 );
 
@@ -27,7 +33,7 @@ module lock_controller (
     always_ff @(posedge clk or posedge rst) begin
         if (rst)
             state <= LOCKED;
-        else
+        else if (digit_valid)         // enable, NOT a clock
             state <= next_state;
     end
 
