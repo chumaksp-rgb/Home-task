@@ -1,0 +1,8 @@
++====================+===================+=====================+
+| Launch Setup Clock | Launch Hold Clock | Pin                 |
++====================+===================+=====================+
+| sys_clk            | sys_clk           | result_reg_reg[3]/D |
+| sys_clk            | sys_clk           | result_reg_reg[2]/D |
+| sys_clk            | sys_clk           | result_reg_reg[1]/D |
+| sys_clk            | sys_clk           | result_reg_reg[0]/D |
++--------------------+-------------------+---------------------+
