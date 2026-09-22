@@ -64,6 +64,7 @@ module tb_debounce;
     endtask
 
     initial begin
+    $timeformat(-9, 0, " ns", 0);
         rst      = 1'b1;
         noisy_in = 4'd0;
         repeat (2) @(posedge clk);
