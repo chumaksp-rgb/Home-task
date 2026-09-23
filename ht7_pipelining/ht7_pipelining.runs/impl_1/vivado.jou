@@ -3,8 +3,8 @@
 # SW Build 6299465 on Fri Nov 14 19:35:11 GMT 2025
 # IP Build 6300035 on Fri Nov 14 10:48:45 MST 2025
 # SharedData Build 6298862 on Thu Nov 13 04:50:51 MST 2025
-# Start of session at: Wed Sep 23 10:01:40 2026
-# Process ID         : 31128
+# Start of session at: Wed Sep 23 10:52:51 2026
+# Process ID         : 29896
 # Current directory  : C:/PROJECTS_FPGA/Home_tasks/HT1/ht7_pipelining/ht7_pipelining.runs/impl_1
 # Command line       : vivado.exe -log expr_plain.vdi -applog -product Vivado -messageDb vivado.pb -mode batch -source expr_plain.tcl -notrace
 # Log file           : C:/PROJECTS_FPGA/Home_tasks/HT1/ht7_pipelining/ht7_pipelining.runs/impl_1/expr_plain.vdi
@@ -19,6 +19,6 @@
 # Host memory        : 16851 MB
 # Swap memory        : 19676 MB
 # Total Virtual      : 36527 MB
-# Available Virtual  : 6206 MB
+# Available Virtual  : 13502 MB
 #-----------------------------------------------------------
 source expr_plain.tcl -notrace

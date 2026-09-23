@@ -1,7 +1,7 @@
 Copyright 1986-2022 Xilinx, Inc. All Rights Reserved. Copyright 2022-2025 Advanced Micro Devices, Inc. All Rights Reserved.
 ----------------------------------------------------------------------------------------------------------------------------------------------------
 | Tool Version     : Vivado v.2025.2 (win64) Build 6299465 Fri Nov 14 19:35:11 GMT 2025
-| Date             : Wed Sep 23 10:02:20 2026
+| Date             : Wed Sep 23 10:53:24 2026
 | Host             : SERHII_WORK running 64-bit major release  (build 9200)
 | Command          : report_power -file expr_plain_power_routed.rpt -pb expr_plain_power_summary_routed.pb -rpx expr_plain_power_routed.rpx
 | Design           : expr_plain
@@ -30,10 +30,10 @@ Table of Contents
 ----------
 
 +--------------------------+--------------+
-| Total On-Chip Power (W)  | 0.128        |
+| Total On-Chip Power (W)  | 0.127        |
 | Design Power Budget (W)  | Unspecified* |
 | Power Budget Margin (W)  | NA           |
-| Dynamic (W)              | 0.024        |
+| Dynamic (W)              | 0.023        |
 | Device Static (W)        | 0.105        |
 | Effective TJA (C/W)      | 11.5         |
 | Max Ambient (C)          | 83.5         |
@@ -52,16 +52,17 @@ Table of Contents
 +----------------+-----------+----------+-----------+-----------------+
 | On-Chip        | Power (W) | Used     | Available | Utilization (%) |
 +----------------+-----------+----------+-----------+-----------------+
-| Clocks         |     0.002 |        3 |       --- |             --- |
-| Slice Logic    |     0.001 |      220 |       --- |             --- |
-|   LUT as Logic |     0.001 |      108 |     53200 |            0.20 |
-|   CARRY4       |    <0.001 |       17 |     13300 |            0.13 |
-|   Register     |    <0.001 |       72 |    106400 |            0.07 |
-|   Others       |     0.000 |        2 |       --- |             --- |
-| Signals        |     0.002 |      212 |       --- |             --- |
+| Clocks         |     0.001 |        3 |       --- |             --- |
+| Slice Logic    |    <0.001 |      132 |       --- |             --- |
+|   LUT as Logic |    <0.001 |       24 |     53200 |            0.05 |
+|   CARRY4       |    <0.001 |        7 |     13300 |            0.05 |
+|   Register     |    <0.001 |       82 |    106400 |            0.08 |
+|   Others       |     0.000 |        4 |       --- |             --- |
+| Signals        |     0.001 |      136 |       --- |             --- |
+| DSPs           |     0.001 |        1 |       220 |            0.45 |
 | I/O            |     0.018 |       50 |       125 |           40.00 |
 | Static Power   |     0.105 |          |           |                 |
-| Total          |     0.128 |          |           |                 |
+| Total          |     0.127 |          |           |                 |
 +----------------+-----------+----------+-----------+-----------------+
 
 
@@ -71,7 +72,7 @@ Table of Contents
 +-----------+-------------+-----------+-------------+------------+-------------+-------------+------------+
 | Source    | Voltage (V) | Total (A) | Dynamic (A) | Static (A) | Powerup (A) | Budget (A)  | Margin (A) |
 +-----------+-------------+-----------+-------------+------------+-------------+-------------+------------+
-| Vccint    |       1.000 |     0.013 |       0.006 |      0.007 |       NA    | Unspecified | NA         |
+| Vccint    |       1.000 |     0.012 |       0.005 |      0.007 |       NA    | Unspecified | NA         |
 | Vccaux    |       1.800 |     0.012 |       0.001 |      0.010 |       NA    | Unspecified | NA         |
 | Vcco33    |       3.300 |     0.000 |       0.000 |      0.000 |       NA    | Unspecified | NA         |
 | Vcco25    |       2.500 |     0.000 |       0.000 |      0.000 |       NA    | Unspecified | NA         |
@@ -147,7 +148,7 @@ Table of Contents
 +------------+-----------+
 | Name       | Power (W) |
 +------------+-----------+
-| expr_plain |     0.024 |
+| expr_plain |     0.023 |
 +------------+-----------+
 
 

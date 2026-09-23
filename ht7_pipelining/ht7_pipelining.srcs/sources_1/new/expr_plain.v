@@ -59,25 +59,68 @@ module expr_plain (
 
 // ---- Stage 1: (a_reg+b_reg)*c_reg, plus pipeline d_reg alongside ----
 
-    reg [15:0] stage1;
-    reg [7:0]  d_stage;
+//    reg [15:0] stage1;
+//    reg [7:0]  d_stage;
+
+//    always @(posedge clk or posedge rst) begin
+//        if (rst) begin
+//            stage1  <= 16'd0;
+//            d_stage <= 8'd0;
+//        end else begin
+//            stage1  <= (a_reg + b_reg) * c_reg;
+//            d_stage <= d_reg;
+//        end
+//    end
+
+//    // ---- Stage 2: stage1 - d_stage ----
+//    always @(posedge clk or posedge rst) begin
+//        if (rst)
+//            result <= 16'd0;
+//        else
+//            result <= stage1 - d_stage;
+//    end
+
+
+
+//************ Pipelined 3-stage version of ((a+b)*c)-d ****************
+// Also here for multipling we tried to use DSP instaed of LUT
+    // ---- Stage 1: a+b, c and d ride along ----
+    reg [8:0] sum_reg;
+    reg [7:0] c_s1, d_s1;
 
     always @(posedge clk or posedge rst) begin
         if (rst) begin
-            stage1  <= 16'd0;
-            d_stage <= 8'd0;
+            sum_reg <= 9'd0;
+            c_s1    <= 8'd0;
+            d_s1    <= 8'd0;
         end else begin
-            stage1  <= (a_reg + b_reg) * c_reg;
-            d_stage <= d_reg;
+            sum_reg <= a_reg + b_reg;
+            c_s1    <= c_reg;
+            d_s1    <= d_reg;
         end
     end
 
-    // ---- Stage 2: stage1 - d_stage ----
+    // ---- Stage 2: multiply ----
+    //reg [15:0] prod_reg;
+   (* use_dsp = "yes" *) reg [15:0] prod_reg; // forse use DSP
+    reg [7:0]  d_s2;
+
+    always @(posedge clk or posedge rst) begin
+        if (rst) begin
+            prod_reg <= 16'd0;
+            d_s2     <= 8'd0;
+        end else begin
+            prod_reg <= sum_reg * c_s1;
+            d_s2     <= d_s1;
+        end
+    end
+
+    // ---- Stage 3: subtract ----
     always @(posedge clk or posedge rst) begin
         if (rst)
             result <= 16'd0;
         else
-            result <= stage1 - d_stage;
+            result <= prod_reg - d_s2;
     end
     
 endmodule
