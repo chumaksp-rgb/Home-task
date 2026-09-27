@@ -79,6 +79,11 @@ endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for the subdirectory.
+  include("C:/PROJECTS_FPGA/Home_tasks/HT1/ht10_running_led/vitis/LED_AXI_GPIO_Zynq/platform_2/ps7_cortexa9_0/standalone_ps7_cortexa9_0/bsp/libsrc/build_configs/gen_bsp/libsrc/tmrctr/src/cmake_install.cmake")
+endif()
+
+if(NOT CMAKE_INSTALL_LOCAL_ONLY)
+  # Include the install script for the subdirectory.
   include("C:/PROJECTS_FPGA/Home_tasks/HT1/ht10_running_led/vitis/LED_AXI_GPIO_Zynq/platform_2/ps7_cortexa9_0/standalone_ps7_cortexa9_0/bsp/libsrc/build_configs/gen_bsp/libsrc/xadcps/src/cmake_install.cmake")
 endif()
 

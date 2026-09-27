@@ -235,8 +235,8 @@ CMAKE_STATIC_LINKER_FLAGS_RELWITHDEBINFO:STRING=
 //Path to a program.
 CMAKE_STRIP:FILEPATH=C:/AMDDesignTools/2025.2/Vitis/gnu/aarch32/nt/gcc-arm-none-eabi/bin/arm-none-eabi-strip.exe
 
-//No help, variable specified on the command line.
-CMAKE_TOOLCHAIN_FILE:UNINITIALIZED=C:/PROJECTS_FPGA/Home_tasks/HT1/ht10_running_led/vitis/LED_AXI_GPIO_Zynq/platform_2/ps7_cortexa9_0/standalone_ps7_cortexa9_0/bsp/cortexa9_toolchain.cmake
+//The CMake toolchain file
+CMAKE_TOOLCHAIN_FILE:FILEPATH=C:/PROJECTS_FPGA/Home_tasks/HT1/ht10_running_led/vitis/LED_AXI_GPIO_Zynq/platform_2/ps7_cortexa9_0/standalone_ps7_cortexa9_0/bsp/cortexa9_toolchain.cmake
 
 //If this value is on, makefiles will be generated without the
 // .SILENT directive, and all commands will be echoed to the console
@@ -278,7 +278,7 @@ TOOLCHAIN_EXTRA_C_FLAGS:STRING= -O2 -g -Wall -Wextra -fno-tree-loop-distribute-p
 XILTIMER_en_interval_timer:BOOL=OFF
 
 //This parameter is used to select specific timer for sleep functionality
-XILTIMER_sleep_timer:STRING=Default;
+XILTIMER_sleep_timer:STRING=Default
 
 //This parameter is used to select specific timer for tick functionality
 XILTIMER_tick_timer:STRING=None
@@ -426,6 +426,15 @@ standalone_ttc_select_cntr:STRING=None
 standalone_xpm_support:BOOL=OFF
 
 //Value Computed by CMake
+tmrctr_BINARY_DIR:STATIC=C:/PROJECTS_FPGA/Home_tasks/HT1/ht10_running_led/vitis/LED_AXI_GPIO_Zynq/platform_2/ps7_cortexa9_0/standalone_ps7_cortexa9_0/bsp/libsrc/build_configs/gen_bsp/libsrc/tmrctr/src
+
+//Value Computed by CMake
+tmrctr_IS_TOP_LEVEL:STATIC=OFF
+
+//Value Computed by CMake
+tmrctr_SOURCE_DIR:STATIC=C:/PROJECTS_FPGA/Home_tasks/HT1/ht10_running_led/vitis/LED_AXI_GPIO_Zynq/platform_2/ps7_cortexa9_0/standalone_ps7_cortexa9_0/bsp/libsrc/tmrctr/src
+
+//Value Computed by CMake
 xadcps_BINARY_DIR:STATIC=C:/PROJECTS_FPGA/Home_tasks/HT1/ht10_running_led/vitis/LED_AXI_GPIO_Zynq/platform_2/ps7_cortexa9_0/standalone_ps7_cortexa9_0/bsp/libsrc/build_configs/gen_bsp/libsrc/xadcps/src
 
 //Value Computed by CMake
@@ -562,7 +571,7 @@ CMAKE_MODULE_LINKER_FLAGS_RELWITHDEBINFO-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: CMAKE_NM
 CMAKE_NM-ADVANCED:INTERNAL=1
 //number of local generators
-CMAKE_NUMBER_OF_MAKEFILES:INTERNAL=22
+CMAKE_NUMBER_OF_MAKEFILES:INTERNAL=23
 //ADVANCED property for variable: CMAKE_OBJCOPY
 CMAKE_OBJCOPY-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: CMAKE_OBJDUMP
@@ -604,9 +613,9 @@ CMAKE_STRIP-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: CMAKE_VERBOSE_MAKEFILE
 CMAKE_VERBOSE_MAKEFILE-ADVANCED:INTERNAL=1
 //STRINGS property for variable: XILTIMER_sleep_timer
-XILTIMER_sleep_timer-STRINGS:INTERNAL=Default;ps7_scutimer_0
+XILTIMER_sleep_timer-STRINGS:INTERNAL=Default;axi_timer_0;ps7_scutimer_0
 //STRINGS property for variable: XILTIMER_tick_timer
-XILTIMER_tick_timer-STRINGS:INTERNAL=None;ps7_scutimer_0
+XILTIMER_tick_timer-STRINGS:INTERNAL=None;axi_timer_0;ps7_scutimer_0
 //STRINGS property for variable: standalone_enable_sw_intrusive_profiling
 standalone_enable_sw_intrusive_profiling-STRINGS:INTERNAL=None
 //STRINGS property for variable: standalone_microblaze_exceptions

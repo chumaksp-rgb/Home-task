@@ -1,40 +1,56 @@
-// main.c -- проста версія: кнопки напряму на світлодіоди.
-// Перемикачі фізично підключені й ініціалізовані, але в логіці
-// не використовуються -- залишені на майбутнє, якщо захочете
-// розширити.
+// main.c -- "бігуча доріжка": один запалений LED рухається по колу
+// LED0 -> LED1 -> LED2 -> LED3 -> LED0 -> ...
+// Темп задає апаратний AXI Timer в режимі auto-reload: програма лише
+// чекає прапорець спрацювання таймера (TINT), програмної затримки немає.
+// Переривання таймера в block design не підключене, тому прапорець
+// опитується (polling).
 
 #include "xparameters.h"
-#include "xil_io.h"
 #include "xgpio.h"
+#include "xtmrctr.h"
 
-// ---- ПЕРЕВІРИТИ реальні назви у вашому xparameters.h ----
-#define LED_BASEADDR   XPAR_AXI_GPIO_0_BASEADDR
-#define BTN_BASEADDR   XPAR_AXI_GPIO_1_BASEADDR
-#define SW_BASEADDR    XPAR_AXI_GPIO_2_BASEADDR
+#define LED_BASEADDR    XPAR_AXI_GPIO_0_BASEADDR
+#define TIMER_BASEADDR  XPAR_AXI_TIMER_0_BASEADDR
+#define TIMER_CLK_HZ    XPAR_AXI_TIMER_0_CLOCK_FREQUENCY   // 50 МГц
 
-XGpio led_gpio, btn_gpio, sw_gpio;
+#define LED_COUNT       4
+#define STEP_MS         250                                // крок доріжки
+
+#define TIMER_NUM       0                                  // використовуємо Timer 0
+// У режимі auto-reload період = (TLR + 2) тактів
+#define TIMER_RELOAD    ((TIMER_CLK_HZ / 1000) * STEP_MS - 2)
+
+XGpio   led_gpio;
+XTmrCtr timer;
+
+// Скидання прапорця TINT: біт скидається записом 1
+static void timer_clear_flag(void) {
+    u32 csr = XTmrCtr_ReadReg(TIMER_BASEADDR, TIMER_NUM, XTC_TCSR_OFFSET);
+    XTmrCtr_WriteReg(TIMER_BASEADDR, TIMER_NUM, XTC_TCSR_OFFSET,
+                     csr | XTC_CSR_INT_OCCURED_MASK);
+}
 
 int main() {
-    XGpio_Config *cfg_ptr;
-
-    cfg_ptr = XGpio_LookupConfig(LED_BASEADDR);
+    XGpio_Config *cfg_ptr = XGpio_LookupConfig(LED_BASEADDR);
     XGpio_CfgInitialize(&led_gpio, cfg_ptr, cfg_ptr->BaseAddress);
-
-    cfg_ptr = XGpio_LookupConfig(BTN_BASEADDR);
-    XGpio_CfgInitialize(&btn_gpio, cfg_ptr, cfg_ptr->BaseAddress);
-
-    cfg_ptr = XGpio_LookupConfig(SW_BASEADDR);
-    XGpio_CfgInitialize(&sw_gpio, cfg_ptr, cfg_ptr->BaseAddress);
-
     XGpio_SetDataDirection(&led_gpio, 1, 0x0); // вихід
-    XGpio_SetDataDirection(&btn_gpio, 1, 0xF); // вхід
-    XGpio_SetDataDirection(&sw_gpio,  1, 0x3); // вхід (не використовується в логіці)
+
+    XTmrCtr_Initialize(&timer, TIMER_BASEADDR);
+    // Лічба вниз від TIMER_RELOAD до 0, потім автоматичне перезавантаження
+    XTmrCtr_SetOptions(&timer, TIMER_NUM,
+                       XTC_DOWN_COUNT_OPTION | XTC_AUTO_RELOAD_OPTION);
+    XTmrCtr_SetResetValue(&timer, TIMER_NUM, TIMER_RELOAD);
+    XTmrCtr_Start(&timer, TIMER_NUM);
+
+    u32 pos = 0;
+    XGpio_DiscreteWrite(&led_gpio, 1, 1u << pos);
 
     while (1) {
-        u32 btn_value = XGpio_DiscreteRead(&btn_gpio, 1);
-
-        // Пряме дзеркалення: яка кнопка натиснута -- той LED світиться
-        XGpio_DiscreteWrite(&led_gpio, 1, btn_value & 0xF);
+        if (XTmrCtr_IsExpired(&timer, TIMER_NUM)) {
+            timer_clear_flag();
+            pos = (pos + 1) % LED_COUNT;
+            XGpio_DiscreteWrite(&led_gpio, 1, 1u << pos);
+        }
     }
 
     return 0;

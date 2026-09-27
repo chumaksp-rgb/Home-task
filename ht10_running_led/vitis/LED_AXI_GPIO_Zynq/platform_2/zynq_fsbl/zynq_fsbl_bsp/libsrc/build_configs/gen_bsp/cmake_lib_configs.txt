@@ -113,7 +113,7 @@ XILFFS_word_access:BOOL=ON
 XILTIMER_en_interval_timer:BOOL=OFF
 
 // This parameter is used to select specific timer for sleep functionality
-XILTIMER_sleep_timer:STRING=Default;
+XILTIMER_sleep_timer:STRING=Default
 
 // This parameter is used to select specific timer for tick functionality
 XILTIMER_tick_timer:STRING=None

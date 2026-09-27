@@ -62,3 +62,9 @@ status = platform.build()
 
 comp.build()
 
+status = platform.update_hw(hw_design = "$COMPONENT_LOCATION/../../../vivado/LED_AXI_GPIO_Zynq/LED_AXI_GPIO/design_1_axi_timer_added.xsa")
+
+status = platform.build()
+
+status = platform.build()
+

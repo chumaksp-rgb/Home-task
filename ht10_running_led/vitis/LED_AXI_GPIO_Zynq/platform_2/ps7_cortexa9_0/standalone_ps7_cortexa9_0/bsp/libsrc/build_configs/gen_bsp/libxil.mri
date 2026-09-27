@@ -1,5 +1,6 @@
 create libxil.a
 addlib C:/PROJECTS_FPGA/Home_tasks/HT1/ht10_running_led/vitis/LED_AXI_GPIO_Zynq/platform_2/ps7_cortexa9_0/standalone_ps7_cortexa9_0/bsp/libsrc/build_configs/gen_bsp/libsrc/xadcps/src/libxadcps.a
+addlib C:/PROJECTS_FPGA/Home_tasks/HT1/ht10_running_led/vitis/LED_AXI_GPIO_Zynq/platform_2/ps7_cortexa9_0/standalone_ps7_cortexa9_0/bsp/libsrc/build_configs/gen_bsp/libsrc/tmrctr/src/libtmrctr.a
 addlib C:/PROJECTS_FPGA/Home_tasks/HT1/ht10_running_led/vitis/LED_AXI_GPIO_Zynq/platform_2/ps7_cortexa9_0/standalone_ps7_cortexa9_0/bsp/libsrc/build_configs/gen_bsp/libsrc/scuwdt/src/libscuwdt.a
 addlib C:/PROJECTS_FPGA/Home_tasks/HT1/ht10_running_led/vitis/LED_AXI_GPIO_Zynq/platform_2/ps7_cortexa9_0/standalone_ps7_cortexa9_0/bsp/libsrc/build_configs/gen_bsp/libsrc/scutimer/src/libscutimer.a
 addlib C:/PROJECTS_FPGA/Home_tasks/HT1/ht10_running_led/vitis/LED_AXI_GPIO_Zynq/platform_2/ps7_cortexa9_0/standalone_ps7_cortexa9_0/bsp/libsrc/build_configs/gen_bsp/libsrc/scugic/src/libscugic.a

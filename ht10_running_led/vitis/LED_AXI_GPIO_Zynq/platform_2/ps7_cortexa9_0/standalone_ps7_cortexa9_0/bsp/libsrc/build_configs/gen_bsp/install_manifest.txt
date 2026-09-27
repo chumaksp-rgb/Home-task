@@ -60,6 +60,9 @@ C:/PROJECTS_FPGA/Home_tasks/HT1/ht10_running_led/vitis/LED_AXI_GPIO_Zynq/platfor
 C:/PROJECTS_FPGA/Home_tasks/HT1/ht10_running_led/vitis/LED_AXI_GPIO_Zynq/platform_2/ps7_cortexa9_0/standalone_ps7_cortexa9_0/bsp/include/../include/xscuwdt_hw.h
 C:/PROJECTS_FPGA/Home_tasks/HT1/ht10_running_led/vitis/LED_AXI_GPIO_Zynq/platform_2/ps7_cortexa9_0/standalone_ps7_cortexa9_0/bsp/include/../include/xstatus.h
 C:/PROJECTS_FPGA/Home_tasks/HT1/ht10_running_led/vitis/LED_AXI_GPIO_Zynq/platform_2/ps7_cortexa9_0/standalone_ps7_cortexa9_0/bsp/include/../include/xtimer_config.h
+C:/PROJECTS_FPGA/Home_tasks/HT1/ht10_running_led/vitis/LED_AXI_GPIO_Zynq/platform_2/ps7_cortexa9_0/standalone_ps7_cortexa9_0/bsp/include/../include/xtmrctr.h
+C:/PROJECTS_FPGA/Home_tasks/HT1/ht10_running_led/vitis/LED_AXI_GPIO_Zynq/platform_2/ps7_cortexa9_0/standalone_ps7_cortexa9_0/bsp/include/../include/xtmrctr_i.h
+C:/PROJECTS_FPGA/Home_tasks/HT1/ht10_running_led/vitis/LED_AXI_GPIO_Zynq/platform_2/ps7_cortexa9_0/standalone_ps7_cortexa9_0/bsp/include/../include/xtmrctr_l.h
 C:/PROJECTS_FPGA/Home_tasks/HT1/ht10_running_led/vitis/LED_AXI_GPIO_Zynq/platform_2/ps7_cortexa9_0/standalone_ps7_cortexa9_0/bsp/lib/libxilstandalone.a
 C:/PROJECTS_FPGA/Home_tasks/HT1/ht10_running_led/vitis/LED_AXI_GPIO_Zynq/platform_2/ps7_cortexa9_0/standalone_ps7_cortexa9_0/bsp/include/../include/bspconfig.h
 C:/PROJECTS_FPGA/Home_tasks/HT1/ht10_running_led/vitis/LED_AXI_GPIO_Zynq/platform_2/ps7_cortexa9_0/standalone_ps7_cortexa9_0/bsp/include/../include/sleep.h
@@ -123,6 +126,9 @@ C:/PROJECTS_FPGA/Home_tasks/HT1/ht10_running_led/vitis/LED_AXI_GPIO_Zynq/platfor
 C:/PROJECTS_FPGA/Home_tasks/HT1/ht10_running_led/vitis/LED_AXI_GPIO_Zynq/platform_2/ps7_cortexa9_0/standalone_ps7_cortexa9_0/bsp/include/../include/xscuwdt_hw.h
 C:/PROJECTS_FPGA/Home_tasks/HT1/ht10_running_led/vitis/LED_AXI_GPIO_Zynq/platform_2/ps7_cortexa9_0/standalone_ps7_cortexa9_0/bsp/include/../include/xstatus.h
 C:/PROJECTS_FPGA/Home_tasks/HT1/ht10_running_led/vitis/LED_AXI_GPIO_Zynq/platform_2/ps7_cortexa9_0/standalone_ps7_cortexa9_0/bsp/include/../include/xtimer_config.h
+C:/PROJECTS_FPGA/Home_tasks/HT1/ht10_running_led/vitis/LED_AXI_GPIO_Zynq/platform_2/ps7_cortexa9_0/standalone_ps7_cortexa9_0/bsp/include/../include/xtmrctr.h
+C:/PROJECTS_FPGA/Home_tasks/HT1/ht10_running_led/vitis/LED_AXI_GPIO_Zynq/platform_2/ps7_cortexa9_0/standalone_ps7_cortexa9_0/bsp/include/../include/xtmrctr_i.h
+C:/PROJECTS_FPGA/Home_tasks/HT1/ht10_running_led/vitis/LED_AXI_GPIO_Zynq/platform_2/ps7_cortexa9_0/standalone_ps7_cortexa9_0/bsp/include/../include/xtmrctr_l.h
 C:/PROJECTS_FPGA/Home_tasks/HT1/ht10_running_led/vitis/LED_AXI_GPIO_Zynq/platform_2/ps7_cortexa9_0/standalone_ps7_cortexa9_0/bsp/lib/libxiltimer.a
 C:/PROJECTS_FPGA/Home_tasks/HT1/ht10_running_led/vitis/LED_AXI_GPIO_Zynq/platform_2/ps7_cortexa9_0/standalone_ps7_cortexa9_0/bsp/include/../include/bspconfig.h
 C:/PROJECTS_FPGA/Home_tasks/HT1/ht10_running_led/vitis/LED_AXI_GPIO_Zynq/platform_2/ps7_cortexa9_0/standalone_ps7_cortexa9_0/bsp/include/../include/sleep.h
@@ -186,3 +192,6 @@ C:/PROJECTS_FPGA/Home_tasks/HT1/ht10_running_led/vitis/LED_AXI_GPIO_Zynq/platfor
 C:/PROJECTS_FPGA/Home_tasks/HT1/ht10_running_led/vitis/LED_AXI_GPIO_Zynq/platform_2/ps7_cortexa9_0/standalone_ps7_cortexa9_0/bsp/include/../include/xscuwdt_hw.h
 C:/PROJECTS_FPGA/Home_tasks/HT1/ht10_running_led/vitis/LED_AXI_GPIO_Zynq/platform_2/ps7_cortexa9_0/standalone_ps7_cortexa9_0/bsp/include/../include/xstatus.h
 C:/PROJECTS_FPGA/Home_tasks/HT1/ht10_running_led/vitis/LED_AXI_GPIO_Zynq/platform_2/ps7_cortexa9_0/standalone_ps7_cortexa9_0/bsp/include/../include/xtimer_config.h
+C:/PROJECTS_FPGA/Home_tasks/HT1/ht10_running_led/vitis/LED_AXI_GPIO_Zynq/platform_2/ps7_cortexa9_0/standalone_ps7_cortexa9_0/bsp/include/../include/xtmrctr.h
+C:/PROJECTS_FPGA/Home_tasks/HT1/ht10_running_led/vitis/LED_AXI_GPIO_Zynq/platform_2/ps7_cortexa9_0/standalone_ps7_cortexa9_0/bsp/include/../include/xtmrctr_i.h
+C:/PROJECTS_FPGA/Home_tasks/HT1/ht10_running_led/vitis/LED_AXI_GPIO_Zynq/platform_2/ps7_cortexa9_0/standalone_ps7_cortexa9_0/bsp/include/../include/xtmrctr_l.h

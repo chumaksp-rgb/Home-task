@@ -148,6 +148,20 @@
 #define XPAR_XSCUWDT_0_INTERRUPTS 0x10400e
 #define XPAR_XSCUWDT_0_INTERRUPT_PARENT 0xf8f01000
 
+#define XPAR_XTMRCTR_NUM_INSTANCES 1
+
+/* Definitions for peripheral AXI_TIMER_0 */
+#define XPAR_AXI_TIMER_0_COMPATIBLE "xlnx,axi-timer-2.0"
+#define XPAR_AXI_TIMER_0_BASEADDR 0x42800000
+#define XPAR_AXI_TIMER_0_HIGHADDR 0x4280ffff
+#define XPAR_AXI_TIMER_0_CLOCK_FREQUENCY 0x2faf080
+
+/* Canonical definitions for peripheral AXI_TIMER_0 */
+#define XPAR_XTMRCTR_0_BASEADDR 0x42800000
+#define XPAR_XTMRCTR_0_HIGHADDR 0x4280ffff
+#define XPAR_XTMRCTR_0_COMPATIBLE "xlnx,axi-timer-2.0"
+#define XPAR_XTMRCTR_0_CLOCK_FREQUENCY 0x2faf080
+
 #define XPAR_XXADCPS_NUM_INSTANCES 1
 
 /* Definitions for peripheral ADC */

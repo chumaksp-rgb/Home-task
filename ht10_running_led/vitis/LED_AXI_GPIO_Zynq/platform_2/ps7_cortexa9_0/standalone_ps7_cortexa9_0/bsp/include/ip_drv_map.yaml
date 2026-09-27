@@ -7,6 +7,9 @@ axi_gpio_1:
 axi_gpio_2:
 - axi_gpio
 - gpio
+axi_timer_0:
+- axi_timer
+- tmrctr
 ps7_afi_0:
 - ps7_afi
 - None

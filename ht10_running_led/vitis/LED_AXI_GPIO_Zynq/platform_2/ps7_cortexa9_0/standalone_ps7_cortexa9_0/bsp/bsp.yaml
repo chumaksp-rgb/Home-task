@@ -162,6 +162,10 @@ drv_info:
     driver: gpio
     ip_name: axi_gpio
     path: C:\AMDDesignTools\2025.2\Vitis\data\embeddedsw\XilinxProcessorIPLib\drivers\gpio_v4_12
+  axi_timer_0:
+    driver: tmrctr
+    ip_name: axi_timer
+    path: C:\AMDDesignTools\2025.2\Vitis\data\embeddedsw\XilinxProcessorIPLib\drivers\tmrctr_v4_14
   ps7_afi_0: None
   ps7_afi_1: None
   ps7_afi_2: None
@@ -224,9 +228,10 @@ lib_config:
       permission: read_write
       type: string
       value: Default;
-      default: Default;
+      default: Default
       options:
       - Default
+      - axi_timer_0
       - ps7_scutimer_0
       description: This parameter is used to select specific timer for sleep functionality
     XILTIMER_tick_timer:
@@ -237,5 +242,6 @@ lib_config:
       default: None
       options:
       - None
+      - axi_timer_0
       - ps7_scutimer_0
       description: This parameter is used to select specific timer for tick functionality

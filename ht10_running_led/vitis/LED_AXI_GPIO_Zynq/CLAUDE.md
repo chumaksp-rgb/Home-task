@@ -21,8 +21,9 @@ The hardware side lives in the Vivado project at `../../vivado/LED_AXI_GPIO_Zynq
 | axi_gpio_0 | `XPAR_AXI_GPIO_0_BASEADDR` | 0x41200000 | 4 | LEDs (output) |
 | axi_gpio_1 | `XPAR_AXI_GPIO_1_BASEADDR` | 0x41210000 | 4 | buttons (input) |
 | axi_gpio_2 | `XPAR_AXI_GPIO_2_BASEADDR` | 0x41220000 | 2 | switches (input) |
+| axi_timer_0 | `XPAR_AXI_TIMER_0_BASEADDR` | 0x42800000 | 2×32-bit | step timer for the running LED (driver `xtmrctr`, clock `XPAR_AXI_TIMER_0_CLOCK_FREQUENCY` = 50 MHz) |
 
-All are single-channel (use channel 1), no interrupts. With the SDT-based flow, `XGpio_LookupConfig()` takes the **base address**, not a device ID. If the block design changes, re-check these macros in the regenerated `xparameters.h`.
+The GPIOs are single-channel (use channel 1). No PL interrupts are wired to the PS (`IRQ_F2P` disabled), so the timer is used by polling its TINT flag in auto-reload mode; the flag is write-1-to-clear. With the SDT-based flow, `XGpio_LookupConfig()` / `XTmrCtr_Initialize()` take the **base address**, not a device ID. If the block design changes, re-check these macros in the regenerated `xparameters.h`.
 
 ## Build
 
@@ -42,6 +43,8 @@ Source files and compiler flags are set in `app_component_2/src/UserConfig.cmake
 ## Run / debug on hardware
 
 Launch config `app_component_2/_ide/launch.json` (JTAG, TCF): resets the system, programs the PL with `app_component_2/_ide/bitstream/design_1_wrapper_vitis.bit`, initializes PS via the platform FSBL (`platform_2/export/platform_2/sw/boot/fsbl.elf`), then downloads and runs the ELF. There are no automated tests; verification is on the board.
+
+After re-exporting the XSA and rebuilding the platform, the launch bitstream is **not** refreshed automatically: copy the new `.bit` from `platform_2/export/platform_2/hw/sdt/` over `app_component_2/_ide/bitstream/design_1_wrapper_vitis.bit` (and check `_ide/psinit/ps7_init.tcl` against the platform's). A stale bitstream missing a peripheral makes AXI accesses to it hang.
 
 ## Conventions
 
