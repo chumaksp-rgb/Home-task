@@ -40,6 +40,31 @@ Output: `app_component_2/build/app_component_2.elf`.
 
 Source files and compiler flags are set in `app_component_2/src/UserConfig.cmake` (`USER_COMPILE_SOURCES`, `-O0 -g3`, linker script `src/lscript.ld`). New `.c` files in `src/` must be added to `USER_COMPILE_SOURCES`.
 
+## BSP regeneration: the xiltimer trap
+
+A **clean** platform regeneration (e.g. on a fresh clone) fails to link `fsbl.elf` with `undefined reference to XTime_GetTime` / `XilSleepTimer_Init`, because `xtimer_config.h` comes out with `/* #undef XTIMER_IS_DEFAULT_TIMER */`.
+
+Cause: adding `axi_timer_0` gave the design two timer instances (`axi_timer_0` + `ps7_scutimer_0`). In `.../xiltimer_v2_3/src/xiltimer.cmake`, that takes the `_len GREATER 1` path, where the only branch that selects the default (global) timer on cortexa9 requires **both** `XILTIMER_sleep_timer` and `XILTIMER_tick_timer` to be CMake lists of length > 1. `bsp.yaml` stores `sleep_timer: Default;` (length 2) but `tick_timer: None` (length 1), so no sleep timer is selected at all and `globaltimer_sleep_zynq.c` compiles to nothing.
+
+Fix, applied in both domains' `bsp.yaml` (`ps7_cortexa9_0/standalone_ps7_cortexa9_0/bsp/` and `zynq_fsbl/zynq_fsbl_bsp/`): set the sleep timer to plain `Default` without the trailing semicolon, which matches `STREQUAL "Default"` earlier in the same logic.
+
+```yaml
+    XILTIMER_sleep_timer:
+      value: Default        # NOT "Default;"
+```
+
+Do **not** point `XILTIMER_sleep_timer` at `axi_timer_0` — the application drives that timer directly. Correct result in `<bsp>/include/xtimer_config.h`: `#define XTIMER_IS_DEFAULT_TIMER 1`.
+
+The BSPs can be regenerated outside the IDE with the same commands Vitis runs (`_ide/logs/vitis.log` records them):
+
+```
+empyro.bat reconfig_bsp -d <bsp_dir>
+empyro.bat build_bsp   -d <bsp_dir>
+empyro.bat build_app   --src_dir <app_dir> --build_dir <app_dir>/build
+```
+
+`build_app` needs `platform_2/export/` to exist, so the platform must be generated in the IDE at least once.
+
 ## Run / debug on hardware
 
 Launch config `app_component_2/_ide/launch.json` (JTAG, TCF): resets the system, programs the PL with `app_component_2/_ide/bitstream/design_1_wrapper_vitis.bit`, initializes PS via the platform FSBL (`platform_2/export/platform_2/sw/boot/fsbl.elf`), then downloads and runs the ELF. There are no automated tests; verification is on the board.

@@ -1,4 +1,0 @@
-C:/PROJECTS_FPGA/Home_tasks/HT1/ht10_running_led/vitis/LED_AXI_GPIO_Zynq/platform_2/zynq_fsbl/build/CMakeFiles/fsbl.elf.dir
-C:/PROJECTS_FPGA/Home_tasks/HT1/ht10_running_led/vitis/LED_AXI_GPIO_Zynq/platform_2/zynq_fsbl/build/CMakeFiles/print_build_info.dir
-C:/PROJECTS_FPGA/Home_tasks/HT1/ht10_running_led/vitis/LED_AXI_GPIO_Zynq/platform_2/zynq_fsbl/build/CMakeFiles/edit_cache.dir
-C:/PROJECTS_FPGA/Home_tasks/HT1/ht10_running_led/vitis/LED_AXI_GPIO_Zynq/platform_2/zynq_fsbl/build/CMakeFiles/rebuild_cache.dir
