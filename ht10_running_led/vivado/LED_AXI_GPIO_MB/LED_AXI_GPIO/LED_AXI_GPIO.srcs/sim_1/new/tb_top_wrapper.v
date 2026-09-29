@@ -13,6 +13,8 @@
 //
 // Порти звірені з design_1_wrapper.v:
 //   inout [3:0] btn_tri_io, led_tri_io   inout [1:0] sw_tri_io   input sysclk
+//
+// Рядки $display -- англійською: консоль XSim не показує кирилицю.
 
 `timescale 1ns / 1ps
 
@@ -66,10 +68,10 @@ module tb_top_wrapper;
             end
 
             if (led_tri_io === expected)
-                $display("[%0t ns] PASS  btn=%b -> led=%b  (чекали %0d нс)",
+                $display("[%0t] PASS  btn=%b -> led=%b  (waited %0d ns)",
                          $time, btn_value, led_tri_io, waited);
             else begin
-                $display("[%0t ns] FAIL  btn=%b -> led=%b, очікувалось %b  (тайм-аут)",
+                $display("[%0t] FAIL  btn=%b -> led=%b, expected %b  (timeout)",
                          $time, btn_value, led_tri_io, expected);
                 errors = errors + 1;
             end
@@ -77,7 +79,10 @@ module tb_top_wrapper;
     endtask
 
     initial begin
-        $display("=== Старт симуляції. Очікуємо завантаження MicroBlaze... ===");
+        // Друкувати час у наносекундах, а не в одиницях точності (пс)
+        $timeformat(-9, 0, " ns", 12);
+
+        $display("=== Simulation started. Waiting for MicroBlaze to boot... ===");
 
         // Перший виклик найдовший: поки процесор не дійде до while(1),
         // світлодіоди перебувають у Z.
@@ -91,11 +96,11 @@ module tb_top_wrapper;
         sw_drv = 2'b11;
         apply_and_check(4'b0101, 4'b0101);
 
-        $display("=== Завершено. Помилок: %0d ===", errors);
+        $display("=== Finished. Errors: %0d ===", errors);
         if (errors == 0)
-            $display("=== УСПІХ: дзеркалення кнопок на світлодіоди працює ===");
+            $display("=== SUCCESS: button-to-LED mirroring works ===");
         else
-            $display("=== Є розбіжності -- дивіться Waveform Viewer ===");
+            $display("=== Mismatches found -- inspect the Waveform Viewer ===");
 
         $finish;
     end
@@ -103,8 +108,8 @@ module tb_top_wrapper;
     // Сторожовий таймер: не дати симуляції зависнути назавжди
     initial begin
         #(TIMEOUT_NS * 8);
-        $display("!!! Сторожовий таймер: симуляція триває занадто довго.");
-        $display("!!! Найімовірніша причина -- не підключений ELF (Associate ELF Files).");
+        $display("!!! Watchdog: simulation is running too long.");
+        $display("!!! Most likely cause: no ELF associated (Tools -> Associate ELF Files).");
         $finish;
     end
 
