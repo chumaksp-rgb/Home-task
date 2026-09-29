@@ -117,7 +117,21 @@ This means **two ELFs**, and mixing them up is the most likely failure:
 | `app_component/build/app_component.elf` | default (`TIME_SCALE` = 1) | the board |
 | `../../vivado/LED_AXI_GPIO_MB/sim_elf/app_component_sim.elf` | `-DTIME_SCALE=1000` | simulation |
 
-The sim ELF is produced by setting `USER_COMPILE_DEFINITIONS` to `"TIME_SCALE=1000"` in `app_component/src/UserConfig.cmake`, building, copying the result to `sim_elf/`, then **reverting the define and rebuilding** so the board ELF is the real-time one. Associating the board ELF with the simulation does not fail loudly — it just hangs until the testbench watchdog fires.
+Both are produced by **`build_elfs.ps1`** in this workspace root — use it rather than toggling the define by hand:
+
+```powershell
+.\build_elfs.ps1              # TIME_SCALE=1000
+.\build_elfs.ps1 -Scale 500   # other scale
+```
+
+It builds the sim variant first, copies it to `sim_elf/`, then rebuilds the board variant. That order is the safety invariant: `app_component/build/` is left holding the real-time ELF even if the script is interrupted, so the board can never be flashed with a 1000× version. `UserConfig.cmake` is restored in a `finally` block, and the script aborts if the `USER_COMPILE_DEFINITIONS` block no longer matches the expected shape rather than corrupting it silently.
+
+Mixing the two ELFs up fails quietly rather than loudly: associating the board ELF with the simulation just hangs until the testbench watchdog fires, and flashing the sim ELF gives a running light 1000× too fast.
+
+Two Windows PowerShell 5.1 quirks are baked into that script; both bit during its development, so preserve them when editing:
+
+- It must stay **UTF-8 with BOM**. Without a BOM, PS 5.1 reads the file as ANSI, the Cyrillic comments turn to mojibake and parsing fails outright.
+- It does **not** use `2>&1` on `empyro.bat`. In PS 5.1 redirecting a native program's stderr wraps every line in an `ErrorRecord`, which under `$ErrorActionPreference = 'Stop'` aborts the script even on a successful build. Success is judged by `$LASTEXITCODE` instead.
 
 Testbenches live in `../../vivado/LED_AXI_GPIO_MB/LED_AXI_GPIO/LED_AXI_GPIO.srcs/sim_1/new/`:
 

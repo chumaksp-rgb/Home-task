@@ -164,7 +164,7 @@ module tb_running_led;
                      $time, period_default);
             errors = errors + 1;
         end
-
+$stop;
         // ---- 3. BTN3 чотири рази: 250 -> 175 -> 125 -> 90 -> 60 мкс ----
         $display("--- BTN3 x4: speed up to the fastest step (~60000 ns) ---");
         press(4'b1000, "BTN3 faster");
