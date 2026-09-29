@@ -3,8 +3,8 @@
   "type": "PLATFORM",
   "configuration": {
     "description": "",
-    "xsa": "C:/PROJECTS_FPGA/Home_tasks/HT1/ht10_running_led/vivado/LED_AXI_GPIO_MB/LED_AXI_GPIO/design_1_wrapper_real_HW.xsa",
-    "xsaPathInPlatform": "platform_2/hw/design_1_wrapper_real_HW.xsa",
+    "xsa": "C:/PROJECTS_FPGA/Home_tasks/HT1/ht10_running_led/vivado/LED_AXI_GPIO_MB/LED_AXI_GPIO/design_1_wrapper_32k_memory.xsa",
+    "xsaPathInPlatform": "platform_2/hw/design_1_wrapper_32k_memory.xsa",
     "emulationXsa": "",
     "emulationXsaPathInPlatform": "",
     "isCustomFSBL": false,

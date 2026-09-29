@@ -16,8 +16,8 @@
                 compatible = "cpus,cluster";
                 #address-cells = <0x1>;
                 #size-cells = <0x0>;
-                address-map = <0x0 &microblaze_0_local_memory_dlmb_bram_if_cntlr_memory 0x0 0x4000>,
-                 <0x0 &microblaze_0_local_memory_dlmb_bram_if_cntlr 0x0 0x4000>,
+                address-map = <0x0 &microblaze_0_local_memory_dlmb_bram_if_cntlr_memory 0x0 0x8000>,
+                 <0x0 &microblaze_0_local_memory_dlmb_bram_if_cntlr 0x0 0x8000>,
                  <0x40000000 &axi_gpio_0 0x40000000 0x10000>,
                  <0x40010000 &axi_gpio_1 0x40010000 0x10000>,
                  <0x40020000 &axi_gpio_2 0x40020000 0x10000>,
@@ -330,7 +330,7 @@
                         xlnx,arbitration = <0x0>;
                         xlnx,num-lmb = <0x1>;
                         xlnx,mask4 = <0x800000>;
-                        reg = <0x0 0x4000>;
+                        reg = <0x0 0x8000>;
                         xlnx,s-axi-ctrl-addr-width = <0x20>;
                         xlnx,mask5 = <0x800000>;
                         xlnx,ecc-status-registers = <0x0>;
@@ -368,7 +368,7 @@
                 xlnx,ip-name = "lmb_bram_if_cntlr";
                 device_type = "memory";
                 memory_type = "memory";
-                reg = <0x0 0x4000>;
+                reg = <0x0 0x8000>;
         };
 
         chosen {

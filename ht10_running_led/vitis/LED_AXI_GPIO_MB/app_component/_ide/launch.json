@@ -28,7 +28,7 @@
           "psDevice": "Auto Detect"
         },
         "resetAPU": false,
-        "bitstreamFile": "${workspaceFolder}\\platform_2\\export\\platform_2\\hw\\sdt\\design_1_wrapper_real_HW.bit",
+        "bitstreamFile": "${workspaceFolder}\\platform_2\\export\\platform_2\\hw\\sdt\\design_1_wrapper_32k_memory.bit",
         "zynqInitialization": {
           "isFsbl": false,
           "usingFSBL": {
