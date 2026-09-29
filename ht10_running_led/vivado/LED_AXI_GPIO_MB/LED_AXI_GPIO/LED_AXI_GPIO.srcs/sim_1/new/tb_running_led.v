@@ -154,6 +154,8 @@ module tb_running_led;
         $display("--- forward at default speed (expect ~250000 ns per step) ---");
         check_step(1);
         check_step(1);
+        //check_step(1);
+        //check_step(1);
         period_default = elapsed;
 
         if (period_default > 200_000 && period_default < 300_000)
@@ -164,7 +166,7 @@ module tb_running_led;
                      $time, period_default);
             errors = errors + 1;
         end
-$stop;
+//$stop;
         // ---- 3. BTN3 чотири рази: 250 -> 175 -> 125 -> 90 -> 60 мкс ----
         $display("--- BTN3 x4: speed up to the fastest step (~60000 ns) ---");
         press(4'b1000, "BTN3 faster");
@@ -177,6 +179,8 @@ $stop;
         // й міряємо період між двома послідовними змінами.
         check_step(1);
         check_step(1);
+        //check_step(1);
+        //check_step(1);
         period_fast = elapsed;
         if (period_fast > 40_000 && period_fast < 80_000)
             $display("[%0t] PASS  fast step = %0d ns (expected ~60000)",
@@ -195,7 +199,7 @@ $stop;
                      $time, period_default, period_fast);
             errors = errors + 1;
         end
-
+//$stop;
         // ---- 4. SW0 = 1: рух назад ----
         $display("--- SW0 = 1: direction must reverse ---");
         sw_drv = 2'b01;
@@ -203,7 +207,9 @@ $stop;
         led_last = led_tri_io;
         check_step(0);
         check_step(0);
-
+        //check_step(0);
+        //check_step(0);
+//$stop;
         // ---- 5. BTN1: стоп ----
         $display("--- BTN1: movement must stop ---");
         press(4'b0010, "BTN1 stop");
@@ -216,7 +222,7 @@ $stop;
                      $time, frozen, led_tri_io);
             errors = errors + 1;
         end
-
+//$stop;
         // ---- 6. BTN0: продовжити ----
         $display("--- BTN0: movement must resume ---");
         press(4'b0001, "BTN0 resume");
