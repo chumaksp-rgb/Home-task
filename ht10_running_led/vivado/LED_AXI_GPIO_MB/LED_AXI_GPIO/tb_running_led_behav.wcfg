@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wave_config>
+   <wave_state>
+   </wave_state>
+   <db_ref_list>
+      <db_ref path="tb_running_led_behav.wdb" id="1">
+         <top_modules>
+            <top_module name="glbl" />
+            <top_module name="ipif_pkg" />
+            <top_module name="lmb_bram_if_funcs" />
+            <top_module name="mdm_funcs" />
+            <top_module name="tb_running_led" />
+            <top_module name="tc_types" />
+            <top_module name="vcomponents" />
+         </top_modules>
+      </db_ref>
+   </db_ref_list>
+   <zoom_setting>
+      <ZoomStartTime time="0.000000 us"></ZoomStartTime>
+      <ZoomEndTime time="1,724.410001 us"></ZoomEndTime>
+      <Cursor1Time time="1,724.410000 us"></Cursor1Time>
+   </zoom_setting>
+   <column_width_setting>
+      <NameColumnWidth column_width="340"></NameColumnWidth>
+      <ValueColumnWidth column_width="132"></ValueColumnWidth>
+   </column_width_setting>
+   <WVObjectSize size="17" />
+   <wvobject fp_name="/tb_running_led/sysclk" type="logic">
+      <obj_property name="ElementShortName">sysclk</obj_property>
+      <obj_property name="ObjectShortName">sysclk</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_running_led/btn_tri_io" type="array">
+      <obj_property name="ElementShortName">btn_tri_io[3:0]</obj_property>
+      <obj_property name="ObjectShortName">btn_tri_io[3:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_running_led/sw_tri_io" type="array">
+      <obj_property name="ElementShortName">sw_tri_io[1:0]</obj_property>
+      <obj_property name="ObjectShortName">sw_tri_io[1:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_running_led/led_tri_io" type="array">
+      <obj_property name="ElementShortName">led_tri_io[3:0]</obj_property>
+      <obj_property name="ObjectShortName">led_tri_io[3:0]</obj_property>
+      <obj_property name="Radix">BINARYRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_running_led/btn_drv" type="array">
+      <obj_property name="ElementShortName">btn_drv[3:0]</obj_property>
+      <obj_property name="ObjectShortName">btn_drv[3:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_running_led/sw_drv" type="array">
+      <obj_property name="ElementShortName">sw_drv[1:0]</obj_property>
+      <obj_property name="ObjectShortName">sw_drv[1:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_running_led/errors" type="array">
+      <obj_property name="ElementShortName">errors[31:0]</obj_property>
+      <obj_property name="ObjectShortName">errors[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_running_led/elapsed" type="array">
+      <obj_property name="ElementShortName">elapsed[31:0]</obj_property>
+      <obj_property name="ObjectShortName">elapsed[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_running_led/led_last" type="array">
+      <obj_property name="ElementShortName">led_last[3:0]</obj_property>
+      <obj_property name="ObjectShortName">led_last[3:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_running_led/waited" type="array">
+      <obj_property name="ElementShortName">waited[31:0]</obj_property>
+      <obj_property name="ObjectShortName">waited[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_running_led/period_default" type="array">
+      <obj_property name="ElementShortName">period_default[31:0]</obj_property>
+      <obj_property name="ObjectShortName">period_default[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_running_led/period_fast" type="array">
+      <obj_property name="ElementShortName">period_fast[31:0]</obj_property>
+      <obj_property name="ObjectShortName">period_fast[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_running_led/frozen" type="array">
+      <obj_property name="ElementShortName">frozen[3:0]</obj_property>
+      <obj_property name="ObjectShortName">frozen[3:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_running_led/RES_NS" type="array">
+      <obj_property name="ElementShortName">RES_NS[31:0]</obj_property>
+      <obj_property name="ObjectShortName">RES_NS[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_running_led/HOLD_NS" type="array">
+      <obj_property name="ElementShortName">HOLD_NS[31:0]</obj_property>
+      <obj_property name="ObjectShortName">HOLD_NS[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_running_led/BOOT_TIMEOUT" type="array">
+      <obj_property name="ElementShortName">BOOT_TIMEOUT[31:0]</obj_property>
+      <obj_property name="ObjectShortName">BOOT_TIMEOUT[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_running_led/STEP_TIMEOUT" type="array">
+      <obj_property name="ElementShortName">STEP_TIMEOUT[31:0]</obj_property>
+      <obj_property name="ObjectShortName">STEP_TIMEOUT[31:0]</obj_property>
+   </wvobject>
+</wave_config>

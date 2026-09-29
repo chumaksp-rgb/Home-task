@@ -999,9 +999,9 @@
     },
     "elf_association": {
       "file": {
-        "name": "..\\..\\..\\..\\..\\..\\..\\vitis\\LED_AXI_GPIO_MB\\app_component\\build\\app_component.elf",
+        "name": "..\\..\\..\\..\\..\\sim_elf\\app_component_sim.elf",
         "type": "ELF",
-        "checksum": "0",
+        "checksum": "1694404039",
         "IsVisible": "1",
         "ScopedToRef": "design_1",
         "ScopedToCell": [

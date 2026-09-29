@@ -6,7 +6,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 A Vitis Unified IDE workspace (AMD Vitis 2025.2, `C:/AMDDesignTools/2025.2/Vitis`) for a bare-metal **MicroBlaze** app on a PYNQ-Z1 board (`xc7z020clg400-1`). It is the MicroBlaze counterpart of `../LED_AXI_GPIO_Zynq/`, which targets the hard ARM cores of the same chip and has its own CLAUDE.md.
 
-The hardware lives in `../../vivado/LED_AXI_GPIO_MB/LED_AXI_GPIO/` (block design `design_1`, constraints `LED_AXI_GPIO.srcs/constrs_1/new/pynq_z1.xdc`), exported as `design_1_wrapper_real_HW.xsa`.
+The hardware lives in `../../vivado/LED_AXI_GPIO_MB/LED_AXI_GPIO/` (block design `design_1`, constraints `LED_AXI_GPIO.srcs/constrs_1/new/pynq_z1.xdc`), currently exported as `design_1_wrapper_32k_memory.xsa`. **The XSA name propagates into the bitstream name**, so re-exporting under a new name breaks the `bitstreamFile` path in `launch.json` — see below.
 
 **MicroBlaze is a soft processor: it exists only while the FPGA is configured.** Without a bitstream there is no CPU, no LMB memory and no MDM debug module, so JTAG finds no target at all. This is the key difference from the Zynq project, where the ARM cores run regardless of the PL. Every XSA export must therefore **include the bitstream** (`Export Hardware → Include bitstream`), and the launch config must program the device.
 
@@ -24,6 +24,19 @@ From `platform_2/export/platform_2/sw/standalone_microblaze_0/include/xparameter
 `XPAR_AXI_TIMER_0_CLOCK_FREQUENCY` = 100 MHz and `XPAR_MICROBLAZE_FREQ` = 100000000, so timer reload values are **twice** those of the Zynq project (50 MHz there). Always derive them from the macro, never hard-code.
 
 No interrupts are wired: `XPAR_MICROBLAZE_USE_INTERRUPT 0` and `INTERRUPT_PRESENT 0` on every GPIO. Poll the timer's TINT flag in auto-reload mode (write-1-to-clear), as the Zynq app does.
+
+## Local memory is the binding constraint
+
+MicroBlaze runs entirely out of LMB block RAM — there is no DDR in this design. The BRAM was originally 16 KB, which the running-light app overflowed by 7336 bytes. It is now **32 KB**; the app occupies ~23.7 KB, leaving ~9 KB.
+
+The size is set **only** in the Address Editor: `Range` on both `SEG_dlmb_bram_if_cntlr_Mem` and `SEG_ilmb_bram_if_cntlr_Mem`. Both must match — they are two views of the same physical memory. Everything downstream follows automatically (`C_HIGHADDR` on both controllers, and `Write_Depth_A` on `lmb_bram`, which is in `use_bram_block = BRAM_Controller` mode and must never be edited by hand).
+
+Two things do **not** follow automatically:
+
+- **`app_component/src/lscript.ld`** keeps the old `LENGTH` (`0x3fb0` for 16 KB, `0x7fb0` for 32 KB). It was generated when the app was created and is not refreshed by a platform rebuild. Forgetting this reproduces the original overflow error even though the hardware has the memory.
+- **`launch.json`'s `bitstreamFile`**, if the XSA was re-exported under a new name.
+
+Optimisation flags barely help: `-O0` → `-Os` saved only 632 bytes, because the bulk is BSP library code, not application code. Measured contributions: `xtmrctr.c.obj` 6079 bytes, `xgpio.c.obj` 1771, `xtmrctr_options.c.obj` 1223, while `main_combined.c.obj` is only 1216. The BSP is compiled without function sections, so `--gc-sections` cannot drop unused functions — a referenced object is pulled in whole. If memory ever runs short again, replacing `XTmrCtr`/`XGpio` with direct `Xil_In32`/`Xil_Out32` register access saves far more than any flag.
 
 ## Clocking and reset in the block design
 
@@ -71,7 +84,7 @@ Fixed by `-D__MICROBLAZE__` in `app_component/src/.clangd`. The same flag also s
 |---|---|---|
 | `runPs7Init`, `runPs7PostInit` | `true`, with an empty `ps7InitTclFile` | `false` |
 | `initWithFSBL` | `true`, pointing at a non-existent `fsbl.elf` | `false` |
-| `bitstreamFile` | `""` | `platform_2/export/platform_2/hw/sdt/design_1_wrapper_real_HW.bit` |
+| `bitstreamFile` | `""` | `platform_2/export/platform_2/hw/sdt/design_1_wrapper_32k_memory.bit` |
 
 `ps7_init` and the FSBL are Zynq PS bring-up mechanisms and have no MicroBlaze equivalent — the bitstream does that job. Leaving `runPs7Init` on with an empty path makes Vitis run `source ""`, which fails with:
 
@@ -89,9 +102,41 @@ Synthesis once failed with `[Synth 8-439] module 'bd_afc3_m03e_0' not found` ins
 
 After any block-design change — especially to the SmartConnect's master count — use **Reset Output Products** before **Generate Output Products**, rather than regenerating on top. If it persists, delete `LED_AXI_GPIO.gen/sources_1/bd/design_1/` and reset the affected run.
 
+## Simulation (Vivado XSim)
+
+Behavioural simulation of this design runs the **real MicroBlaze executing the real ELF**, so it verifies the software, not just the RTL. Two facts shape everything:
+
+**1. The ELF is an input to the simulator.** Without `Tools → Associate ELF Files → Simulation Sources → microblaze_0`, the CPU executes nothing and the LEDs stay high-Z. The dialog only lists ELFs already added to the project, so the file must first go in via `Add Sources → Add or create simulation sources` (set the filter to All Files — the default hides `.elf`).
+
+**2. Real timing cannot be simulated.** One 250 ms step at 100 MHz is 25 million cycles. The app therefore carries a `TIME_SCALE` macro (default 1); building with `-DTIME_SCALE=1000` turns 250 ms into 250 µs and the 10 ms button tick into 10 µs, while the logic stays identical. Do not go much past 1000: the polling loop itself costs a few µs per iteration, and the debounce tick would stop being reliable.
+
+This means **two ELFs**, and mixing them up is the most likely failure:
+
+| File | Built with | Use |
+|---|---|---|
+| `app_component/build/app_component.elf` | default (`TIME_SCALE` = 1) | the board |
+| `../../vivado/LED_AXI_GPIO_MB/sim_elf/app_component_sim.elf` | `-DTIME_SCALE=1000` | simulation |
+
+The sim ELF is produced by setting `USER_COMPILE_DEFINITIONS` to `"TIME_SCALE=1000"` in `app_component/src/UserConfig.cmake`, building, copying the result to `sim_elf/`, then **reverting the define and rebuilding** so the board ELF is the real-time one. Associating the board ELF with the simulation does not fail loudly — it just hangs until the testbench watchdog fires.
+
+Testbenches live in `../../vivado/LED_AXI_GPIO_MB/LED_AXI_GPIO/LED_AXI_GPIO.srcs/sim_1/new/`:
+
+- `tb_top_wrapper.v` — the earlier button-to-LED mirror app
+- `tb_running_led.v` — the running light: step period, BTN3 speed-up, SW0 direction, BTN1 stop, BTN0 resume
+
+Three traps these testbenches encode, each of which cost a debugging round:
+
+- **At `t=0` the GPIO lines are `X`, not `Z`.** The `IOBUF` tri-state control is undefined until reset propagates. A boot wait written as `while (led === 4'bzzzz)` therefore exits immediately and reports success at 0 ns. Wait for a valid one-hot pattern instead (`is_onehot()`), and compare with `===` throughout so `X` and `Z` are distinguished from `0`/`1`.
+- **A resync point makes the next measured interval a partial period.** Any `led_last = led_tri_io` after a button press lands mid-step, so the following measurement is shorter than the real period. Discard it and measure between two consecutive LED changes.
+- **Button presses must be held generously.** The debounce needs two matching samples for the press *and* two for the release. At a 10 µs tick, a 30 µs hold lost roughly one press in four on phase-alignment; 50 µs is reliable.
+
+Expected healthy output: boot at ~44 µs, default step ~251 µs (nominal 250), fast step ~61 µs (nominal 60), `Errors: 0`. Those tolerances are the hardware timer's real accuracy — worth keeping as the pass criteria.
+
+`$display` strings are in English on purpose: the XSim console renders Cyrillic as mojibake. `$timeformat(-9, 0, " ns", 12)` is set so `%0t` prints nanoseconds rather than the raw picosecond precision units.
+
 ## Conventions
 
-Comments in `app_component/src/main_combined.c` are written in Ukrainian; keep that style. The app is currently the simple version that mirrors buttons onto LEDs — the timer-driven running-light logic lives in the Zynq project and has not been ported here.
+Comments in `app_component/src/main_combined.c` are written in Ukrainian; keep that style. The app is the timer-driven running light, ported from the Zynq project — the C source is **identical** apart from the header comment and the `TIME_SCALE` macro, since all addresses and clock rates come from `xparameters.h`. Keeping it that way is the point of the exercise; prefer fixing the hardware or the build over letting the two versions diverge.
 
 ## Repository hygiene
 
