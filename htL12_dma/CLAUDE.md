@@ -4,87 +4,97 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## What this is
 
-Lesson 12 home task (branch `ht_lesson_12`): a MicroBlaze system on `xc7z020clg400-1` that is being grown towards an AXI DMA data path. It is one sub-project of the `HT1` git repository — the git root and the `.gitignore` are one level up, and sibling directories (`../ht10_running_led/` etc.) are independent earlier tasks.
+Lesson 12 home task (branch `ht_lesson_12`): a MicroBlaze system on `xc7z020clg400-1` that receives a 320×200 frame of 8-bit pixels on external ports and writes it through AXI DMA into a custom AXI4-Full RAM, starting only after a button press. The assignment text is `Task/L12_task.txt`.
 
-Work in progress. What exists today:
+It is one sub-project of the `HT1` git repository — the git root and the main `.gitignore` are one level up, and sibling directories (`../ht10_running_led/` etc.) are independent earlier tasks.
 
-| Path | State |
+**This is a simulation-only teaching project.** No hardware bring-up is planned: there is no XDC, the clock/reset ports are IP Integrator defaults, and details that only matter on a board (button debounce, real pinout, timing closure) are deliberately left out. Do not add them unasked.
+
+Status: the whole chain passes Behavioral Simulation (`TEST PASSED`, one frame captured after one button press).
+
+| Path | What it is |
 |---|---|
-| `Axi4_full_ram/` | Custom AXI4-Full slave RAM, packaged as IP `xilinx.com:user:axi4_full_ram:1.0` and instantiated in the block design |
-| `Axis_doubler/axis_doubler.v` | AXI4-Stream ×2 accelerator. Plain RTL only — **not packaged, not added to the Vivado project** |
-| `vivado/DMA_MB/` | Vivado 2025.2 project, block design `design_1`, top `design_1_wrapper`. Synthesis passes |
-| `vivado/DMA_MB/DMA_MB.srcs/sources_1/new/frame_receiver.v` | Empty module stub, `AutoDisabled` in the project (not in the hierarchy) |
-| `vitis/` | Empty — no platform or application yet |
+| `vivado/DMA_MB/` | Vivado 2025.2 project, block design `design_1`, top `design_1_wrapper` |
+| `vivado/DMA_MB/DMA_MB.srcs/sources_1/new/frame_receiver.v` | Pixel receiver: 8-bit input → async FIFO → 32-bit AXI4-Stream master. In the BD as an RTL module reference |
+| `vivado/DMA_MB/DMA_MB.srcs/sim_1/new/tb_frame_capture.v` | System testbench (simulation top) |
+| `Axi4_full_ram/` | AXI4-Full slave RAM, packaged IP `xilinx.com:user:axi4_full_ram:1.0` |
+| `vitis/DMA_MB/` | Vitis workspace: `platform/` (from `design_1_DMA_MB.xsa`) and `app_component/` (`src/main.c`) |
+| `Axis_doubler/axis_doubler.v` | Leftover AXI4-Stream example from the lecture; not used by this design |
 
-There is no XDC (`constrs_1` is empty), no testbench (`sim_1` is empty) and no AXI DMA in the block design yet, so nothing beyond synthesis can currently be verified.
-
-## Tools
-
-Vivado/Vitis 2025.2 under `C:/AMDDesignTools/2025.2/`; `vivado` is on `PATH`. The project is normally driven from the GUI:
-
-```powershell
-vivado vivado/DMA_MB/DMA_MB.xpr
-```
-
-Headless synthesis, when needed (run from a scratch directory so `.jou`/`.log` do not land in the repo):
-
-```powershell
-vivado -mode batch -source synth.tcl
-```
-
-```tcl
-open_project C:/PROJECTS_FPGA/Home_tasks/HT1/htL12_dma/vivado/DMA_MB/DMA_MB.xpr
-reset_run synth_1
-launch_runs synth_1 -jobs 4
-wait_on_run synth_1
-```
-
-There are no automated tests and no lint setup.
-
-## Block design `design_1`
+## Data path
 
 ```
-diff_clock_rtl_0 ─> clk_wiz_1 ─ 100 MHz ─> everything
-reset_rtl_0 (active low) ─> rst_clk_wiz_1_100M ─> mb_reset / peripheral_aresetn
-
-microblaze_0 ── ILMB/DLMB ──> microblaze_0_local_memory (BRAM)
-             └─ M_AXI_DP ──> axi_smc (SmartConnect, 1 SI / 2 MI)
-                                ├─ M00 ─> axi4_full_ram_0   (custom IP)
-                                └─ M01 ─> axi_gpio_0 ─> btn (1 bit)
-mdm_1 ── debug ──> microblaze_0
+pix_clk, pix_data[7:0], pix_valid, pix_sof          (external ports, own clock domain)
+        │
+  frame_receiver ── m_axis (32 bit, TLAST) ──> axi_dma_0 (S2MM only, no SG)
+        ▲ start                                    │ M_AXI_S2MM
+        │                                          ▼
+  axi_gpio_0.GPIO2 (out)            axi_smc (SmartConnect, 2 SI / 3 MI)
+  axi_gpio_0.GPIO  (in) <── btn        ├─ M00 ─> axi4_full_ram_0
+        ▲                              ├─ M01 ─> axi_gpio_0
+        └──────── microblaze_0 ────────┴─ M02 ─> axi_dma_0 (S_AXI_LITE)
+                  (M_AXI_DP → S00)
 ```
 
-Address map (MicroBlaze data space):
+Everything except the `pix_*` side runs on `clk_wiz_1/clk_out1` (100 MHz) with `rst_clk_wiz_1_100M/peripheral_aresetn`.
+
+Address map — identical for `microblaze_0/Data` and `axi_dma_0/Data_S2MM`:
 
 | Segment | Base | Range |
 |---|---|---|
-| LMB BRAM (also the instruction space) | `0x0000_0000` | 16K |
-| `axi4_full_ram_0` | `0x0001_0000` | 4K |
+| LMB BRAM (MicroBlaze only) | `0x0000_0000` | 16K |
+| `axi4_full_ram_0` | `0x0001_0000` | 64K |
 | `axi_gpio_0` | `0x4000_0000` | 64K |
+| `axi_dma_0` registers | `0x41E0_0000` | 64K |
 
-Things that are not obvious from the diagram:
+Sizing: 320 × 200 = 64000 bytes = 16000 32-bit words, hence `axi4_full_ram` with `ADDR_WIDTH = 16`, `MEM_DEPTH = 16000` and a 64K segment. The DMA's *Width of Buffer Length Register* is 18; the default of 14 caps a transfer at 16 KB and would truncate the frame.
 
-- **`M_AXI_DP` is the only AXI master, and it issues single-beat transactions.** The burst logic in `axi4_full_ram` (`awlen`/`arlen` counters) is therefore not exercised by MicroBlaze at all; it only gets real bursts once an AXI DMA (or another AXI4-Full master) is added. SmartConnect does the protocol conversion in between.
-- **The RAM is smaller than its address segment.** The segment is 4K, but the IP defaults are `ADDR_WIDTH = 10`, `MEM_DEPTH = 256` (1 KB), so the memory aliases four times across the range.
-- **Clock and reset ports are still IP Integrator auto-generated defaults**: a differential clock at `FREQ_HZ = 100000000` and an external active-low reset. They must be reconciled with the real board pins before an XDC is written — `../ht10_running_led/vitis/LED_AXI_GPIO_MB/CLAUDE.md` documents the PYNQ-Z1 version of this (single-ended 125 MHz `sysclk`, port `FREQ_HZ` overriding the Clocking Wizard, port names having to match the XDC, reset tied off when no pin is free).
-- **LMB memory is 16K.** The same sibling CLAUDE.md records a 16 KB BRAM being overflowed by a small `XGpio`/`XTmrCtr` app and the fix (Address Editor range on both LMB segments, plus `lscript.ld`). Expect the same here once a Vitis app exists.
-- MicroBlaze is a soft core: an XSA export for Vitis must include the bitstream.
+## The start protocol (spans RTL, software and testbench)
 
-## The custom IP and how edits reach the design
+- `frame_receiver` ignores its inputs until it sees a **rising edge** on `start`. It then waits for the next `pix_sof`, takes exactly `FRAME_BYTES` pixels, asserts `TLAST` on the last word and goes back to sleep. One edge = one frame.
+- `start` is a **level** from GPIO2, synchronised into the `pix_clk` domain. Software must hold it high and drop it before the next frame.
+- Software must program the DMA (`S2MM_DA`, then `S2MM_LENGTH`) **before** raising `start`: the receiver's FIFO is only 16 words, so nothing may arrive while the DMA is not yet accepting. `pix_overflow` is a sticky flag for exactly this failure.
+- Byte order: the first pixel goes to bits `[7:0]` of the word, so pixels sit in memory in order on little-endian MicroBlaze. The testbench's expected-word construction depends on this.
+- `FRAME_BYTES` must be a multiple of 4.
 
-`vivado/DMA_MB/DMA_MB.xpr` registers `Axi4_full_ram/` as an IP repository (`IPRepoPath = $PPRDIR/../../Axi4_full_ram`). The block design does not reference `axi4_full_ram.v` directly — it instantiates the packaged IP described by `component.xml`.
+`main.c` talks to GPIO and DMA through raw registers (`Xil_In32`/`Xil_Out32`) on purpose. Local memory is 16K and the `XGpio`/`XAxiDma` drivers would not fit (the sibling project overflowed 16K with less); the current ELF is about 7 KB. Completion is polled via the DMA's Idle bit — no interrupts are wired.
 
-Consequently, editing `axi4_full_ram.v` alone changes nothing in the build. After an edit: re-package the IP (or at least refresh the IP catalog), then *Report IP Status → Upgrade Selected* on `axi4_full_ram_0` and regenerate output products. A change to the port list or parameters also needs `component.xml` and `xgui/axi4_full_ram_v1_0.tcl` regenerated by the packager; do not hand-edit them.
+## Simulation
 
-Port names follow the Vivado `<interface>_<signal>` convention (`s_axi_awaddr`, `s_axis_tdata`, `m_axis_tvalid`, …) on purpose: that is what lets Package IP infer the AXI interfaces automatically. Keep it when adding ports.
+The testbench runs the real MicroBlaze executing the real ELF. The ELF is referenced by the Vivado project directly from `vitis/DMA_MB/app_component/build/app_component.elf` and associated with `microblaze_0` for simulation (*Tools → Associate ELF Files*). So after changing `main.c`: rebuild in Vitis, then relaunch the simulation — no copying.
 
-Deliberate simplifications in `axi4_full_ram` to be aware of before relying on it: `wstrb`, `awsize`/`arsize`, `awburst`/`arburst` and `wlast` are ignored (always full-word INCR), there are no ID signals, and AW must be accepted before W (`wready` is low in `WRIDLE`).
+Run from the GUI: *Run Simulation → Run Behavioral Simulation*, then `run all` in the Tcl console (the project's default run time is still 1000 ns; the testbench ends itself with `$finish`). A full run is about 5.1 ms of simulated time and takes a few minutes. Results also land in `vivado/DMA_MB/DMA_MB.sim/sim_1/behav/xsim/simulate.log`.
+
+What `tb_frame_capture` does: 25 MHz `pix_clk`, back-to-back frames with a 16-cycle gap, pixel = column + row + 17 × frame number; presses the button at 300 µs; waits for `start` to rise and fall; then compares all 16000 words of the RAM against the frame whose SOF started the capture. It also fails if any stream data appears before the button press or if `pix_overflow` is set.
+
+The testbench reaches into the design by hierarchical name — `dut.design_1_i.frame_receiver.inst.*` and `dut.design_1_i.axi4_full_ram_0.inst.mem`. Renaming those BD instances, or signals `start` / `state` / `mem`, breaks it. `$display` strings are English because the XSim console garbles Cyrillic.
+
+To check a single module quickly without the whole system, compile it standalone with `xvlog` / `xelab` / `xsim` from `C:/AMDDesignTools/2025.2/Vivado/bin/` in a scratch directory, overriding `FRAME_BYTES` to something small.
+
+## How edits reach the block design
+
+Two different mechanisms, and mixing them up wastes a synthesis run:
+
+- **`frame_receiver.v`** is an RTL module reference. After editing, click *Refresh Changed Modules* on the diagram banner.
+- **`axi4_full_ram.v`** is a packaged IP (`DMA_MB.xpr` registers `Axi4_full_ram/` as an IP repository); the BD uses a generated copy. After editing: right-click the block → *Edit in IP Packager* → *Re-Package IP*, then *Report IP Status → Upgrade Selected*, then re-check the block parameters and the Address Editor range, which an upgrade can reset. Do not hand-edit `component.xml` or `xgui/`.
+
+After any hardware change that affects software (addresses, new peripherals): re-export the XSA and rebuild the Vitis platform before the app.
+
+Port names follow the Vivado `<interface>_<signal>` convention (`s_axi_awaddr`, `m_axis_tdata`, `aclk`, `aresetn`) on purpose: that is what lets Vivado infer the bus interfaces and their clock association automatically.
+
+## Traps already hit
+
+- **Memory arrays must not live in an `always` block with asynchronous reset.** With the write and read of `mem` inside the reset FSM blocks, `axi4_full_ram` synthesised only while it was 256 words; at 16000 it failed with `[Synth 8-3391] Unable to infer a block/distributed RAM`. The memory write and the registered read are now separate reset-less `always @(posedge clk)` blocks (16 RAMB36).
+- **`m_axi_s2mm_aclk` on the DMA is not connected by Connection Automation** in this flow and must be wired to `clk_out1` by hand, as must `M_AXI_S2MM` → `axi_smc/S01_AXI` and the RAM's assignment in the `Data_S2MM` address space.
+- **clangd shows a false error on `#include "xil_io.h"`** while the build succeeds. Fixed by `-D__MICROBLAZE__` in `vitis/DMA_MB/app_component/src/.clangd`; Vitis may regenerate that file and drop the flag.
+- `axi4_full_ram` simplifications: `wstrb`, `awsize`/`arsize`, `awburst`/`arburst`, `wlast` are ignored (always full-word INCR), no ID signals, and AW must be accepted before W. SmartConnect and the DMA live with this; a byte-wide write from software would not.
 
 ## Conventions
 
-- RTL is plain Verilog-2001, active-low **asynchronous** reset (`negedge aresetn`), one `always` block per FSM.
-- Nearly every line carries a comment: file/section headers in Ukrainian, per-line comments in Russian. Keep both the density and the language when editing these files.
+- RTL is plain Verilog-2001 with active-low **asynchronous** reset (`negedge aresetn`), except memory arrays (see above).
+- Nearly every RTL line carries a comment: file and section headers in Ukrainian, per-line comments in Russian. C sources are commented in Ukrainian. Keep both the density and the language.
+- The user works in the Vivado/Vitis GUIs and edits the block design themself; the saved `design_1.bd` is JSON and is the reliable way to verify connectivity, parameters and addresses.
 
 ## Repository hygiene
 
-`../.gitignore` ignores `*.runs/`, `*.gen/`, `*.cache/`, `*.sim/`, `*.hw/`, `*.ip_user_files/` and the generated `bd/*/hdl/` wrapper. Tracked Vivado state is only the `.xpr`, `design_1.bd`/`.bda`, the per-IP `.xci` files and hand-written sources under `*.srcs/`. Opening or building the project in the GUI rewrites `DMA_MB.xpr`, so expect it to show as modified.
+`../.gitignore` ignores Vivado's `*.runs/`, `*.gen/`, `*.cache/`, `*.sim/`, `*.hw/`, `*.ip_user_files/` and the generated BD wrapper. Tracked Vivado state is the `.xpr`, `design_1.bd`/`.bda`, per-IP `.xci` files and hand-written sources under `*.srcs/`. Opening or building the project rewrites `DMA_MB.xpr`, and Vitis rewrites files under `vitis/DMA_MB/_ide/`, so expect both to show as modified.

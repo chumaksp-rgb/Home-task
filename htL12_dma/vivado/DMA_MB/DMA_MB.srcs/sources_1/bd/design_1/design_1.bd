@@ -1161,6 +1161,21 @@
           }
         }
       }
+    },
+    "elf_association": {
+      "file": {
+        "name": "..\\..\\..\\..\\..\\..\\vitis\\DMA_MB\\app_component\\build\\app_component.elf",
+        "type": "ELF",
+        "checksum": "2301054076",
+        "IsVisible": "1",
+        "ScopedToRef": "design_1",
+        "ScopedToCell": [
+          "microblaze_0"
+        ],
+        "UsedIn": [
+          "simulation"
+        ]
+      }
     }
   }
 }
