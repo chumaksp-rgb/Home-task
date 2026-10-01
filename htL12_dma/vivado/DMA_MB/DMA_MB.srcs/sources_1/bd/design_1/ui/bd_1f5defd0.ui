@@ -1,0 +1,47 @@
+{
+   "ActiveEmotionalView":"Default View",
+   "Default View_ScaleFactor":"0.68718",
+   "Default View_TopLeft":"-365,-327",
+   "ExpandedHierarchyInLayout":"/microblaze_0_local_memory",
+   "guistr":"# # String gsaved with Nlview 7.8.0 2024-04-26 e1825d835c VDI=44 GEI=38 GUI=JA:21.0
+#  -string -flagsOSRD
+preplace port diff_clock_rtl_0 -pg 1 -lvl 0 -x -50 -y 80 -defaultsOSRD
+preplace port port-id_reset_rtl_0 -pg 1 -lvl 0 -x -50 -y 160 -defaultsOSRD
+preplace inst microblaze_0 -pg 1 -lvl 1 -x 220 -y -70 -defaultsOSRD
+preplace inst microblaze_0_local_memory -pg 1 -lvl 2 -x 700 -y -78 -defaultsOSRD
+preplace inst mdm_1 -pg 1 -lvl 1 -x 220 -y 230 -defaultsOSRD
+preplace inst clk_wiz_1 -pg 1 -lvl 1 -x 220 -y 90 -defaultsOSRD
+preplace inst rst_clk_wiz_1_100M -pg 1 -lvl 2 -x 700 -y 334 -defaultsOSRD
+preplace inst microblaze_0_local_memory|dlmb_v10 -pg 1 -lvl 1 -x 800 -y -58 -defaultsOSRD
+preplace inst microblaze_0_local_memory|ilmb_v10 -pg 1 -lvl 1 -x 800 -y 112 -defaultsOSRD
+preplace inst microblaze_0_local_memory|dlmb_bram_if_cntlr -pg 1 -lvl 2 -x 1030 -y -38 -defaultsOSRD
+preplace inst microblaze_0_local_memory|ilmb_bram_if_cntlr -pg 1 -lvl 2 -x 1030 -y 132 -defaultsOSRD
+preplace inst microblaze_0_local_memory|lmb_bram -pg 1 -lvl 3 -x 1260 -y -28 -defaultsOSRD
+preplace netloc microblaze_0_Clk 1 0 2 -10 -160 510
+preplace netloc clk_wiz_1_locked 1 1 1 470 100n
+preplace netloc rst_clk_wiz_1_100M_mb_reset 1 0 3 -10 20 490 234 1410
+preplace netloc rst_clk_wiz_1_100M_bus_struct_reset 1 1 2 530 434 1410J
+preplace netloc mdm_1_debug_sys_rst 1 0 2 -30 310 460
+preplace netloc reset_rtl_0_1 1 0 2 NJ 160 480J
+preplace netloc microblaze_0_dlmb_1 1 1 1 520 -90n
+preplace netloc microblaze_0_ilmb_1 1 1 1 500 -70n
+preplace netloc microblaze_0_debug 1 0 2 -20 300 450J
+preplace netloc diff_clock_rtl_0_1 1 0 1 NJ 80
+preplace netloc microblaze_0_local_memory|microblaze_0_Clk 1 0 2 680 22 910
+preplace netloc microblaze_0_local_memory|SYS_Rst_1 1 0 2 690 32 920
+preplace netloc microblaze_0_local_memory|microblaze_0_dlmb_bus 1 1 1 N -58
+preplace netloc microblaze_0_local_memory|microblaze_0_ilmb_bus 1 1 1 N 112
+preplace netloc microblaze_0_local_memory|microblaze_0_dlmb_cntlr 1 2 1 N -38
+preplace netloc microblaze_0_local_memory|microblaze_0_ilmb_cntlr 1 2 1 1140 -18n
+preplace netloc microblaze_0_local_memory|microblaze_0_dlmb 1 0 1 N -78
+preplace netloc microblaze_0_local_memory|microblaze_0_ilmb 1 0 1 N 92
+levelinfo -pg 1 -50 220 700 1430
+levelinfo -hier microblaze_0_local_memory * 800 1030 1260 *
+pagesize -pg 1 -db -bbox -sgen -200 -170 1430 520
+pagesize -hier microblaze_0_local_memory -db -bbox -sgen 650 -138 1380 212
+"
+}
+{
+   "da_board_cnt":"3",
+   "da_mb_cnt":"1"
+}
