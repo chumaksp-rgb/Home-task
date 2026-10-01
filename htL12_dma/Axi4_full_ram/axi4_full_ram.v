@@ -72,9 +72,8 @@ module axi4_full_ram #(
                 end
             end
             WRDATA: begin
-                if (s_axi_wvalid && s_axi_wready) begin              // handshake по данным
-                    mem[waddr_cur[ADDR_WIDTH-1:2]] <= s_axi_wdata;   // запись слова (байтовый адрес -> индекс слова)
-                    waddr_cur <= waddr_cur + 4;                      // следующий адрес (+4 байта, режим INCR)
+                if (s_axi_wvalid && s_axi_wready) begin              // handshake по данным (сама запись в mem -- ниже, отдельным блоком)
+                    waddr_cur <= waddr_cur + 4;                    // следующий адрес (+4 байта, режим INCR)
                     if (wburst_cnt == 0) begin                       // это было последнее слово
                         wstate <= WRRESP;                            // перейти к отправке ответа
                     end else begin
@@ -91,6 +90,13 @@ module axi4_full_ram #(
                 end
             end
         endcase
+    end
+
+    // Запис у пам'ять -- окремим блоком БЕЗ скидання: інакше синтезатор
+    // не може вивести блочну пам'ять (BRAM) і намагається розкласти її на тригери.
+    always @(posedge s_axi_aclk) begin
+        if (s_axi_wvalid && s_axi_wready)                    // handshake по данным
+            mem[waddr_cur[ADDR_WIDTH-1:2]] <= s_axi_wdata;   // запись слова (байтовый адрес -> индекс слова)
     end
 
     // ======================== ЧТЕНИЕ ========================
@@ -115,9 +121,8 @@ module axi4_full_ram #(
                 end
             end
             RDDATA: begin
-                if (!s_axi_rvalid || (s_axi_rvalid && s_axi_rready)) begin  // выход пуст или мастер забрал слово
-                    s_axi_rdata  <= mem[raddr_cur[ADDR_WIDTH-1:2]];         // загрузить слово из памяти
-                    s_axi_rresp  <= 2'b00;                                  // код OKAY
+                if (!s_axi_rvalid || (s_axi_rvalid && s_axi_rready)) begin  // выход пуст или мастер забрал слово (само чтение mem -- ниже, отдельным блоком)
+                    s_axi_rresp <= 2'b00;                                  // код OKAY
                     s_axi_rvalid <= 1'b1;                                   // данные валидны
                     s_axi_rlast  <= (rburst_cnt == 0);                      // пометка последнего слова
                     if (rburst_cnt != 0) begin                              // в пакете ещё есть слова
@@ -129,6 +134,12 @@ module axi4_full_ram #(
                 end
             end
         endcase
+    end
+
+    // Читання з пам'яті -- теж окремим блоком без скидання (синхронне читання = BRAM).
+    always @(posedge s_axi_aclk) begin
+        if (rstate == RDDATA && (!s_axi_rvalid || s_axi_rready))    // то же условие, что и в автомате выше
+            s_axi_rdata <= mem[raddr_cur[ADDR_WIDTH-1:2]];          // загрузить слово из памяти
     end
 
 endmodule
