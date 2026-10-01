@@ -1,0 +1,6 @@
+create libxil.a
+addlib C:/PROJECTS_FPGA/Home_tasks/HT1/htL12_dma/vitis/DMA_MB/platform/microblaze_0/standalone_microblaze_0/bsp/libsrc/build_configs/gen_bsp/libsrc/gpio/src/libgpio.a
+addlib C:/PROJECTS_FPGA/Home_tasks/HT1/htL12_dma/vitis/DMA_MB/platform/microblaze_0/standalone_microblaze_0/bsp/libsrc/build_configs/gen_bsp/libsrc/bram/src/libbram.a
+addlib C:/PROJECTS_FPGA/Home_tasks/HT1/htL12_dma/vitis/DMA_MB/platform/microblaze_0/standalone_microblaze_0/bsp/libsrc/build_configs/gen_bsp/libsrc/axidma/src/libaxidma.a
+save
+end
