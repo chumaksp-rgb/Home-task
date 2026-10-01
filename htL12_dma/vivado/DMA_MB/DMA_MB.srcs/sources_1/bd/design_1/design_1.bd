@@ -1039,10 +1039,10 @@
           "rst_clk_wiz_1_100M/slowest_sync_clk",
           "axi_smc/aclk",
           "axi_gpio_0/s_axi_aclk",
-          "frame_receiver/aclk",
           "axi_dma_0/s_axi_lite_aclk",
           "axi_dma_0/m_axi_s2mm_aclk",
-          "axi4_full_ram_0/s_axi_aclk"
+          "axi4_full_ram_0/s_axi_aclk",
+          "frame_receiver/aclk"
         ]
       },
       "pix_clk_0_1": {
@@ -1092,9 +1092,9 @@
           "rst_clk_wiz_1_100M/peripheral_aresetn",
           "axi_smc/aresetn",
           "axi_gpio_0/s_axi_aresetn",
-          "frame_receiver/aresetn",
           "axi_dma_0/axi_resetn",
-          "axi4_full_ram_0/s_axi_aresetn"
+          "axi4_full_ram_0/s_axi_aresetn",
+          "frame_receiver/aresetn"
         ]
       }
     },

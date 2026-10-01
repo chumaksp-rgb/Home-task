@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wave_config>
+   <wave_state>
+   </wave_state>
+   <db_ref_list>
+      <db_ref path="tb_frame_capture_behav.wdb" id="1">
+         <top_modules>
+            <top_module name="axi_datamover_pkg" />
+            <top_module name="axi_dma_pkg" />
+            <top_module name="glbl" />
+            <top_module name="ipif_pkg" />
+            <top_module name="lmb_bram_if_funcs" />
+            <top_module name="mdm_funcs" />
+            <top_module name="tb_frame_capture" />
+            <top_module name="vcomponents" />
+         </top_modules>
+      </db_ref>
+   </db_ref_list>
+   <zoom_setting>
+      <ZoomStartTime time="0.000000000 ms"></ZoomStartTime>
+      <ZoomEndTime time="5.122615001 ms"></ZoomEndTime>
+      <Cursor1Time time="5.122615000 ms"></Cursor1Time>
+   </zoom_setting>
+   <column_width_setting>
+      <NameColumnWidth column_width="169"></NameColumnWidth>
+      <ValueColumnWidth column_width="159"></ValueColumnWidth>
+   </column_width_setting>
+   <WVObjectSize size="27" />
+   <wave_markers>
+      <marker time="5122615000" label="" />
+   </wave_markers>
+   <wvobject fp_name="/tb_frame_capture/clk_p" type="logic">
+      <obj_property name="ElementShortName">clk_p</obj_property>
+      <obj_property name="ObjectShortName">clk_p</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_frame_capture/clk_n" type="logic">
+      <obj_property name="ElementShortName">clk_n</obj_property>
+      <obj_property name="ObjectShortName">clk_n</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_frame_capture/reset_rtl" type="logic">
+      <obj_property name="ElementShortName">reset_rtl</obj_property>
+      <obj_property name="ObjectShortName">reset_rtl</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_frame_capture/btn" type="logic">
+      <obj_property name="ElementShortName">btn</obj_property>
+      <obj_property name="ObjectShortName">btn</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_frame_capture/pix_clk" type="logic">
+      <obj_property name="ElementShortName">pix_clk</obj_property>
+      <obj_property name="ObjectShortName">pix_clk</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_frame_capture/pix_data" type="array">
+      <obj_property name="ElementShortName">pix_data[7:0]</obj_property>
+      <obj_property name="ObjectShortName">pix_data[7:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_frame_capture/pix_valid" type="logic">
+      <obj_property name="ElementShortName">pix_valid</obj_property>
+      <obj_property name="ObjectShortName">pix_valid</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_frame_capture/pix_sof" type="logic">
+      <obj_property name="ElementShortName">pix_sof</obj_property>
+      <obj_property name="ObjectShortName">pix_sof</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_frame_capture/pix_overflow" type="logic">
+      <obj_property name="ElementShortName">pix_overflow</obj_property>
+      <obj_property name="ObjectShortName">pix_overflow</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_frame_capture/src_frame" type="array">
+      <obj_property name="ElementShortName">src_frame[31:0]</obj_property>
+      <obj_property name="ObjectShortName">src_frame[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_frame_capture/i" type="array">
+      <obj_property name="ElementShortName">i[31:0]</obj_property>
+      <obj_property name="ObjectShortName">i[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_frame_capture/start" type="logic">
+      <obj_property name="ElementShortName">start</obj_property>
+      <obj_property name="ObjectShortName">start</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_frame_capture/rx_state" type="array">
+      <obj_property name="ElementShortName">rx_state[1:0]</obj_property>
+      <obj_property name="ObjectShortName">rx_state[1:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_frame_capture/s_tvalid" type="logic">
+      <obj_property name="ElementShortName">s_tvalid</obj_property>
+      <obj_property name="ObjectShortName">s_tvalid</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_frame_capture/errors" type="array">
+      <obj_property name="ElementShortName">errors[31:0]</obj_property>
+      <obj_property name="ObjectShortName">errors[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_frame_capture/cap_frame" type="array">
+      <obj_property name="ElementShortName">cap_frame[31:0]</obj_property>
+      <obj_property name="ObjectShortName">cap_frame[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_frame_capture/w" type="array">
+      <obj_property name="ElementShortName">w[31:0]</obj_property>
+      <obj_property name="ObjectShortName">w[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_frame_capture/b" type="array">
+      <obj_property name="ElementShortName">b[31:0]</obj_property>
+      <obj_property name="ObjectShortName">b[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_frame_capture/got" type="array">
+      <obj_property name="ElementShortName">got[31:0]</obj_property>
+      <obj_property name="ObjectShortName">got[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_frame_capture/exp" type="array">
+      <obj_property name="ElementShortName">exp[31:0]</obj_property>
+      <obj_property name="ObjectShortName">exp[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_frame_capture/FRAME_WIDTH" type="array">
+      <obj_property name="ElementShortName">FRAME_WIDTH[31:0]</obj_property>
+      <obj_property name="ObjectShortName">FRAME_WIDTH[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_frame_capture/FRAME_HEIGHT" type="array">
+      <obj_property name="ElementShortName">FRAME_HEIGHT[31:0]</obj_property>
+      <obj_property name="ObjectShortName">FRAME_HEIGHT[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_frame_capture/FRAME_BYTES" type="array">
+      <obj_property name="ElementShortName">FRAME_BYTES[31:0]</obj_property>
+      <obj_property name="ObjectShortName">FRAME_BYTES[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_frame_capture/FRAME_WORDS" type="array">
+      <obj_property name="ElementShortName">FRAME_WORDS[31:0]</obj_property>
+      <obj_property name="ObjectShortName">FRAME_WORDS[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_frame_capture/FRAME_GAP" type="array">
+      <obj_property name="ElementShortName">FRAME_GAP[31:0]</obj_property>
+      <obj_property name="ObjectShortName">FRAME_GAP[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_frame_capture/BTN_PRESS_NS" type="array">
+      <obj_property name="ElementShortName">BTN_PRESS_NS[31:0]</obj_property>
+      <obj_property name="ObjectShortName">BTN_PRESS_NS[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_frame_capture/WATCHDOG_NS" type="array">
+      <obj_property name="ElementShortName">WATCHDOG_NS[31:0]</obj_property>
+      <obj_property name="ObjectShortName">WATCHDOG_NS[31:0]</obj_property>
+   </wvobject>
+</wave_config>

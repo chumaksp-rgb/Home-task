@@ -23,32 +23,32 @@ preplace inst axi_smc -pg 1 -lvl 4 -x 1990 -y 20 -defaultsOSRD
 preplace inst axi_gpio_0 -pg 1 -lvl 1 -x 680 -y -180 -defaultsOSRD
 preplace inst frame_receiver -pg 1 -lvl 2 -x 1220 -y -290 -defaultsOSRD
 preplace inst axi_dma_0 -pg 1 -lvl 1 -x 680 -y -600 -defaultsOSRD
-preplace netloc clk_wiz_1_locked 1 1 2 990 200 1380
-preplace netloc mdm_1_debug_sys_rst 1 0 3 450 480 980 190 1370
-preplace netloc reset_rtl_0_1 1 0 3 NJ 0 940J 180 1360
+preplace netloc axi_gpio_0_gpio2_io_o 1 1 1 940 -230n
+preplace netloc clk_wiz_1_locked 1 1 2 1000 200 1380
+preplace netloc frame_receiver_0_pix_overflow 1 2 3 NJ -280 NJ -280 NJ
+preplace netloc mdm_1_debug_sys_rst 1 0 3 450 480 990 190 1370
+preplace netloc microblaze_0_Clk 1 0 4 420 -260 950 -20 1440 10 1820J
+preplace netloc pix_clk_0_1 1 0 2 NJ -360 930J
+preplace netloc pix_data_0_1 1 0 2 NJ -330 NJ
+preplace netloc pix_sof_0_1 1 0 2 NJ -270 930J
+preplace netloc pix_valid_0_1 1 0 2 NJ -300 910J
+preplace netloc reset_rtl_0_1 1 0 3 NJ 0 910J 180 1360
 preplace netloc rst_clk_wiz_1_100M_bus_struct_reset 1 2 2 1460 -190 1810J
 preplace netloc rst_clk_wiz_1_100M_mb_reset 1 0 4 410 230 N 230 N 230 1800
-preplace netloc rst_clk_wiz_1_100M_peripheral_aresetn 1 0 4 430 -90 940J -170 1360 -180 1840
-preplace netloc microblaze_0_Clk 1 0 4 420 -270 930 -20 1440 10 1820J
-preplace netloc pix_sof_0_1 1 0 2 20J -290 NJ
-preplace netloc pix_valid_0_1 1 0 2 NJ -300 930J
-preplace netloc pix_clk_0_1 1 0 2 20J -350 NJ
-preplace netloc pix_data_0_1 1 0 2 NJ -330 NJ
-preplace netloc frame_receiver_0_pix_overflow 1 2 3 NJ -280 NJ -280 NJ
-preplace netloc axi_gpio_0_gpio2_io_o 1 1 1 960 -230n
+preplace netloc rst_clk_wiz_1_100M_peripheral_aresetn 1 0 4 430 -100 930J -170 1360 -180 1840
+preplace netloc axi_dma_0_M_AXI_S2MM 1 1 3 NJ -620 NJ -620 1860
+preplace netloc axi_gpio_0_GPIO 1 1 4 920 -550 NJ -550 NJ -550 NJ
 preplace netloc axi_smc_M00_AXI 1 0 5 450 210 NJ 210 N 210 NJ 210 2140
 preplace netloc axi_smc_M01_AXI 1 0 5 440 220 NJ 220 N 220 NJ 220 2130
-preplace netloc diff_clock_rtl_0_1 1 0 1 20J -210n
-preplace netloc microblaze_0_M_AXI_DP 1 1 3 970J 170 1350 0 1850
-preplace netloc microblaze_0_debug 1 0 2 430 300 910J
-preplace netloc microblaze_0_dlmb_1 1 1 2 950 -120 N
-preplace netloc microblaze_0_ilmb_1 1 1 2 960 -100 N
-preplace netloc axi_gpio_0_GPIO 1 1 4 920 -550 NJ -550 NJ -550 NJ
-preplace netloc frame_receiver_m_axis 1 0 3 450 -360 910J -410 1360
 preplace netloc axi_smc_M02_AXI 1 0 5 410 -10 NJ -10 NJ -10 1830J 110 2120
-preplace netloc axi_dma_0_M_AXI_S2MM 1 1 3 NJ -780 NJ -780 1860
+preplace netloc diff_clock_rtl_0_1 1 0 1 20J -210n
+preplace netloc frame_receiver_m_axis 1 0 3 450 -500 NJ -500 1360
+preplace netloc microblaze_0_M_AXI_DP 1 1 3 980J 170 1350 0 1850
+preplace netloc microblaze_0_debug 1 0 2 430 300 910J
+preplace netloc microblaze_0_dlmb_1 1 1 2 960 -120 N
+preplace netloc microblaze_0_ilmb_1 1 1 2 970 -100 N
 levelinfo -pg 1 0 680 1220 1630 1990 2160
-pagesize -pg 1 -db -bbox -sgen -200 -980 2290 950
+pagesize -pg 1 -db -bbox -sgen -200 -980 2300 950
 "
 }
 {

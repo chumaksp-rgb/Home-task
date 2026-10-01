@@ -1,18 +1,18 @@
 `timescale 1ns / 1ps
 // tb_frame_capture.v
-// Testbench усієї системи: MicroBlaze (виконує справжній ELF) + AXI GPIO +
+// Testbench всей системы: MicroBlaze (выполняет настоящий ELF) + AXI GPIO +
 // frame_receiver + AXI DMA + axi4_full_ram.
 //
-// Джерело кадрів: pix_clk = 25 МГц, кадри 320x200 ідуть безперервно один
-// за одним із короткою паузою між ними. Значення пікселя залежить від
-// номера кадру, рядка й стовпця -- тому за вмістом пам'яті видно, що
-// прийнято цілий кадр, саме з його початку, і який саме.
+// Источник кадров: pix_clk = 25 МГц, кадры 320x200 идут непрерывно один
+// за другим с короткой паузой между ними. Значение пикселя зависит от
+// номера кадра, строки и столбца -- поэтому по содержимому памяти видно, что
+// принят целый кадр, именно с его начала, и какой именно.
 //
-// Сценарій: скидання -> кадри йдуть, кнопка не натиснута (нічого не має
-// прийматися) -> натискання кнопки -> програма запускає DMA і дає start ->
-// приймається найближчий повний кадр -> порівняння пам'яті з очікуваним.
+// Сценарий: сброс -> кадры идут, кнопка не нажата (ничего не должно
+// приниматься) -> нажатие кнопки -> программа запускает DMA и даёт start ->
+// принимается ближайший полный кадр -> сравнение памяти с ожидаемым.
 //
-// Повідомлення $display -- англійською: консоль XSim не показує кирилицю.
+// Сообщения $display -- на английском: консоль XSim не показывает кириллицу.
 
 module tb_frame_capture;
 
@@ -25,7 +25,7 @@ module tb_frame_capture;
     localparam BTN_PRESS_NS = 300_000;                      // когда нажать кнопку (программа к этому моменту уже загрузилась)
     localparam WATCHDOG_NS  = 20_000_000;                   // предел времени симуляции
 
-    // ---- Сигнали до DUT ----
+    // ---- Сигналы к DUT ----
     reg        clk_p = 1'b0;                                // системный такт 100 МГц (дифференциальный)
     wire       clk_n = ~clk_p;
     reg        reset_rtl = 1'b0;                            // сброс, активный низкий
@@ -51,7 +51,7 @@ module tb_frame_capture;
     always #5  clk_p   = ~clk_p;                            // 100 МГц
     always #20 pix_clk = ~pix_clk;                          // 25 МГц
 
-    // ---- Очікуване значення пікселя ----
+    // ---- Ожидаемое значение пикселя ----
     function [7:0] pixel;
         input integer frame;                                // номер кадра
         input integer idx;                                  // номер пикселя в кадре, 0..63999
@@ -60,7 +60,7 @@ module tb_frame_capture;
         end
     endfunction
 
-    // ---- Джерело кадрів: працює весь час, незалежно від кнопки ----
+    // ---- Источник кадров: работает всё время, независимо от кнопки ----
     integer src_frame = 0;                                  // номер кадра, который сейчас передаётся
     integer i;
 
@@ -81,7 +81,7 @@ module tb_frame_capture;
         end
     end
 
-    // ---- Спостереження всередині дизайну ----
+    // ---- Наблюдение внутри дизайна ----
     wire        start    = dut.design_1_i.frame_receiver.inst.start;          // "старт" от GPIO
     wire [1:0]  rx_state = dut.design_1_i.frame_receiver.inst.state;          // состояние приёмника
     wire        s_tvalid = dut.design_1_i.frame_receiver.inst.m_axis_tvalid;  // поток в DMA
@@ -89,7 +89,7 @@ module tb_frame_capture;
     integer errors = 0;
     integer cap_frame = -1;                                 // какой кадр был захвачен
 
-    // До натискання кнопки приймач має мовчати
+    // До нажатия кнопки приёмник должен молчать
     always @(posedge clk_p) begin
         if (reset_rtl && !btn && cap_frame < 0 && s_tvalid === 1'b1) begin
             $display("%0t ERROR: stream data before the button was pressed", $time);
@@ -97,7 +97,7 @@ module tb_frame_capture;
         end
     end
 
-    // Запам'ятати, з якого кадру почався прийом (перехід у стан ST_CAPTURE = 2)
+    // Запомнить, с какого кадра начался приём (переход в состояние ST_CAPTURE = 2)
     always @(rx_state) begin
         if (rx_state === 2'd2 && cap_frame < 0) begin
             cap_frame = src_frame;
@@ -105,7 +105,7 @@ module tb_frame_capture;
         end
     end
 
-    // ---- Основний сценарій ----
+    // ---- Основной сценарий ----
     integer w, b;
     reg [31:0] got, exp;
 
@@ -130,7 +130,7 @@ module tb_frame_capture;
         $display("%0t start released: DMA transfer finished", $time);
         btn = 1'b0;
 
-        // Порівняння вмісту пам'яті з кадром
+        // Сравнение содержимого памяти с кадром
         for (w = 0; w < FRAME_WORDS; w = w + 1) begin
             got = dut.design_1_i.axi4_full_ram_0.inst.mem[w];
             for (b = 0; b < 4; b = b + 1)
