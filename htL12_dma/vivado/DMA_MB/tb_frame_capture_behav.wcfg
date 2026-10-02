@@ -18,17 +18,14 @@
    </db_ref_list>
    <zoom_setting>
       <ZoomStartTime time="0.000000000 ms"></ZoomStartTime>
-      <ZoomEndTime time="5.122615001 ms"></ZoomEndTime>
-      <Cursor1Time time="5.122615000 ms"></Cursor1Time>
+      <ZoomEndTime time="10.243855001 ms"></ZoomEndTime>
+      <Cursor1Time time="7.682280000 ms"></Cursor1Time>
    </zoom_setting>
    <column_width_setting>
       <NameColumnWidth column_width="169"></NameColumnWidth>
-      <ValueColumnWidth column_width="159"></ValueColumnWidth>
+      <ValueColumnWidth column_width="147"></ValueColumnWidth>
    </column_width_setting>
-   <WVObjectSize size="27" />
-   <wave_markers>
-      <marker time="5122615000" label="" />
-   </wave_markers>
+   <WVObjectSize size="22" />
    <wvobject fp_name="/tb_frame_capture/clk_p" type="logic">
       <obj_property name="ElementShortName">clk_p</obj_property>
       <obj_property name="ObjectShortName">clk_p</obj_property>
@@ -69,10 +66,6 @@
       <obj_property name="ElementShortName">src_frame[31:0]</obj_property>
       <obj_property name="ObjectShortName">src_frame[31:0]</obj_property>
    </wvobject>
-   <wvobject fp_name="/tb_frame_capture/i" type="array">
-      <obj_property name="ElementShortName">i[31:0]</obj_property>
-      <obj_property name="ObjectShortName">i[31:0]</obj_property>
-   </wvobject>
    <wvobject fp_name="/tb_frame_capture/start" type="logic">
       <obj_property name="ElementShortName">start</obj_property>
       <obj_property name="ObjectShortName">start</obj_property>
@@ -92,22 +85,6 @@
    <wvobject fp_name="/tb_frame_capture/cap_frame" type="array">
       <obj_property name="ElementShortName">cap_frame[31:0]</obj_property>
       <obj_property name="ObjectShortName">cap_frame[31:0]</obj_property>
-   </wvobject>
-   <wvobject fp_name="/tb_frame_capture/w" type="array">
-      <obj_property name="ElementShortName">w[31:0]</obj_property>
-      <obj_property name="ObjectShortName">w[31:0]</obj_property>
-   </wvobject>
-   <wvobject fp_name="/tb_frame_capture/b" type="array">
-      <obj_property name="ElementShortName">b[31:0]</obj_property>
-      <obj_property name="ObjectShortName">b[31:0]</obj_property>
-   </wvobject>
-   <wvobject fp_name="/tb_frame_capture/got" type="array">
-      <obj_property name="ElementShortName">got[31:0]</obj_property>
-      <obj_property name="ObjectShortName">got[31:0]</obj_property>
-   </wvobject>
-   <wvobject fp_name="/tb_frame_capture/exp" type="array">
-      <obj_property name="ElementShortName">exp[31:0]</obj_property>
-      <obj_property name="ObjectShortName">exp[31:0]</obj_property>
    </wvobject>
    <wvobject fp_name="/tb_frame_capture/FRAME_WIDTH" type="array">
       <obj_property name="ElementShortName">FRAME_WIDTH[31:0]</obj_property>

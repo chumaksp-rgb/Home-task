@@ -11,6 +11,8 @@
 // Сценарий: сброс -> кадры идут, кнопка не нажата (ничего не должно
 // приниматься) -> нажатие кнопки -> программа запускает DMA и даёт start ->
 // принимается ближайший полный кадр -> сравнение памяти с ожидаемым.
+// Затем кнопка отпускается и нажимается второй раз: должен быть принят
+// ещё один кадр (уже другой) в ту же память.
 //
 // Сообщения $display -- на английском: консоль XSim не показывает кириллицу.
 
@@ -23,6 +25,7 @@ module tb_frame_capture;
     localparam FRAME_GAP    = 16;                           // пауза между кадрами, тактов pix_clk
 
     localparam BTN_PRESS_NS = 300_000;                      // когда нажать кнопку (программа к этому моменту уже загрузилась)
+    localparam BTN_GAP_NS   = 100_000;                      // пауза между отпусканием и вторым нажатием
     localparam WATCHDOG_NS  = 20_000_000;                   // предел времени симуляции
 
     // ---- Сигналы к DUT ----
@@ -89,10 +92,10 @@ module tb_frame_capture;
     integer errors = 0;
     integer cap_frame = -1;                                 // какой кадр был захвачен
 
-    // До нажатия кнопки приёмник должен молчать
+    // Пока кнопка не нажата (до первого нажатия и между нажатиями), приёмник должен молчать
     always @(posedge clk_p) begin
         if (reset_rtl && !btn && cap_frame < 0 && s_tvalid === 1'b1) begin
-            $display("%0t ERROR: stream data before the button was pressed", $time);
+            $display("%0t ERROR: stream data while the button is not pressed", $time);
             errors = errors + 1;
         end
     end
@@ -105,10 +108,54 @@ module tb_frame_capture;
         end
     end
 
-    // ---- Основной сценарий ----
+    // ---- Один цикл: нажатие кнопки -> приём кадра -> проверка памяти ----
     integer w, b;
     reg [31:0] got, exp;
 
+    task capture_and_check;
+        input integer n;                                    // номер нажатия (для сообщений)
+        begin
+            if (start !== 1'b0) begin                       // до нажатия программа должна держать start = 0
+                $display("%0t ERROR: start is %b before button press %0d (program not running? ELF associated?)", $time, start, n);
+                errors = errors + 1;
+            end
+            btn = 1'b1;                                     // нажать кнопку
+            $display("%0t button pressed (%0d)", $time, n);
+
+            @(posedge start);                               // программа настроила DMA и дала старт
+            $display("%0t start asserted by software", $time);
+
+            @(negedge start);                               // программа увидела Idle у DMA и сняла старт
+            $display("%0t start released: DMA transfer finished", $time);
+
+            // Сравнение содержимого памяти с кадром
+            for (w = 0; w < FRAME_WORDS; w = w + 1) begin
+                got = dut.design_1_i.axi4_full_ram_0.inst.mem[w];
+                for (b = 0; b < 4; b = b + 1)
+                    exp[8*b +: 8] = pixel(cap_frame, 4*w + b);  // первый пиксель -- в младшем байте слова
+                if (got !== exp) begin
+                    errors = errors + 1;
+                    if (errors <= 10)
+                        $display("ERROR: word %0d: got %h, expected %h", w, got, exp);
+                end
+            end
+
+            if (pix_overflow !== 1'b0) begin
+                $display("ERROR: pix_overflow = %b (FIFO lost data)", pix_overflow);
+                errors = errors + 1;
+            end
+
+            $display("Frame %0d checked: %0d words, first %h, last %h",
+                     cap_frame, FRAME_WORDS,
+                     dut.design_1_i.axi4_full_ram_0.inst.mem[0],
+                     dut.design_1_i.axi4_full_ram_0.inst.mem[FRAME_WORDS-1]);
+
+            btn = 1'b0;                                     // отпустить кнопку
+            cap_frame = -1;                                 // снова "ничего не захвачено": между нажатиями приёмник должен молчать
+        end
+    endtask
+
+    // ---- Основной сценарий ----
     initial begin
         $timeformat(-9, 0, " ns", 12);
 
@@ -116,41 +163,11 @@ module tb_frame_capture;
         $display("%0t reset released", $time);
 
         #(BTN_PRESS_NS);
-        if (start !== 1'b0) begin                           // программа должна была выставить start = 0
-            $display("%0t ERROR: start is %b before the button press (program not running? ELF associated?)", $time, start);
-            errors = errors + 1;
-        end
-        btn = 1'b1;                                         // нажать кнопку
-        $display("%0t button pressed", $time);
+        capture_and_check(1);                               // первое нажатие -> первый кадр
 
-        @(posedge start);                                   // программа настроила DMA и дала старт
-        $display("%0t start asserted by software", $time);
+        #(BTN_GAP_NS);                                      // кнопка отпущена, кадры идут, приёмник спит
+        capture_and_check(2);                               // второе нажатие -> новый фронт start -> второй кадр
 
-        @(negedge start);                                   // программа увидела Idle у DMA и сняла старт
-        $display("%0t start released: DMA transfer finished", $time);
-        btn = 1'b0;
-
-        // Сравнение содержимого памяти с кадром
-        for (w = 0; w < FRAME_WORDS; w = w + 1) begin
-            got = dut.design_1_i.axi4_full_ram_0.inst.mem[w];
-            for (b = 0; b < 4; b = b + 1)
-                exp[8*b +: 8] = pixel(cap_frame, 4*w + b);  // первый пиксель -- в младшем байте слова
-            if (got !== exp) begin
-                errors = errors + 1;
-                if (errors <= 10)
-                    $display("ERROR: word %0d: got %h, expected %h", w, got, exp);
-            end
-        end
-
-        if (pix_overflow !== 1'b0) begin
-            $display("ERROR: pix_overflow = %b (FIFO lost data)", pix_overflow);
-            errors = errors + 1;
-        end
-
-        $display("Frame %0d checked: %0d words, first %h, last %h",
-                 cap_frame, FRAME_WORDS,
-                 dut.design_1_i.axi4_full_ram_0.inst.mem[0],
-                 dut.design_1_i.axi4_full_ram_0.inst.mem[FRAME_WORDS-1]);
         $display("Errors: %0d", errors);
         if (errors == 0) $display("TEST PASSED");
         else             $display("TEST FAILED");
