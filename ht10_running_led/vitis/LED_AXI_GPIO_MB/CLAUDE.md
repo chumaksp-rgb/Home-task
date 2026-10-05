@@ -148,6 +148,34 @@ Expected healthy output: boot at ~44 µs, default step ~251 µs (nominal 250), f
 
 `$display` strings are in English on purpose: the XSim console renders Cyrillic as mojibake. `$timeformat(-9, 0, " ns", 12)` is set so `%0t` prints nanoseconds rather than the raw picosecond precision units.
 
+## On-chip debug (ILA)
+
+An ILA is currently inserted on the LED output nets. The debug constraints live in `../../vivado/LED_AXI_GPIO_MB/LED_AXI_GPIO/LED_AXI_GPIO.srcs/constrs_1/new/pynq_z1.xdc` as an auto-generated `create_debug_core` / `connect_debug_port` block appended after the pin constraints; deleting that block removes the ILA without touching the pin assignments.
+
+**Probe the internal nets, not the pad.** Mark `led_tri_o[3:0]` — the data the AXI GPIO drives. `led_tri_io` is a top-level `inout` pad and cannot be probed. `led_tri_i` just mirrors what is driven, and `led_tri_t` only changes once at startup.
+
+**Expect one probe per bit.** `design_1_wrapper.v` splits buses into scalar nets (`led_tri_o_0` … `led_tri_o_3`) because each feeds its own `IOBUF`, so Set Up Debug creates four 1-bit probes rather than one 4-bit probe. In the waveform window select all four and use **New Virtual Bus** to read them as `0001`/`0010`/`0100`/`1000`.
+
+**Capture control is mandatory here, not optional.** At 100 MHz a 1024-sample buffer spans 10.24 µs, while one running-light step is 60–1000 ms. Without storage qualification you capture a frozen picture. Tick **Capture control** (and **Advanced trigger**, which is cheap and saves a re-synthesis if basic mode turns out too limited) on the ILA Core Options page.
+
+**The global condition defaults to AND — this is the trap.** In both Trigger Setup and Capture Setup the rows are combined by a global operator whose state is *not visible in the table*; it is behind the gate-icon toolbar button. Six rows of "signal changed" ANDed together mean "all six changed on the same clock edge", which never happens: a running-light step changes exactly two of four bits. Symptom: `Window sample 0 of 1024`, 0%, forever. Switch both to **OR**. When in doubt, start with a *single* row — with one condition the operator is irrelevant.
+
+**Trigger position** defaults to mid-buffer, which makes the core collect ~512 qualified samples before it even starts evaluating the trigger — at four LED transitions per second that is two minutes of apparent hang (status `Pre-Trigger`, 0%). Set it to 0 while debugging. `Trigger Immediately` forces a capture regardless of the trigger condition and is the fastest way to tell a broken trigger from a broken capture condition.
+
+**With storage qualification the X axis is sample index, not time.** The order of states and the response to buttons are accurate; the intervals on screen are meaningless. Measuring the real step period needs a free-running counter on an extra probe — simulation is the better tool for timing.
+
+### Running it
+
+`programDevice: false` in `launch.json` does **not** work with this project's `debugType: baremetal-zynq`: Vitis reaches a reset step that has no MicroBlaze equivalent and aborts with `Invalid reset type` / `Failed to initialize the hardware` (the log shows it selecting an `APU*` target first). Setting `resetSystem: false` does not help — the programming step is what satisfies the reset. So keep both `true` and point `bitstreamFile` at the ILA bitstream instead:
+
+```
+..\..\vivado\LED_AXI_GPIO_MB\LED_AXI_GPIO\LED_AXI_GPIO.runs\impl_1\design_1_wrapper.bit
+```
+
+That path is **build output** — it is outside git, and a rebuild without the ILA silently leaves a non-ILA bitstream there. It is a debug-session setting; restore the platform bitstream when finished. Keep `design_1_wrapper.ltx` next to the `.bit`, or Hardware Manager shows probes as `probe0`…`probe3` with no signal names.
+
+Because Vitis reconfigures the FPGA on every launch, the ILA resets with it, so arm the trigger **after** the program is running. For a repeating pattern that costs nothing — the next cycle is a few hundred ms away. The proper fix, if this ever becomes tedious, is to recreate the run configuration from the Vitis GUI so it gets a MicroBlaze-appropriate `debugType` instead of the Zynq template's.
+
 ## Conventions
 
 Comments in `app_component/src/main_combined.c` are written in Ukrainian; keep that style. The app is the timer-driven running light, ported from the Zynq project — the C source is **identical** apart from the header comment and the `TIME_SCALE` macro, since all addresses and clock rates come from `xparameters.h`. Keeping it that way is the point of the exercise; prefer fixing the hardware or the build over letting the two versions diverge.

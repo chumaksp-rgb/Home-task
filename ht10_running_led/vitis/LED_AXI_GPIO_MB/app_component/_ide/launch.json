@@ -28,7 +28,7 @@
           "psDevice": "Auto Detect"
         },
         "resetAPU": false,
-        "bitstreamFile": "${workspaceFolder}\\platform_2\\export\\platform_2\\hw\\sdt\\design_1_wrapper_32k_memory.bit",
+        "bitstreamFile": "${workspaceFolder}\\..\\..\\vivado\\LED_AXI_GPIO_MB\\LED_AXI_GPIO\\LED_AXI_GPIO.runs\\impl_1\\design_1_wrapper.bit",
         "zynqInitialization": {
           "isFsbl": false,
           "usingFSBL": {
