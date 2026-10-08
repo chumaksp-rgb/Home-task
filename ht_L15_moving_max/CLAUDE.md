@@ -1,0 +1,70 @@
+# CLAUDE.md
+
+This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+
+## What this is
+
+Lesson 15 home task (branch `ht_lesson_15_moving_max`): a moving-maximum IP written in C++ for Vitis HLS 2025.2, targeting `xc7z020clg400-1`, then simulated in Vivado with a Verilog testbench. The assignment text is `task/task.txt` (Russian).
+
+It is one sub-project of the `HT1` git repository — the git root and the main `.gitignore` are one level up, and sibling directories (`../htL12_dma/`, `../ht_l14_debug/` etc.) are independent earlier tasks. `../htL12_dma/CLAUDE.md` documents the conventions of the previous Vivado/Vitis task.
+
+Status: `moving_max.cpp` (version without directives) and the C testbench `moving_max_tb.cpp` are written and pass when built with a host g++. No HLS step (C Simulation, C Synthesis, Co-simulation, Package) has been run yet, and `vivado/` is empty.
+
+## Layout
+
+| Path | What it is |
+|---|---|
+| `vitis/` | Vitis Unified IDE workspace (open this folder in the IDE) |
+| `vitis/example/` | The C++ sources: `moving_max.cpp`, `moving_max.h`, `moving_max_tb.cpp` |
+| `vitis/moving_max_test/` | HLS component. `hls_config.cfg` is the single source of truth for part, clock, top function and file list |
+| `vitis/moving_max_test/moving_max/` | HLS work dir (`work_dir` in `vitis-comp.json`); appears after the first run |
+| `vivado/` | For the Vivado project that simulates the exported IP with a Verilog testbench |
+
+The sources live **outside** the component and are referenced from `hls_config.cfg` by relative path (`../example/...`). A new source or testbench file has to be added there as a `syn.file=` / `tb.file=` line, or HLS will not see it.
+
+## Requirements the code must meet (from `task/task.txt`)
+
+- `void moving_max(int in[64], int out[64])`: `out[n] = max(in[n-7] .. in[n])`; for `n < 7` the maximum is over `in[0] .. in[n]`.
+- Fixed-size arrays, no `malloc`, no hard-coded addresses, and **each input element is read exactly once**. This is why the skeleton keeps an 8-element shift register `window[]` pre-filled with `INT_MIN` instead of re-indexing `in_data[n-k]`.
+- The testbench is a separate file that compares the function against a brute-force reference written straight from the rule above, on at least five input vectors, and returns `0` on success and `1` on failure. The return value is what C Simulation and Co-simulation use as pass/fail.
+- Two builds are compared and their numbers recorded — latency in clock cycles, DSP, FF, LUT:
+  1. no directives, with automatic loop pipelining switched off (`syn.compile.pipeline_loops=0` in `hls_config.cfg`; without it HLS pipelines the loops by itself and the comparison is meaningless);
+  2. with `#pragma HLS PIPELINE II=1`.
+- Then Co-simulation, Package (IP catalog output), a Verilog testbench, a Vivado simulation and a screenshot of it.
+
+## Commands
+
+The user normally drives the flow from the Vitis IDE *Flow* panel (C Simulation → C Synthesis → C/RTL Cosimulation → Package). The same steps from a shell, run inside `vitis/moving_max_test/`:
+
+```powershell
+$v = 'C:\AMDDesignTools\2025.2\Vitis\bin'          # not on PATH; only vivado is
+& $v\vitis-run.bat --mode hls --csim    --config hls_config.cfg --work_dir moving_max
+& $v\v++.bat -c    --mode hls           --config hls_config.cfg --work_dir moving_max   # C Synthesis
+& $v\vitis-run.bat --mode hls --cosim   --config hls_config.cfg --work_dir moving_max
+& $v\vitis-run.bat --mode hls --package --config hls_config.cfg --work_dir moving_max
+```
+
+Keep `--work_dir moving_max` so the CLI and the IDE share one result directory. Synthesis numbers end up in `moving_max/hls/syn/report/` (`csynth.rpt`, `moving_max_csynth.rpt`).
+
+For a fast check of the algorithm without HLS, the sources are plain C++ and build with any host compiler — `moving_max.cpp` plus `moving_max_tb.cpp`, exit code is the verdict.
+
+Vivado 2025.2 is on PATH (`vivado`); `xvlog` / `xelab` / `xsim` are in `C:\AMDDesignTools\2025.2\Vivado\bin\`.
+
+## Things to know
+
+- `N_SAMPLES` and `WINDOW` are macros in `moving_max.h`; the testbench and its reference model should use them rather than literal 64 and 8.
+- The loop labels `INIT_LOOP` and `MAIN_LOOP` are the names the synthesis report uses for per-loop latency; keep them, and label any new inner loop.
+- With plain array arguments and no interface pragmas HLS generates `ap_memory` ports (address / chip-enable / data for `in_data`, plus write-enable for `out_data`) and `ap_ctrl_hs` handshaking (`ap_start`, `ap_done`, `ap_idle`, `ap_ready`). The Verilog testbench therefore has to model a memory for each array, not a stream.
+- `package.output.syn=false` in `hls_config.cfg` means Package exports the IP without running Vivado synthesis; resource figures come from the C Synthesis estimate.
+- `compile_commands.json` and `_ide/settings.json` contain absolute paths to this machine's install and are regenerated by the IDE.
+
+## Conventions
+
+- Comments in the C++ sources are in Russian, C-style `/* */` (the instructor's skeleton was in Ukrainian; the user had it all switched to Russian). Keep that language and style; `printf` strings stay English.
+- The user works in the Vitis and Vivado GUIs and makes their own commits.
+
+## Repository hygiene
+
+- The two `.gitignore` files generated inside `vitis/` are ineffective as written (`.o`, `.log`, `.lock` without `*`), and nothing ignores the HLS work dir: `/build` does not match `vitis/moving_max_test/moving_max/`. After the first HLS run that directory shows up as untracked — add an ignore rule rather than committing it.
+- `../.gitignore` covers Vivado's `*.runs/`, `*.gen/`, `*.cache/`, `*.sim/`, `*.hw/`, `*.ip_user_files/` and Vitis `_ide/logs`, `_ide/.wsdata`.
+- Opening the workspace rewrites files under `vitis/_ide/`, so expect them to show as modified.

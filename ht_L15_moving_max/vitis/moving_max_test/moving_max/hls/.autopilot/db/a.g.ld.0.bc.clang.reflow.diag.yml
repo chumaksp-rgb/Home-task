@@ -1,0 +1,63 @@
+--- !Passed
+Pass:            reflow-infer-unroll
+Name:            ImplicitUnroll
+DebugLoc:        { File: ../example/moving_max.cpp, Line: 23, Column: 9 }
+Function:        _Z10moving_maxPiS_
+Args:            
+  - String:          'Loop '''
+  - LoopName:        SHIFT_LOOP
+  - String:          ''' is marked as complete unroll implied by the pipeline pragma'
+...
+--- !Passed
+Pass:            reflow-infer-unroll
+Name:            ImplicitUnroll
+DebugLoc:        { File: ../example/moving_max.cpp, Line: 33, Column: 9 }
+Function:        _Z10moving_maxPiS_
+Args:            
+  - String:          'Loop '''
+  - LoopName:        MAX_LOOP
+  - String:          ''' is marked as complete unroll implied by the pipeline pragma'
+...
+--- !Passed
+Pass:            reflow-pragma-loop-unroll
+Name:            PragmaFullyUnroll
+DebugLoc:        { File: ../example/moving_max.cpp, Line: 8, Column: 0 }
+Function:        _Z10moving_maxPiS_
+Args:            
+  - String:          'Unrolling loop '''
+  - LoopName:        SHIFT_LOOP
+  - String:          ''' ('
+  - LoopLoc:         '../example/moving_max.cpp:23:9'
+  - String:          ') '
+  - String:          'in function '''
+  - String:          moving_max
+  - String:          ''' completely with a factor of '
+  - Factor:          '7'
+...
+--- !Passed
+Pass:            reflow-pragma-loop-unroll
+Name:            PragmaFullyUnroll
+DebugLoc:        { File: ../example/moving_max.cpp, Line: 8, Column: 0 }
+Function:        _Z10moving_maxPiS_
+Args:            
+  - String:          'Unrolling loop '''
+  - LoopName:        MAX_LOOP
+  - String:          ''' ('
+  - LoopLoc:         '../example/moving_max.cpp:33:9'
+  - String:          ') '
+  - String:          'in function '''
+  - String:          moving_max
+  - String:          ''' completely with a factor of '
+  - Factor:          '7'
+...
+--- !Missed
+Pass:            inline
+Name:            NeverInline
+Function:        apatb_moving_max_ir
+Args:            
+  - Callee:          'moving_max(int*, int*)'
+    DebugLoc:        { File: ../example/moving_max.cpp, Line: 8, Column: 0 }
+  - String:          ' not inlined into '
+  - Caller:          apatb_moving_max_ir
+  - String:          ' because it should never be inlined (cost=never)'
+...

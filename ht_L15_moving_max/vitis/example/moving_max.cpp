@@ -1,29 +1,41 @@
 #include <climits>
 #include "moving_max.h"
 
-/* Ковзний максимум: out_data[n] = найбільше з останніх WINDOW відліків,
-   разом із поточним відліком n.
-   Допишіть місця, позначені TODO. */
+/* Скользящий максимум: out_data[n] = наибольшее из последних WINDOW отсчётов,
+   вместе с текущим отсчётом n.
+   Для первых WINDOW-1 отсчётов максимум берётся только из имеющихся:
+   остальные ячейки окна содержат INT_MIN и на результат не влияют. */
 void moving_max(int in_data[N_SAMPLES], int out_data[N_SAMPLES]) {
-    int window[WINDOW];      /* тут зберігаються останні WINDOW відліків */
+    int window[WINDOW];      /* здесь хранятся последние WINDOW отсчётов */
 
 INIT_LOOP:
     for (int k = 0; k < WINDOW; k++) {
-        /* TODO 1: запишіть у window[k] найменше можливе значення типу int
-                   (воно називається INT_MIN) */
+        window[k] = INT_MIN; /* "пустая" ячейка: меньше любого отсчёта */
     }
 
 MAIN_LOOP:
     for (int n = 0; n < N_SAMPLES; n++) {
-        /* TODO 2: зсуньте вміст window на одну позицію:
-                   window[k] отримує значення window[k-1],
-                   для k від WINDOW-1 до 1 (по спаданню) */
+        /* сдвиг окна на одну позицию: самый старый отсчёт выпадает */
+        
+        #pragma HLS PIPELINE II=1 // pipeline is on
+        
+SHIFT_LOOP:
+        for (int k = WINDOW - 1; k > 0; k--) {
+            window[k] = window[k - 1];
+        }
 
-        /* TODO 3: покладіть новий відлік in_data[n] у window[0].
-                   in_data[n] читається ТІЛЬКИ тут і ТІЛЬКИ один раз */
+        /* новый отсчёт; in_data[n] читается только здесь и только один раз */
+        window[0] = in_data[n];
 
-        /* TODO 4: знайдіть найбільше значення серед усіх window[0..WINDOW-1]
-                   і запишіть його в out_data[n] */
-        out_data[n] = 0;     
+        /* поиск наибольшего значения в окне */
+        int max_val = window[0];
+MAX_LOOP:
+        for (int k = 1; k < WINDOW; k++) {
+            if (window[k] > max_val) {
+                max_val = window[k];
+            }
+        }
+
+        out_data[n] = max_val;
     }
 }

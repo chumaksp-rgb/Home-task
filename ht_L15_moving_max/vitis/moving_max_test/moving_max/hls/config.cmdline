@@ -1,0 +1,3 @@
+relativeroot=C:/PROJECTS_FPGA/Home_tasks/HT1/ht_L15_moving_max/vitis/moving_max_test
+original_argv=-c --mode hls --config C:\PROJECTS_FPGA\Home_tasks\HT1\ht_L15_moving_max\vitis\moving_max_test\hls_config.cfg --work_dir moving_max 
+
