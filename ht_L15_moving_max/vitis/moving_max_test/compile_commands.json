@@ -1,0 +1,27 @@
+[
+  {
+    "directory": "C:\\PROJECTS_FPGA\\Home_tasks\\HT1\\ht_L15_moving_max\\vitis\\moving_max_test",
+    "arguments": [
+      "C:\\AMDDesignTools\\2025.2\\Vitis\\win64\\tools\\vcxx\\libexec\\clang++.exe",
+      "--sysroot=C:\\AMDDesignTools\\2025.2\\Vitis\\tps\\mingw\\10.0.0\\win64.o\\nt",
+      "-fhls",
+      "-hls-syn-headers-dir=C:\\AMDDesignTools\\2025.2\\Vitis\\common\\technology\\autopilot",
+      "-fhlstoplevel=moving_max",
+      "-c",
+      "C:\\PROJECTS_FPGA\\Home_tasks\\HT1\\ht_L15_moving_max\\vitis\\example\\moving_max.cpp"
+    ],
+    "file": "C:\\PROJECTS_FPGA\\Home_tasks\\HT1\\ht_L15_moving_max\\vitis\\example\\moving_max.cpp"
+  },
+  {
+    "directory": "C:\\PROJECTS_FPGA\\Home_tasks\\HT1\\ht_L15_moving_max\\vitis\\moving_max_test",
+    "arguments": [
+      "C:\\AMDDesignTools\\2025.2\\Vitis\\win64\\tools\\vcxx\\libexec\\clang++.exe",
+      "--sysroot=C:\\AMDDesignTools\\2025.2\\Vitis\\tps\\mingw\\10.0.0\\win64.o\\nt",
+      "-fhls-tb",
+      "-hls-sim-headers-dir=C:\\AMDDesignTools\\2025.2\\Vitis\\include",
+      "-c",
+      "C:\\PROJECTS_FPGA\\Home_tasks\\HT1\\ht_L15_moving_max\\vitis\\example\\moving_max_tb.cpp"
+    ],
+    "file": "C:\\PROJECTS_FPGA\\Home_tasks\\HT1\\ht_L15_moving_max\\vitis\\example\\moving_max_tb.cpp"
+  }
+]
