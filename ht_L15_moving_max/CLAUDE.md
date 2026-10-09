@@ -8,7 +8,9 @@ Lesson 15 home task (branch `ht_lesson_15_moving_max`): a moving-maximum IP writ
 
 It is one sub-project of the `HT1` git repository — the git root and the main `.gitignore` are one level up, and sibling directories (`../htL12_dma/`, `../ht_l14_debug/` etc.) are independent earlier tasks. `../htL12_dma/CLAUDE.md` documents the conventions of the previous Vivado/Vitis task.
 
-Status: `moving_max.cpp` (version without directives) and the C testbench `moving_max_tb.cpp` are written and pass when built with a host g++. No HLS step (C Simulation, C Synthesis, Co-simulation, Package) has been run yet, and `vivado/` is empty.
+Status: the HLS flow is done through Package by the user (`moving_max.cpp` currently carries `#pragma HLS PIPELINE II=1` on `MAIN_LOOP`; latency 77 cycles in Co-simulation). The Vivado project `vivado/moving_max_test/` instantiates the exported IP as `moving_max_0` (IP repository points at `vitis/moving_max_test/moving_max/hls/impl/ip`). The Verilog testbench is `vivado/moving_max_test/moving_max_test.srcs/sim_1/new/tb_moving_max.v`; it passes in a standalone `xvlog`/`xelab`/`xsim` run against the generated RTL. Remaining: run it in the Vivado GUI and take the screenshot.
+
+The IP asserts `in_data_ce0` with address 0 twice per run (the real read at the start and one extra cycle after address 63, when the counter wraps), so a testbench must not check "each element read once" by counting `ce0` strobes.
 
 ## Layout
 
