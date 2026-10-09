@@ -1,0 +1,8 @@
+run all
+Vector 0: OK (0 mismatches), latency = 77 cycles
+Vector 1: OK (0 mismatches), latency = 77 cycles
+Vector 2: OK (0 mismatches), latency = 77 cycles
+Vector 3: OK (0 mismatches), latency = 77 cycles
+Vector 4: OK (0 mismatches), latency = 77 cycles
+Vector 5: OK (0 mismatches), latency = 77 cycles
+TEST PASSED: 6 vectors, 64 samples each
