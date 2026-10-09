@@ -407,6 +407,7 @@
     <FIFOInformation/>
     <UserConfigCommands>
         <config_compile pipeline_loops="0"/>
+        <config_cosim wave_debug="1"/>
     </UserConfigCommands>
     <Args>
         <Arg ArgName="in_data" index="0" direction="in" srcType="int*" srcSize="32">

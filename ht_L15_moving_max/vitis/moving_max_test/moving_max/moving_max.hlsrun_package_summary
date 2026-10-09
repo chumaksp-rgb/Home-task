@@ -1,0 +1,157 @@
+<ENTRY>
+{
+ "thisFile": "C:/PROJECTS_FPGA\\Home_tasks\\HT1\\ht_L15_moving_max\\vitis\\moving_max_test\\moving_max\\moving_max.hlsrun_package_summary",
+ "connectId": "",
+ "serverToken": "",
+ "timestamp": "0"
+}
+</ENTRY>
+<ENTRY>
+{
+ "type": "ET_CmdStep",
+ "dateTimestamp": "10/09/26 08:40:21",
+ "timestampMillis": "1791524421886",
+ "buildStep": {
+  "cmdId": "234a48da-ce9c-4889-b160-6b9a2eadab93",
+  "name": "vitis-run",
+  "logFile": "C:/PROJECTS_FPGA\\Home_tasks\\HT1\\ht_L15_moving_max\\vitis\\moving_max_test\\moving_max\\logs\\moving_max.steps.log",
+  "commandLine": "C:/AMDDesignTools/2025.2/Vitis/bin/unwrapped/win64.o/vitis-run.exe  --mode hls --package --config C:\\PROJECTS_FPGA\\Home_tasks\\HT1\\ht_L15_moving_max\\vitis\\moving_max_test\\hls_config.cfg --work_dir moving_max ",
+  "args": [
+   "--mode",
+   "hls",
+   "--package",
+   "--config",
+   "C:\\PROJECTS_FPGA\\Home_tasks\\HT1\\ht_L15_moving_max\\vitis\\moving_max_test\\hls_config.cfg",
+   "--work_dir",
+   "moving_max"
+  ],
+  "iniFiles": [],
+  "cwd": "C:\\PROJECTS_FPGA\\Home_tasks\\HT1\\ht_L15_moving_max\\vitis\\moving_max_test"
+ }
+}
+</ENTRY>
+<ENTRY>
+{
+ "type": "ET_Status",
+ "dateTimestamp": "10/09/26 08:40:21",
+ "timestampMillis": "1791524421886",
+ "status": {
+  "cmdId": "234a48da-ce9c-4889-b160-6b9a2eadab93",
+  "state": "CS_RUNNING"
+ }
+}
+</ENTRY>
+<ENTRY>
+{
+ "type": "ET_FlowMetaData",
+ "dateTimestamp": "10/09/26 08:40:24",
+ "timestampMillis": "1791524424737",
+ "buildSummary": {
+  "hardwarePlatform": "",
+  "hardwareDsa": "",
+  "platformDirectory": "",
+  "runtime": "",
+  "systemConfig": "",
+  "flow": "BF_RUN",
+  "target": "TT_HLS_IP",
+  "kernels": [
+   {
+    "base": {
+     "type": "KERNEL",
+     "name": "moving_max",
+     "file": "C:/PROJECTS_FPGA\\Home_tasks\\HT1\\ht_L15_moving_max\\vitis\\moving_max_test\\moving_max\\moving_max.zip",
+     "reports": [],
+     "uuid": ""
+    },
+    "sources": [
+     "C:/PROJECTS_FPGA\\Home_tasks\\HT1\\ht_L15_moving_max\\vitis\\example\\moving_max.cpp",
+     "C:/PROJECTS_FPGA\\Home_tasks\\HT1\\ht_L15_moving_max\\vitis\\example\\moving_max.h"
+    ],
+    "psSources": [],
+    "cuNames": [],
+    "type": "HLS",
+    "frequency": 0,
+    "freqUnits": ""
+   }
+  ],
+  "toolVersion": "2025.2"
+ }
+}
+</ENTRY>
+<ENTRY>
+{
+ "type": "ET_SubCmdStep",
+ "dateTimestamp": "10/09/26 08:40:24",
+ "timestampMillis": "1791524424738",
+ "buildStep": {
+  "cmdId": "f5310f47-ff66-4553-a7d1-8bfcba17ce4e",
+  "name": "",
+  "logFile": "C:/PROJECTS_FPGA\\Home_tasks\\HT1\\ht_L15_moving_max\\vitis\\moving_max_test\\moving_max\\hls\\hls.log",
+  "commandLine": "",
+  "args": [],
+  "iniFiles": [],
+  "cwd": "C:\\PROJECTS_FPGA\\Home_tasks\\HT1\\ht_L15_moving_max\\vitis\\moving_max_test"
+ }
+}
+</ENTRY>
+<ENTRY>
+{
+ "type": "ET_Status",
+ "dateTimestamp": "10/09/26 08:40:24",
+ "timestampMillis": "1791524424738",
+ "status": {
+  "cmdId": "f5310f47-ff66-4553-a7d1-8bfcba17ce4e",
+  "state": "CS_RUNNING"
+ }
+}
+</ENTRY>
+<ENTRY>
+{
+ "type": "ET_Status",
+ "dateTimestamp": "10/09/26 08:40:31",
+ "timestampMillis": "1791524431941",
+ "status": {
+  "cmdId": "f5310f47-ff66-4553-a7d1-8bfcba17ce4e",
+  "state": "CS_PASSED"
+ }
+}
+</ENTRY>
+<ENTRY>
+{
+ "type": "ET_Status",
+ "dateTimestamp": "10/09/26 08:40:32",
+ "timestampMillis": "1791524432013",
+ "status": {
+  "cmdId": "234a48da-ce9c-4889-b160-6b9a2eadab93",
+  "state": "CS_PASSED"
+ }
+}
+</ENTRY>
+<ENTRY>
+{
+ "type": "ET_Report",
+ "dateTimestamp": "10/09/26 08:40:32",
+ "timestampMillis": "1791524432014",
+ "report": {
+  "path": "",
+  "name": "",
+  "fileType": "HTML",
+  "reportType": "GLOBAL_RULECHECK_GUIDANCE",
+  "cmdId": ""
+ }
+}
+</ENTRY>
+<ENTRY>
+{
+ "type": "ET_Report",
+ "dateTimestamp": "10/09/26 08:40:32",
+ "timestampMillis": "1791524432014",
+ "report": {
+  "path": "",
+  "name": "",
+  "fileType": "BINARY_PROTOBUF",
+  "reportType": "GLOBAL_RULECHECK_GUIDANCE",
+  "cmdId": ""
+ }
+}
+</ENTRY>

@@ -3,7 +3,7 @@
 ================================================================
 == Vitis HLS Report for 'moving_max_Pipeline_MAIN_LOOP'
 ================================================================
-* Date:           Thu Oct  8 15:31:53 2026
+* Date:           Fri Oct  9 08:37:20 2026
 
 * Version:        2025.2 (Build 6295257 on Nov 14 2025)
 * Project:        moving_max
@@ -177,7 +177,7 @@ Target clock period: 10.000ns, clock uncertainty: 2.700ns.
 The critical path consists of the following:
 	'store' operation ('store_ln17', ../example/moving_max.cpp:17) of constant 0 7 bit on local variable 'n', ../example/moving_max.cpp:17 [33]  (1.588 ns)
 	'load' operation 7 bit ('n', ../example/moving_max.cpp:17) on local variable 'n', ../example/moving_max.cpp:17 [37]  (0.000 ns)
-	'add' operation 7 bit ('add_ln17', ../example/moving_max.cpp:17) [45]  (1.870 ns)
+	'icmp' operation 1 bit ('icmp_ln17', ../example/moving_max.cpp:17) [44]  (1.870 ns)
 	'store' operation ('store_ln17', ../example/moving_max.cpp:17) of variable 'add_ln17', ../example/moving_max.cpp:17 7 bit on local variable 'n', ../example/moving_max.cpp:17 [77]  (1.588 ns)
 
  <State 2>: 6.500ns

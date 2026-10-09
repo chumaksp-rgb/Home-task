@@ -9,10 +9,10 @@
 <ENTRY>
 {
  "type": "ET_CmdStep",
- "dateTimestamp": "10/08/26 15:31:42",
- "timestampMillis": "1791462702412",
+ "dateTimestamp": "10/09/26 08:37:09",
+ "timestampMillis": "1791524229240",
  "buildStep": {
-  "cmdId": "fe2fa2d8-d68c-4b8d-8d6a-ef63f8add889",
+  "cmdId": "3effba23-3967-4047-8f2d-e04999b4fd52",
   "name": "v++",
   "logFile": "C:/PROJECTS_FPGA\\Home_tasks\\HT1\\ht_L15_moving_max\\vitis\\moving_max_test\\moving_max\\logs\\moving_max.steps.log",
   "commandLine": "C:/AMDDesignTools/2025.2/Vitis/bin/unwrapped/win64.o/v++.exe  -c --mode hls --config C:\\PROJECTS_FPGA\\Home_tasks\\HT1\\ht_L15_moving_max\\vitis\\moving_max_test\\hls_config.cfg --work_dir moving_max ",
@@ -28,7 +28,7 @@
   "iniFiles": [
    {
     "path": "C:/PROJECTS_FPGA\\Home_tasks\\HT1\\ht_L15_moving_max\\vitis\\moving_max_test\\hls_config.cfg",
-    "content": "part=xc7z020clg400-1\n\n[hls]\nflow_target=vivado\npackage.output.format=ip_catalog\npackage.output.syn=false\nsyn.top=moving_max\nsyn.file=../example/moving_max.cpp\nsyn.file=../example/moving_max.h\ntb.file=../example/moving_max_tb.cpp\nclock=10ns\nsyn.compile.pipeline_loops=0"
+    "content": "part=xc7z020clg400-1\n\n[hls]\nflow_target=vivado\npackage.output.format=ip_catalog\npackage.output.syn=false\nsyn.top=moving_max\nsyn.file=../example/moving_max.cpp\nsyn.file=../example/moving_max.h\ntb.file=../example/moving_max_tb.cpp\nclock=10ns\nsyn.compile.pipeline_loops=0\ncosim.wave_debug=1"
    }
   ],
   "cwd": "C:\\PROJECTS_FPGA\\Home_tasks\\HT1\\ht_L15_moving_max\\vitis\\moving_max_test"
@@ -38,10 +38,10 @@
 <ENTRY>
 {
  "type": "ET_Status",
- "dateTimestamp": "10/08/26 15:31:42",
- "timestampMillis": "1791462702413",
+ "dateTimestamp": "10/09/26 08:37:09",
+ "timestampMillis": "1791524229242",
  "status": {
-  "cmdId": "fe2fa2d8-d68c-4b8d-8d6a-ef63f8add889",
+  "cmdId": "3effba23-3967-4047-8f2d-e04999b4fd52",
   "state": "CS_RUNNING"
  }
 }
@@ -49,8 +49,8 @@
 <ENTRY>
 {
  "type": "ET_FlowMetaData",
- "dateTimestamp": "10/08/26 15:31:45",
- "timestampMillis": "1791462705143",
+ "dateTimestamp": "10/09/26 08:37:12",
+ "timestampMillis": "1791524232065",
  "buildSummary": {
   "hardwarePlatform": "",
   "hardwareDsa": "",
@@ -86,10 +86,10 @@
 <ENTRY>
 {
  "type": "ET_SubCmdStep",
- "dateTimestamp": "10/08/26 15:31:45",
- "timestampMillis": "1791462705144",
+ "dateTimestamp": "10/09/26 08:37:12",
+ "timestampMillis": "1791524232066",
  "buildStep": {
-  "cmdId": "facfe143-7e01-4c27-bcfd-01d195bb4b95",
+  "cmdId": "d7e7c8e5-dbe8-4a98-968b-043932021f8c",
   "name": "",
   "logFile": "C:/PROJECTS_FPGA\\Home_tasks\\HT1\\ht_L15_moving_max\\vitis\\moving_max_test\\moving_max\\hls\\hls.log",
   "commandLine": "",
@@ -102,10 +102,10 @@
 <ENTRY>
 {
  "type": "ET_Status",
- "dateTimestamp": "10/08/26 15:31:45",
- "timestampMillis": "1791462705145",
+ "dateTimestamp": "10/09/26 08:37:12",
+ "timestampMillis": "1791524232066",
  "status": {
-  "cmdId": "facfe143-7e01-4c27-bcfd-01d195bb4b95",
+  "cmdId": "d7e7c8e5-dbe8-4a98-968b-043932021f8c",
   "state": "CS_RUNNING"
  }
 }
@@ -113,8 +113,8 @@
 <ENTRY>
 {
  "type": "ET_Report",
- "dateTimestamp": "10/08/26 15:31:45",
- "timestampMillis": "1791462705145",
+ "dateTimestamp": "10/09/26 08:37:12",
+ "timestampMillis": "1791524232066",
  "report": {
   "path": "C:/PROJECTS_FPGA\\Home_tasks\\HT1\\ht_L15_moving_max\\vitis\\moving_max_test\\moving_max\\hls\\hls_data.json",
   "name": "",
@@ -127,8 +127,8 @@
 <ENTRY>
 {
  "type": "ET_Report",
- "dateTimestamp": "10/08/26 15:31:45",
- "timestampMillis": "1791462705145",
+ "dateTimestamp": "10/09/26 08:37:12",
+ "timestampMillis": "1791524232066",
  "report": {
   "path": "C:/PROJECTS_FPGA\\Home_tasks\\HT1\\ht_L15_moving_max\\vitis\\moving_max_test\\moving_max\\hls\\syn\\report\\csynth.rpt",
   "name": "",
@@ -141,8 +141,8 @@
 <ENTRY>
 {
  "type": "ET_Report",
- "dateTimestamp": "10/08/26 15:31:45",
- "timestampMillis": "1791462705145",
+ "dateTimestamp": "10/09/26 08:37:12",
+ "timestampMillis": "1791524232067",
  "report": {
   "path": "C:/PROJECTS_FPGA\\Home_tasks\\HT1\\ht_L15_moving_max\\vitis\\moving_max_test\\moving_max\\hls\\syn\\report\\csynth.xml",
   "name": "",
@@ -155,8 +155,8 @@
 <ENTRY>
 {
  "type": "ET_Report",
- "dateTimestamp": "10/08/26 15:31:56",
- "timestampMillis": "1791462716417",
+ "dateTimestamp": "10/09/26 08:37:23",
+ "timestampMillis": "1791524243245",
  "report": {
   "path": "C:/PROJECTS_FPGA\\Home_tasks\\HT1\\ht_L15_moving_max\\vitis\\moving_max_test\\moving_max\\hls",
   "name": "",
@@ -169,8 +169,8 @@
 <ENTRY>
 {
  "type": "ET_Report",
- "dateTimestamp": "10/08/26 15:31:56",
- "timestampMillis": "1791462716417",
+ "dateTimestamp": "10/09/26 08:37:23",
+ "timestampMillis": "1791524243245",
  "report": {
   "path": "C:/PROJECTS_FPGA\\Home_tasks\\HT1\\ht_L15_moving_max\\vitis\\moving_max_test\\moving_max\\hls",
   "name": "",
@@ -183,8 +183,8 @@
 <ENTRY>
 {
  "type": "ET_Report",
- "dateTimestamp": "10/08/26 15:31:56",
- "timestampMillis": "1791462716417",
+ "dateTimestamp": "10/09/26 08:37:23",
+ "timestampMillis": "1791524243245",
  "report": {
   "path": "C:/PROJECTS_FPGA\\Home_tasks\\HT1\\ht_L15_moving_max\\vitis\\moving_max_test\\moving_max\\hls",
   "name": "",
@@ -197,10 +197,10 @@
 <ENTRY>
 {
  "type": "ET_Status",
- "dateTimestamp": "10/08/26 15:31:56",
- "timestampMillis": "1791462716418",
+ "dateTimestamp": "10/09/26 08:37:23",
+ "timestampMillis": "1791524243245",
  "status": {
-  "cmdId": "facfe143-7e01-4c27-bcfd-01d195bb4b95",
+  "cmdId": "d7e7c8e5-dbe8-4a98-968b-043932021f8c",
   "state": "CS_PASSED"
  }
 }
@@ -208,10 +208,10 @@
 <ENTRY>
 {
  "type": "ET_Status",
- "dateTimestamp": "10/08/26 15:31:56",
- "timestampMillis": "1791462716490",
+ "dateTimestamp": "10/09/26 08:37:23",
+ "timestampMillis": "1791524243324",
  "status": {
-  "cmdId": "fe2fa2d8-d68c-4b8d-8d6a-ef63f8add889",
+  "cmdId": "3effba23-3967-4047-8f2d-e04999b4fd52",
   "state": "CS_PASSED"
  }
 }
@@ -219,8 +219,8 @@
 <ENTRY>
 {
  "type": "ET_Report",
- "dateTimestamp": "10/08/26 15:31:56",
- "timestampMillis": "1791462716503",
+ "dateTimestamp": "10/09/26 08:37:23",
+ "timestampMillis": "1791524243343",
  "report": {
   "path": "C:/PROJECTS_FPGA\\Home_tasks\\HT1\\ht_L15_moving_max\\vitis\\moving_max_test\\moving_max\\reports\\v++_compile_moving_max_guidance.html",
   "name": "",
@@ -233,8 +233,8 @@
 <ENTRY>
 {
  "type": "ET_Report",
- "dateTimestamp": "10/08/26 15:31:56",
- "timestampMillis": "1791462716503",
+ "dateTimestamp": "10/09/26 08:37:23",
+ "timestampMillis": "1791524243343",
  "report": {
   "path": "C:/PROJECTS_FPGA\\Home_tasks\\HT1\\ht_L15_moving_max\\vitis\\moving_max_test\\moving_max\\reports\\.db\\v++_compile_moving_max_guidance.pb3",
   "name": "",
