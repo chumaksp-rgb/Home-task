@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wave_config>
+   <wave_state>
+   </wave_state>
+   <db_ref_list>
+      <db_ref path="tb_moving_max_behav.wdb" id="1">
+         <top_modules>
+            <top_module name="glbl" />
+            <top_module name="tb_moving_max" />
+         </top_modules>
+      </db_ref>
+   </db_ref_list>
+   <zoom_setting>
+      <ZoomStartTime time="2,445.833 ns"></ZoomStartTime>
+      <ZoomEndTime time="3,266.834 ns"></ZoomEndTime>
+      <Cursor1Time time="3,255.000 ns"></Cursor1Time>
+   </zoom_setting>
+   <column_width_setting>
+      <NameColumnWidth column_width="249"></NameColumnWidth>
+      <ValueColumnWidth column_width="100"></ValueColumnWidth>
+   </column_width_setting>
+   <WVObjectSize size="15" />
+   <wvobject fp_name="/tb_moving_max/ap_clk" type="logic">
+      <obj_property name="ElementShortName">ap_clk</obj_property>
+      <obj_property name="ObjectShortName">ap_clk</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_moving_max/ap_rst" type="logic">
+      <obj_property name="ElementShortName">ap_rst</obj_property>
+      <obj_property name="ObjectShortName">ap_rst</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_moving_max/ap_start" type="logic">
+      <obj_property name="ElementShortName">ap_start</obj_property>
+      <obj_property name="ObjectShortName">ap_start</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_moving_max/ap_done" type="logic">
+      <obj_property name="ElementShortName">ap_done</obj_property>
+      <obj_property name="ObjectShortName">ap_done</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_moving_max/ap_idle" type="logic">
+      <obj_property name="ElementShortName">ap_idle</obj_property>
+      <obj_property name="ObjectShortName">ap_idle</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_moving_max/ap_ready" type="logic">
+      <obj_property name="ElementShortName">ap_ready</obj_property>
+      <obj_property name="ObjectShortName">ap_ready</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_moving_max/in_data_address0" type="array">
+      <obj_property name="ElementShortName">in_data_address0[5:0]</obj_property>
+      <obj_property name="ObjectShortName">in_data_address0[5:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_moving_max/in_data_ce0" type="logic">
+      <obj_property name="ElementShortName">in_data_ce0</obj_property>
+      <obj_property name="ObjectShortName">in_data_ce0</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_moving_max/in_data_q0" type="array">
+      <obj_property name="ElementShortName">in_data_q0[31:0]</obj_property>
+      <obj_property name="ObjectShortName">in_data_q0[31:0]</obj_property>
+      <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_moving_max/out_data_address0" type="array">
+      <obj_property name="ElementShortName">out_data_address0[5:0]</obj_property>
+      <obj_property name="ObjectShortName">out_data_address0[5:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_moving_max/out_data_ce0" type="logic">
+      <obj_property name="ElementShortName">out_data_ce0</obj_property>
+      <obj_property name="ObjectShortName">out_data_ce0</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_moving_max/out_data_we0" type="logic">
+      <obj_property name="ElementShortName">out_data_we0</obj_property>
+      <obj_property name="ObjectShortName">out_data_we0</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_moving_max/out_data_d0" type="array">
+      <obj_property name="ElementShortName">out_data_d0[31:0]</obj_property>
+      <obj_property name="ObjectShortName">out_data_d0[31:0]</obj_property>
+      <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_moving_max/vec" type="array">
+      <obj_property name="ElementShortName">vec[31:0]</obj_property>
+      <obj_property name="ObjectShortName">vec[31:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_moving_max/errors" type="array">
+      <obj_property name="ElementShortName">errors[31:0]</obj_property>
+      <obj_property name="ObjectShortName">errors[31:0]</obj_property>
+   </wvobject>
+</wave_config>
