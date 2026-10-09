@@ -1,0 +1,9 @@
+INFO: [HLS 200-2036] Building debug C Simulation binaries
+mingw32-make: 'csim.exe' is up to date.
+Vector 0: OK (0 mismatches)
+Vector 1: OK (0 mismatches)
+Vector 2: OK (0 mismatches)
+Vector 3: OK (0 mismatches)
+Vector 4: OK (0 mismatches)
+Vector 5: OK (0 mismatches)
+TEST PASSED: 6 vectors, 64 samples each
