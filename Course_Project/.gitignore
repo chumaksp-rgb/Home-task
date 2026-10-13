@@ -1,0 +1,55 @@
+# Дополнение к общему .gitignore в корне репозитория (на уровень выше).
+# Здесь повторены правила для Vivado, чтобы папку курсового проекта можно было
+# понять и без корневого файла, и добавлено то, чего в корневом нет.
+
+# ---- Vivado: сгенерированные папки проекта ----
+*.runs/
+*.gen/
+*.cache/
+*.sim/
+*.hw/
+*.ip_user_files/
+*.Xil/
+.Xil/
+
+# ---- Vivado: сгенерированная обёртка Block Design ----
+*.srcs/sources_1/bd/*/hdl/
+
+# ---- Vivado: журналы и служебные файлы ----
+*.jou
+*.log
+*.str
+*.backup.jou
+*.backup.log
+vivado_pid*.debug
+vivado_pid*.zip
+webtalk*
+*.dmp
+
+# ---- XSim: результаты запуска из командной строки ----
+xsim.dir/
+*.wdb
+*.pb
+xelab.*
+xvlog.*
+xsim*.backup.*
+
+# ---- Vitis: результаты сборки ----
+build/
+build-vitis/
+build-vivado/
+**/Debug/
+**/Release/
+*.o
+*.d
+_ide/logs/
+_ide/.wsdata/
+*.vitisWorkspace.json
+
+# ---- Файлы блокировки редакторов (LibreOffice, Word) ----
+.~lock.*#
+~$*
+
+# ---- Системные файлы Windows ----
+Thumbs.db
+desktop.ini

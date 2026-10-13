@@ -1,0 +1,17 @@
+{
+   "ActiveEmotionalView":"Default View",
+   "Default View_ScaleFactor":"0.862776",
+   "Default View_TopLeft":"-491,-285",
+   "ExpandedHierarchyInLayout":"",
+   "guistr":"# # String gsaved with Nlview 7.8.0 2024-04-26 e1825d835c VDI=44 GEI=38 GUI=JA:21.0
+#  -string -flagsOSRD
+preplace inst axi_gpio_0 -pg 1 -lvl 1 -x 330 -y -210 -defaultsOSRD
+preplace inst axi_gpio_1 -pg 1 -lvl 1 -x 330 -y -10 -defaultsOSRD
+preplace inst axi_gpio_2 -pg 1 -lvl 1 -x 330 -y 270 -defaultsOSRD
+levelinfo -pg 1 0 330 440
+pagesize -pg 1 -db -bbox -sgen 0 -330 440 350
+"
+}
+{
+   "da_board_cnt":"3"
+}
