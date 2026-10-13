@@ -29,7 +29,11 @@ Only the skeleton exists:
 | `README.md` | The graded README, in Russian (as in the sibling projects). Has a status table and placeholder sections for steps 3–7 — keep it in sync as each step is finished |
 | `.gitignore` | Project-local additions to `../.gitignore` (XSim CLI output, editor lock files, Vitis build output) |
 
-No broken copy, packaged IP or C program has been written yet. Update this section as they appear.
+| `tb/axi_metronome_broken.v` | Step 3 broken copy, module `axi_metronome_broken`: identical to the module except `last_cnt <= quo_next` (no `- 1`), so every interval is one cycle too long. Testbench gives `RESULT: FAIL (15 errors)`. It was generated from the module with `sed`; if the module changes, regenerate it so the two differ only in the header, the module name and that one line |
+
+No packaged IP or C program has been written yet. Update this section as they appear.
+
+Passing the define on the command line: `xvlog -d DUT_MODULE=...` does not work on Windows (`xvlog.bat` splits the argument at `=`, from Git Bash and PowerShell alike). Use a `.prj` file: `verilog work <files> -d DUT_MODULE=axi_metronome_broken`, then `xvlog -prj broken.prj`.
 
 The testbench is black-box (no hierarchical references). It numbers cycles from the accepted write to `ENABLE` and instantiates `` `DUT_MODULE `` (default `axi_metronome`), so a broken copy can be checked either by defining `DUT_MODULE` or by compiling a same-named file instead. Run it standalone from a scratch directory:
 
