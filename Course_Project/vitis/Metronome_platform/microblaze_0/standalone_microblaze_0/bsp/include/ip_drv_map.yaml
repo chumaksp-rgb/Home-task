@@ -1,0 +1,6 @@
+axi_metronome_0:
+- axi_metronome
+- None
+microblaze_0_local_memory_dlmb_bram_if_cntlr:
+- lmb_bram_if_cntlr
+- bram

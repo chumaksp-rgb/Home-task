@@ -1,0 +1,4 @@
+create libxil.a
+addlib C:/PROJECTS_FPGA/Home_tasks/HT1/Course_Project/vitis/Metronome_platform/microblaze_0/standalone_microblaze_0/bsp/libsrc/build_configs/gen_bsp/libsrc/bram/src/libbram.a
+save
+end
