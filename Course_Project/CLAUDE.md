@@ -31,7 +31,11 @@ Only the skeleton exists:
 
 | `tb/axi_metronome_broken.v` | Step 3 broken copy, module `axi_metronome_broken`: identical to the module except `last_cnt <= quo_next` (no `- 1`), so every interval is one cycle too long. Testbench gives `RESULT: FAIL (15 errors)`. It was generated from the module with `sed`; if the module changes, regenerate it so the two differ only in the header, the module name and that one line |
 
-No packaged IP or C program has been written yet. Update this section as they appear.
+| `ip_repo/axi_metronome/component.xml`, `xgui/` | Packaged IP `xilinx.com:user:axi_metronome:1.0`, packaged in place with *Package a specified directory* (file set = only `axi_metronome.v`). Interfaces verified: `s_axi` aximm slave, 4K block `reg0`; `aclk` with `ASSOCIATED_BUSIF s_axi` / `ASSOCIATED_RESET aresetn`; `aresetn` ACTIVE_LOW. Do not hand-edit |
+
+The repository to add in the `Metronome` project is `ip_repo/` (the parent folder). The user's first attempt used *Package your current project*, which went to `%APPDATA%/Xilinx/ip_repo` and copied the testbench and broken copy into the IP — avoid that. The packager's temporary project lands in `vivado/Metronome_testbench/Metronome_testbench.tmp/` (ignored via `*.tmp/`).
+
+No C program has been written yet. Update this section as it appears.
 
 Passing the define on the command line: `xvlog -d DUT_MODULE=...` does not work on Windows (`xvlog.bat` splits the argument at `=`, from Git Bash and PowerShell alike). Use a `.prj` file: `verilog work <files> -d DUT_MODULE=axi_metronome_broken`, then `xvlog -prj broken.prj`.
 

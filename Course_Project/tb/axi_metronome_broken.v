@@ -87,10 +87,12 @@ module axi_metronome_broken #(
     assign s_axi_wready  = wr_en;           // готовность данных только вместе с адресом
     assign s_axi_bresp   = 2'b00;           // OKAY
 
-    // Ограничение записываемого темпа: сравнивается всё 32-битное слово
-    wire [7:0] bpm_clamped = (s_axi_wdata < BPM_MIN) ? BPM_MIN :      // меньше 30 (в том числе 0) -> 30
-                             (s_axi_wdata > BPM_MAX) ? BPM_MAX :      // больше 240 -> 240
-                                                       s_axi_wdata[7:0]; // в диапазоне -> как есть
+    // Ограничение записываемого темпа: сравнивается всё 32-битное слово.
+    // Объявление и assign разделены: иначе упаковщик IP принимает bpm_clamped за порт (IP_Flow 19-587)
+    wire [7:0] bpm_clamped;
+    assign bpm_clamped = (s_axi_wdata < BPM_MIN) ? BPM_MIN :          // меньше 30 (в том числе 0) -> 30
+                         (s_axi_wdata > BPM_MAX) ? BPM_MAX :          // больше 240 -> 240
+                                                   s_axi_wdata[7:0];  // в диапазоне -> как есть
 
     always @(posedge aclk or negedge aresetn) begin
         if (!aresetn) begin

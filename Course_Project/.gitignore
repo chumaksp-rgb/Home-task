@@ -12,6 +12,9 @@
 *.Xil/
 .Xil/
 
+# ---- Vivado: временный проект упаковщика IP (Edit in IP Packager) ----
+*.tmp/
+
 # ---- Vivado: сгенерированная обёртка Block Design ----
 *.srcs/sources_1/bd/*/hdl/
 
