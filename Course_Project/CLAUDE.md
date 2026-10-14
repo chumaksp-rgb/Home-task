@@ -8,18 +8,19 @@ FPGA course project (branch `Courese_Project` — the typo is the real branch na
 
 It is one sub-project of the `HT1` git repository: the git root and the only `.gitignore` are one level up, and the sibling directories (`../htL12_dma/`, `../ht_l14_debug/`, ...) are independent earlier home tasks. `../htL12_dma/` is the closest precedent (MicroBlaze + packaged custom IP + Vitis app + system simulation) and has its own `CLAUDE.md` worth consulting for flow details.
 
-**Graded in simulation, also run on a PYNQ-Z1.** Everything graded is done in simulation, but the user has the board and wants the design to work on it too (beyond the assignment). Planned board I/O, wired with spare capacity: 4 buttons, 4 LEDs, 2 switches. LED3/LED2 flash alternately on each beat with duty below 0.5, LED0 is their OR (main output, possibly driving a sounder), BTN3/BTN2 raise/lower the tempo, SW1 stops, zeroes and restarts the count. The user wants to proceed in small steps — do one stage at a time and do not build ahead.
+**Graded in simulation, also run on a PYNQ-Z1.** Everything graded is done in simulation, but the user has the board and wants the design to work on it too (beyond the assignment). Planned board I/O, wired with spare capacity: 4 buttons, 4 LEDs, 2 switches. LED3/LED2 flash alternately on each beat with duty below 0.5, LED0 is their OR (main output, possibly driving a sounder), BTN3/BTN2 raise/lower the tempo, SW1 stops, zeroes and restarts the count. The user wants to proceed in small steps — do one stage at a time and do not build ahead. **Board support comes last**, after all seven graded steps: the user decided (2026-10-14) that the Block Design for steps 5–7 is strictly what the task asks for (MicroBlaze + clock/reset + the IP + external `tick`), with no GPIO or LED indicator; the board additions are an optional extra at the very end.
 
 ## Current state
 
-Only the skeleton exists:
+Steps 1–5 are done; step 6 (C program + system simulation) is next.
 
 | Path | State |
 |---|---|
 | `Doc/Task.md` | Assignment text |
 | `vivado/Metronome/Metronome.xpr` | Vivado 2025.2 project, part `xc7z020clg400-1`, no board part |
-| `vivado/Metronome/Metronome.srcs/sources_1/bd/Metronome/Metronome.bd` | Block design `Metronome`, still empty (`design_tree: {}`) |
+| `vivado/Metronome/Metronome.srcs/sources_1/bd/Metronome/Metronome.bd` | Block design `Metronome`, validated. `microblaze_0` (no cache/interrupts, debug on) + 32K local memory + `mdm_1` + `clk_wiz_1` (single-ended `sys_clk` 125 MHz in → `clk_out1` 100 MHz, everything on it) + `rst_clk_wiz_1_100M` + `axi_smc` → `axi_metronome_0` (`CLK_HZ`=1000). External ports `sys_clk`, `reset_n` (active low), `tick`. Metronome `reg0` at **`0x0001_0000`**, 4K (Data space only). Wrapper `Metronome_wrapper` (Vivado-managed, in ignored `.gen/`) is the top |
 | `vitis/` | Empty; the Vitis workspace goes here |
+| `docs/` | The screenshots folder the task requires (renamed from `Матеріали для сдачі/` at the user's request): testbench PASS/FAIL and waveforms under `Simulation testbench/`, IP Catalog, Block design, Address editor, BD validate OK. README links to each file. `Doc/` (assignment text) is a separate folder |
 
 | `ip_repo/axi_metronome/axi_metronome.v` | The graded module, written and smoke-tested standalone in XSim; not yet packaged as IP |
 
@@ -73,7 +74,7 @@ Seven graded steps (`Doc/Task.md` §5), each counted only with its evidence file
 6. System simulation: the real C program on MicroBlaze writes and reads the IP's registers; AXI4-Lite transactions and `tick` are visible on the waveform.
 7. Implementation: LUT / FF / DSP used by the IP and the WNS, with a one-line verdict on timing.
 
-Section 7 of the task also requires a `README.md` (topic, register table, hand-computed expected results, step 7 numbers, 2–5 problems hit and how they were solved) and a `docs/` folder with the screenshots. The existing folder is `Doc/`, not `docs/` — ask before renaming or adding a second one.
+Section 7 of the task also requires a `README.md` (topic, register table, hand-computed expected results, step 7 numbers, 2–5 problems hit and how they were solved) and a `docs/` folder with the screenshots (it exists; `Doc/` holds only the assignment text).
 
 ## Metronome specification (Тема 5)
 

@@ -13,8 +13,8 @@ Vivado/Vitis 2025.2, кристалл `xc7z020clg400-1` (плата PYNQ-Z1).
 | 1 | Модуль с регистрами AXI4-Lite, таблица регистров | сделано |
 | 2 | Тестбенч с PASS/FAIL | сделано |
 | 3 | Сломанная копия модуля | сделано |
-| 4 | Упаковка в IP | сделано (осталось положить скриншот IP Catalog) |
-| 5 | Block Design с MicroBlaze | не сделано |
+| 4 | Упаковка в IP | сделано |
+| 5 | Block Design с MicroBlaze | сделано |
 | 6 | Системная симуляция с программой на C | не сделано |
 | 7 | Implementation, ресурсы и время | не сделано |
 
@@ -29,6 +29,7 @@ Vivado/Vitis 2025.2, кристалл `xc7z020clg400-1` (плата PYNQ-Z1).
 | `vivado/Metronome/` | Проект Vivado с Block Design (MicroBlaze + IP) |
 | `vitis/` | Рабочая папка Vitis для программы на C |
 | `Doc/` | Текст задания |
+| `docs/` | Скриншоты для сдачи |
 
 ## Модуль `axi_metronome`
 
@@ -48,7 +49,7 @@ Vivado/Vitis 2025.2, кристалл `xc7z020clg400-1` (плата PYNQ-Z1).
 | `0x04` | `ENABLE` | да | да | Разряд [0]: 1 — метроном работает, 0 — стоит. После сброса 0. |
 | `0x08` | `TICKS` | нет | да | Количество импульсов с момента включения, разряды [31:0]. Запись игнорируется. |
 
-Базовый адрес назначает Vivado в Address Editor (будет указан после шага 5).
+Базовый адрес назначен в Address Editor: `0x0001_0000` (см. шаг 5).
 
 ### Как модуль работает
 
@@ -105,7 +106,11 @@ Vivado/Vitis 2025.2, кристалл `xc7z020clg400-1` (плата PYNQ-Z1).
 
 Все четыре сценария пройдены, в консоли Vivado `RESULT: PASS`.
 
-Скриншоты: *будут добавлены в папку со скриншотами.*
+Скриншоты (папка `docs/Simulation testbench/`):
+
+- консоль, все сценарии PASS: [`Scenario1 and 2 PASS in  Console.png`](<docs/Simulation testbench/Scenario1 and 2 PASS in  Console.png>), [`PASS in  Console.png`](<docs/Simulation testbench/PASS in  Console.png>); полный текст консоли: [`run all.txt`](<docs/Simulation testbench/run all.txt>);
+- временная диаграмма всех четырёх сценариев: [`2.png`](<docs/Simulation testbench/2.png>);
+- импульс `tick` крупно: длится ровно один такт `aclk`, счётчик `cnt` после него начинается с нуля: [`tick.png`](<docs/Simulation testbench/tick.png>).
 
 ### Как запустить
 
@@ -155,7 +160,7 @@ last_cnt <= quo_next - 1'b1;   // в исправном модуле
 
 Проверки регистров (`BPM`, `ENABLE`, `TICKS`) и количества импульсов в окне при этом проходят: ошибка сдвигает импульсы, но не меняет их число. Её ловит только сравнение номеров тактов.
 
-Скриншоты: *будут добавлены в папку со скриншотами.*
+Скриншоты консоли со сломанной копией (папка `docs/Simulation testbench/`): [`Scenario1&2&3 FAIL in  Console.png`](<docs/Simulation testbench/Scenario1&2&3 FAIL in  Console.png>), [`Scenario 4 & TOTAL FAIL in  Console.png`](<docs/Simulation testbench/Scenario 4 & TOTAL FAIL in  Console.png>).
 
 **Как запустить.** Тестбенч создаёт экземпляр модуля с именем из макроса `DUT_MODULE` (по умолчанию `axi_metronome`). Для проверки сломанной копии макрос задаётся как `DUT_MODULE=axi_metronome_broken`:
 
@@ -203,11 +208,58 @@ xsim sim -runall
 
 **Подключение.** В проекте `Metronome`: *Settings → IP → Repository → «+»* → папка `ip_repo/`. После этого IP виден в *IP Catalog → User Repository*.
 
-Скриншот IP Catalog: *будет добавлен в папку со скриншотами.*
+Скриншот IP Catalog: [`IP catalog with my IP.png`](<docs/IP catalog with my IP.png>).
 
 ## Block Design (шаг 5)
 
-*Не сделано.*
+Block Design `Metronome` в проекте `vivado/Metronome/`. Собран строго по заданию: процессор, такт, сброс и метроном, выход `tick` выведен наружу. Других периферийных блоков нет.
+
+| Блок | Что делает |
+|---|---|
+| `microblaze_0` | Процессор MicroBlaze, без кэша и прерываний, с модулем отладки |
+| `microblaze_0_local_memory` | Локальная память 32 КБ (BRAM) для программы и данных, шины ILMB и DLMB |
+| `mdm_1` | Модуль отладки MicroBlaze (загрузка программы через JTAG) |
+| `clk_wiz_1` | Clocking Wizard: однофазный вход 125 МГц, выход `clk_out1` 100 МГц |
+| `rst_clk_wiz_1_100M` | Processor System Reset: синхронизирует сброс с `clk_out1` |
+| `axi_smc` | AXI SmartConnect: соединяет порт `M_AXI_DP` процессора с метрономом |
+| `axi_metronome_0` | IP метронома, `CLK_HZ` = 1000 |
+
+Соединения:
+
+- Все блоки работают от одного такта `clk_out1`.
+- `axi_metronome_0/aresetn` и `axi_smc/aresetn` подключены к `peripheral_aresetn`.
+- Шина: `microblaze_0/M_AXI_DP` → `axi_smc` → `axi_metronome_0/s_axi` (AXI4-Lite).
+- Внешние порты: `sys_clk` (вход, 125 МГц), `reset_n` (вход, активный ноль), `tick` (выход).
+
+Входная частота 125 МГц и однофазный вход выбраны под тактовый генератор платы PYNQ-Z1. В симуляции частота не важна: `CLK_HZ` = 1000 задаёт только длину промежутка в тактах.
+
+`CLK_HZ` = 1000 — значение для симуляции: промежуток при BPM=120 длится 500 тактов. Для работы на плате параметр нужно поставить равным реальной частоте `aclk` (100 000 000).
+
+### Адреса (Address Editor)
+
+| Ведомое устройство | Пространство | Базовый адрес | Размер |
+|---|---|---|---|
+| `axi_metronome_0/s_axi` (`reg0`) | Data | `0x0001_0000` | 4K |
+| `dlmb_bram_if_cntlr` | Data | `0x0000_0000` | 32K |
+| `ilmb_bram_if_cntlr` | Instruction | `0x0000_0000` | 32K |
+
+Адреса регистров метронома для программы:
+
+| Регистр | Адрес |
+|---|---|
+| `BPM` | `0x0001_0000` |
+| `ENABLE` | `0x0001_0004` |
+| `TICKS` | `0x0001_0008` |
+
+Метроном есть только в пространстве данных: из его регистров процессор не исполняет команды. Блок занимает 4K (минимальный размер в Vivado), а модуль декодирует только разряды адреса `[3:2]`, поэтому внутри блока регистры повторяются через каждые 16 байт.
+
+Validate Design: *Validation successful. There are no errors or critical warnings in this design.* HDL-обёртка `Metronome_wrapper` создана Vivado (*Let Vivado manage wrapper*) и назначена верхним модулем проекта.
+
+Скриншоты:
+
+- Block Design: [`Block design.png`](<docs/Block design.png>)
+- Address Editor: [`Address editor.png`](<docs/Address editor.png>)
+- Validate Design: [`BD validate OK.png`](<docs/BD validate OK.png>)
 
 ## Системная симуляция (шаг 6)
 
@@ -223,3 +275,4 @@ xsim sim -runall
 2. **Кириллица в консоли XSim** отображается искажённо. Решение: сообщения тестбенча (`$display`) написаны на английском, комментарии в коде оставлены как есть.
 3. **Предупреждение упаковщика IP `[IP_Flow 19-587]`**: «HDL port or parameter 'bpm_clamped' has a dependency on the module local parameter». Внутренний сигнал был объявлен вместе с присваиванием (`wire [7:0] bpm_clamped = ...`), и анализатор упаковщика принял его за порт, зависящий от локальных констант. Решение: объявление и `assign` разделены, предупреждение исчезло, поведение модуля не изменилось.
 4. **Граница окна наблюдения.** При BPM=120 четвёртый импульс приходится ровно на такт 2000, то есть на границу «первых 2000 тактов». Чтобы результат проверки не зависел от того, попал ли он в окно, окно определено как такты 0..1999, а `TICKS` читается заранее, на такте 1700.
+5. **Несовпадение частоты на тактовом входе.** Порт тактового сигнала создала автоматизация Vivado, когда на входе Clocking Wizard ещё стояли 100 МГц. После того как входная частота была изменена на 125 МГц, у внешнего порта осталось `FREQ_HZ` = 100 МГц, а сам вход был дифференциальным, хотя генератор на PYNQ-Z1 однофазный. Решение: источник Clocking Wizard переключён на *Single ended clock capable pin*, старый порт удалён, новый порт `sys_clk` выведен наружу с `FREQ_HZ` = 125 МГц.
