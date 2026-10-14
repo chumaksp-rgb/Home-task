@@ -1,0 +1,45 @@
+run all
+
+Scenario 1: BPM=120, first 2000 cycles
+  ok:    BPM = 120
+      tick at cycle 500
+      tick at cycle 1000
+      tick at cycle 1500
+  ok:    TICKS = 3
+  ok:    3 ticks in the window
+  -> scenario PASS
+
+Scenario 2: BPM=60, changed to 120 while running
+      tick at cycle 1000
+  ok:    BPM = 120
+      tick at cycle 2000
+      tick at cycle 2500
+      tick at cycle 3000
+      tick at cycle 3500
+  ok:    TICKS = 5
+  ok:    5 ticks in the window
+  -> scenario PASS
+
+Scenario 3: ENABLE=0 for 2000 cycles, then ENABLE=1
+  ok:    ENABLE = 0
+  ok:    0 ticks in the window
+      tick at cycle 500
+      tick at cycle 1000
+      tick at cycle 1500
+  ok:    TICKS = 3
+  ok:    3 ticks in the window
+  -> scenario PASS
+
+Scenario 4: BPM=0 and BPM=1000 (out of range)
+  ok:    BPM = 30
+      tick at cycle 2000
+      tick at cycle 4000
+  ok:    TICKS = 2
+  ok:    2 ticks in the window
+  ok:    BPM = 240
+      tick at cycle 250
+      tick at cycle 500
+  ok:    2 ticks in the window
+  -> scenario PASS
+
+RESULT: PASS
