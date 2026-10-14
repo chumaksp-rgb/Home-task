@@ -672,6 +672,21 @@
           }
         }
       }
+    },
+    "elf_association": {
+      "file": {
+        "name": "..\\..\\..\\..\\..\\..\\vitis\\app_metronome\\build\\app_metronome.elf",
+        "type": "ELF",
+        "checksum": "1227748351",
+        "IsVisible": "1",
+        "ScopedToRef": "Metronome",
+        "ScopedToCell": [
+          "microblaze_0"
+        ],
+        "UsedIn": [
+          "simulation"
+        ]
+      }
     }
   }
 }

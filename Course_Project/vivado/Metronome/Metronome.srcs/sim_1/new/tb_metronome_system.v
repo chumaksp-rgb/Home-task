@@ -57,6 +57,7 @@ module tb_metronome_system;
     );
 
     initial begin
+        $timeformat(-9, 0, " ns", 0);              // %t печатает время в наносекундах
         reset_n = 1'b0;
         #200;
         reset_n = 1'b1;                             // дальше сбросом управляет Processor System Reset

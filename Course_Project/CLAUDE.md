@@ -12,14 +12,17 @@ It is one sub-project of the `HT1` git repository: the git root and the only `.g
 
 ## Current state
 
-Steps 1–5 are done; step 6 (C program + system simulation) is next.
+Steps 1–6 are done; step 7 (implementation: LUT/FF/DSP of the IP, WNS) is next.
 
 | Path | State |
 |---|---|
 | `Doc/Task.md` | Assignment text |
 | `vivado/Metronome/Metronome.xpr` | Vivado 2025.2 project, part `xc7z020clg400-1`, no board part |
 | `vivado/Metronome/Metronome.srcs/sources_1/bd/Metronome/Metronome.bd` | Block design `Metronome`, validated. `microblaze_0` (no cache/interrupts, debug on) + 32K local memory + `mdm_1` + `clk_wiz_1` (single-ended `sys_clk` 125 MHz in → `clk_out1` 100 MHz, everything on it) + `rst_clk_wiz_1_100M` + `axi_smc` → `axi_metronome_0` (`CLK_HZ`=1000). External ports `sys_clk`, `reset_n` (active low), `tick`. Metronome `reg0` at **`0x0001_0000`**, 4K (Data space only). Wrapper `Metronome_wrapper` (Vivado-managed, in ignored `.gen/`) is the top |
-| `vitis/` | Empty; the Vitis workspace goes here |
+| `vivado/Metronome/Metronome_wrapper.xsa` | Hardware export, *Pre-synthesis* (needs *Generate Output Products* first). Re-export with bitstream for the board |
+| `vitis/Metronome_platform/` | Vitis platform from that XSA, standalone on `microblaze_0`. `XPAR_AXI_METRONOME_0_BASEADDR` = `0x10000` |
+| `vitis/app_metronome/src/main.c` | The C program: BPM=120, read BPM, ENABLE=1, `delay(200)`, read TICKS, BPM=240, `delay(200)`, ENABLE=0, read TICKS. Raw `Xil_Out32`/`Xil_In32`. `-O0`; one delay iteration is ~13 cycles, so 200 loops ≈ 2700 cycles ≈ 5 ticks at BPM=120. `src/.clangd` has `-D__MICROBLAZE__` added by hand to silence false clangd errors |
+| `vivado/Metronome/Metronome.srcs/sim_1/new/tb_metronome_system.v` | System testbench, top of `sim_1`: 125 MHz `sys_clk`, `reset_n`; watches `dut.Metronome_i.axi_metronome_0.inst` and checks the 7-transaction sequence, BPM readback, every TICKS read against its own tick count, 1-cycle ticks, intervals 500 → 250 (first interval after the tempo write still 500), no ticks after disable. Passes (`RESULT: PASS`, 15 ticks, ends at 83.5 µs). ELF associated from `vitis/app_metronome/build/app_metronome.elf`; wave config `vivado/Metronome/tb_metronome_system_behav.wcfg` |
 | `docs/` | The screenshots folder the task requires (renamed from `Матеріали для сдачі/` at the user's request): testbench PASS/FAIL and waveforms under `Simulation testbench/`, IP Catalog, Block design, Address editor, BD validate OK. README links to each file. `Doc/` (assignment text) is a separate folder |
 
 | `ip_repo/axi_metronome/axi_metronome.v` | The graded module, written and smoke-tested standalone in XSim; not yet packaged as IP |
@@ -35,8 +38,6 @@ Steps 1–5 are done; step 6 (C program + system simulation) is next.
 | `ip_repo/axi_metronome/component.xml`, `xgui/` | Packaged IP `xilinx.com:user:axi_metronome:1.0`, packaged in place with *Package a specified directory* (file set = only `axi_metronome.v`). Interfaces verified: `s_axi` aximm slave, 4K block `reg0`; `aclk` with `ASSOCIATED_BUSIF s_axi` / `ASSOCIATED_RESET aresetn`; `aresetn` ACTIVE_LOW. Do not hand-edit |
 
 The repository to add in the `Metronome` project is `ip_repo/` (the parent folder). The user's first attempt used *Package your current project*, which went to `%APPDATA%/Xilinx/ip_repo` and copied the testbench and broken copy into the IP — avoid that. The packager's temporary project lands in `vivado/Metronome_testbench/Metronome_testbench.tmp/` (ignored via `*.tmp/`).
-
-No C program has been written yet. Update this section as it appears.
 
 Passing the define on the command line: `xvlog -d DUT_MODULE=...` does not work on Windows (`xvlog.bat` splits the argument at `=`, from Git Bash and PowerShell alike). Use a `.prj` file: `verilog work <files> -d DUT_MODULE=axi_metronome_broken`, then `xvlog -prj broken.prj`.
 

@@ -1,0 +1,26 @@
+AXI WRITE  addr 0x0  data 120  at 7956 ns
+AXI READ   addr 0x0  data 120  at 8416 ns
+AXI WRITE  addr 0x4  data 1  at 8956 ns
+      expected period 500 cycles
+      tick #1 at cycle 500 (interval 500)
+      tick #2 at cycle 1000 (interval 500)
+      tick #3 at cycle 1500 (interval 500)
+      tick #4 at cycle 2000 (interval 500)
+      tick #5 at cycle 2500 (interval 500)
+AXI READ   addr 0x8  data 5  at 35676 ns
+AXI WRITE  addr 0x0  data 240  at 36216 ns
+      tick #6 at cycle 3000 (interval 500)
+      tick #7 at cycle 3250 (interval 250)
+      tick #8 at cycle 3500 (interval 250)
+      tick #9 at cycle 3750 (interval 250)
+      tick #10 at cycle 4000 (interval 250)
+      tick #11 at cycle 4250 (interval 250)
+      tick #12 at cycle 4500 (interval 250)
+      tick #13 at cycle 4750 (interval 250)
+      tick #14 at cycle 5000 (interval 250)
+      tick #15 at cycle 5250 (interval 250)
+AXI WRITE  addr 0x4  data 0  at 63026 ns
+AXI READ   addr 0x8  data 15  at 63486 ns
+
+TICKS while running: 5, after disable: 15, ticks counted by testbench: 15
+RESULT: PASS
