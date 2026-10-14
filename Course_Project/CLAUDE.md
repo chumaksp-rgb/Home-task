@@ -12,7 +12,7 @@ It is one sub-project of the `HT1` git repository: the git root and the only `.g
 
 ## Current state
 
-Steps 1–6 are done; step 7 (implementation: LUT/FF/DSP of the IP, WNS) is next.
+All seven graded steps are done (implementation: IP 186 LUT / 209 FF / 0 DSP; WNS +1.818 ns at 100 MHz, worst path in MicroBlaze; worst IP-internal path +3.821 ns, `cnt` → `ticks_reg` CE). Remaining: README final review, then the optional PYNQ-Z1 board support.
 
 | Path | State |
 |---|---|
