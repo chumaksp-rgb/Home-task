@@ -31,6 +31,7 @@ All seven graded steps are done (implementation: IP 186 LUT / 209 FF / 0 DSP; WN
 
 | `vivado/Metronome_testbench/` | The user's separate Vivado project for simulating the module with its testbench; references the two files above in place, plus a saved `.wcfg` |
 | `README.md` | The graded README, in Russian (as in the sibling projects). Has a status table and placeholder sections for steps 3–7 — keep it in sync as each step is finished |
+| `docs/Src/` | Copies of the hand-written sources (module, broken copy, both testbenches, `main.c`, both Tcl scripts), made at the user's request on 2026-10-19 for browsing. They go stale: after editing any original, re-copy it here |
 | `scripts/create_project.tcl` | Recreates the `Metronome` project in `vivado_tcl/Metronome` (ignored) or `-tclargs <dir>`: ip_repo, sources `Metronome_bd.tcl`, sets `CLK_HZ`=1000 explicitly (write_bd_tcl omits defaults), validate, wrapper, `generate_target all` (batch mode does not do it on its own), sim_1 with the testbench, wcfg and ELF (`SCOPED_TO_REF`/`SCOPED_TO_CELLS`). Do not set `simulator_language Verilog`: MicroBlaze and other IP sim models are VHDL |
 | `scripts/Metronome_bd.tcl` | `write_bd_tcl -no_ip_version` output; regenerate after any BD change. Open the project normally, not `-read_only`, or the script gets a "generated from a locked design" critical warning |
 | `.gitignore` | Project-local additions to `../.gitignore` (XSim CLI output, editor lock files, Vitis build output) |
