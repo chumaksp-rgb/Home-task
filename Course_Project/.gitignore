@@ -56,3 +56,6 @@ _ide/.wsdata/
 # ---- Системные файлы Windows ----
 Thumbs.db
 desktop.ini
+
+# ---- Проект, созданный скриптом scripts/create_project.tcl ----
+vivado_tcl/

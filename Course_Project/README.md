@@ -4,7 +4,7 @@ IP-модуль на Verilog с регистровым интерфейсом AX
 
 Vivado/Vitis 2025.2, кристалл `xc7z020clg400-1` (плата PYNQ-Z1).
 
-Текст задания: [`Doc/Task.md`](Doc/Task.md) (оригинал), [`Doc/Task_ru.md`](Doc/Task_ru.md) (перевод).
+Текст задания: [`Task/Task.md`](Task/Task.md) (оригинал), [`Task/Task_ru.md`](Task/Task_ru.md) (перевод).
 
 ## Состояние работы
 
@@ -30,7 +30,8 @@ Vivado/Vitis 2025.2, кристалл `xc7z020clg400-1` (плата PYNQ-Z1).
 | `vivado/Metronome/Metronome.srcs/sim_1/new/tb_metronome_system.v` | Системный тестбенч (MicroBlaze + IP) |
 | `vitis/app_metronome/src/main.c` | Программа на C для MicroBlaze |
 | `vitis/Metronome_platform/` | Платформа Vitis, создана из `vivado/Metronome/Metronome_wrapper.xsa` |
-| `Doc/` | Текст задания и его перевод на русский |
+| `scripts/create_project.tcl`, `scripts/Metronome_bd.tcl` | Tcl-скрипты, воспроизводящие проект Vivado |
+| `Task/` | Текст задания и его перевод на русский |
 | `docs/` | Скриншоты для сдачи |
 
 ## Модуль `axi_metronome` (шаг 1)
@@ -108,11 +109,11 @@ Vivado/Vitis 2025.2, кристалл `xc7z020clg400-1` (плата PYNQ-Z1).
 
 Все четыре сценария пройдены, в консоли Vivado `RESULT: PASS`.
 
-Скриншоты (папка `docs/Simulation testbench/`):
+Скриншоты (папка `docs/1. Simulation testbench/`):
 
-- консоль, все сценарии PASS: [`Scenario1 and 2 PASS in  Console.png`](<docs/Simulation testbench/Scenario1 and 2 PASS in  Console.png>), [`PASS in  Console.png`](<docs/Simulation testbench/PASS in  Console.png>); полный текст консоли: [`run all.txt`](<docs/Simulation testbench/run all.txt>);
-- временная диаграмма всех четырёх сценариев: [`2.png`](<docs/Simulation testbench/2.png>);
-- импульс `tick` крупно: длится ровно один такт `aclk`, счётчик `cnt` после него начинается с нуля: [`tick.png`](<docs/Simulation testbench/tick.png>).
+- консоль, все сценарии PASS: [`Scenario1 and 2 PASS in  Console.png`](<docs/1. Simulation testbench/Scenario1 and 2 PASS in  Console.png>), [`PASS in  Console.png`](<docs/1. Simulation testbench/PASS in  Console.png>); полный текст консоли: [`run all.txt`](<docs/1. Simulation testbench/run all.txt>);
+- временная диаграмма всех четырёх сценариев: [`2.png`](<docs/1. Simulation testbench/2.png>);
+- импульс `tick` крупно: длится ровно один такт `aclk`, счётчик `cnt` после него начинается с нуля: [`tick.png`](<docs/1. Simulation testbench/tick.png>).
 
 ### Как запустить
 
@@ -162,7 +163,7 @@ last_cnt <= quo_next - 1'b1;   // в исправном модуле
 
 Проверки регистров (`BPM`, `ENABLE`, `TICKS`) и количества импульсов в окне при этом проходят: ошибка сдвигает импульсы, но не меняет их число. Её ловит только сравнение номеров тактов.
 
-Скриншоты консоли со сломанной копией (папка `docs/Simulation testbench/`): [`Scenario1&2&3 FAIL in  Console.png`](<docs/Simulation testbench/Scenario1&2&3 FAIL in  Console.png>), [`Scenario 4 & TOTAL FAIL in  Console.png`](<docs/Simulation testbench/Scenario 4 & TOTAL FAIL in  Console.png>).
+Скриншоты консоли со сломанной копией (папка `docs/1. Simulation testbench/`): [`Scenario1&2&3 FAIL in  Console.png`](<docs/1. Simulation testbench/Scenario1&2&3 FAIL in  Console.png>), [`Scenario 4 & TOTAL FAIL in  Console.png`](<docs/1. Simulation testbench/Scenario 4 & TOTAL FAIL in  Console.png>).
 
 **Как запустить.** Тестбенч создаёт экземпляр модуля с именем из макроса `DUT_MODULE` (по умолчанию `axi_metronome`). Для проверки сломанной копии макрос задаётся как `DUT_MODULE=axi_metronome_broken`:
 
@@ -210,7 +211,7 @@ xsim sim -runall
 
 **Подключение.** В проекте `Metronome`: *Settings → IP → Repository → «+»* → папка `ip_repo/`. После этого IP виден в *IP Catalog → User Repository*.
 
-Скриншот IP Catalog: [`IP catalog with my IP.png`](<docs/IP catalog with my IP.png>).
+Скриншот IP Catalog: [`IP catalog with my IP.png`](<docs/2. IP and Block Design/IP catalog with my IP.png>).
 
 ## Block Design (шаг 5)
 
@@ -259,9 +260,9 @@ Validate Design: *Validation successful. There are no errors or critical warning
 
 Скриншоты:
 
-- Block Design: [`Block design.png`](<docs/Block design.png>)
-- Address Editor: [`Address editor.png`](<docs/Address editor.png>)
-- Validate Design: [`BD validate OK.png`](<docs/BD validate OK.png>)
+- Block Design: [`Block design.png`](<docs/2. IP and Block Design/Block design.png>)
+- Address Editor: [`Address editor.png`](<docs/2. IP and Block Design/Address editor.png>)
+- Validate Design: [`BD validate OK.png`](<docs/2. IP and Block Design/BD validate OK.png>)
 
 ## Системная симуляция (шаг 6)
 
@@ -311,7 +312,7 @@ Validate Design: *Validation successful. There are no errors or critical warning
 
 ### Результат
 
-`RESULT: PASS`. Скриншот консоли: [`PASS in console.png`](<docs/System simulation/PASS in console.png>), тот же вывод текстом: [`run all.txt`](<docs/System simulation/run all.txt>).
+`RESULT: PASS`. Скриншот консоли: [`PASS in console.png`](<docs/3. System simulation/PASS in console.png>), тот же вывод текстом: [`run all.txt`](<docs/3. System simulation/run all.txt>).
 
 | Момент | Что произошло |
 |---|---|
@@ -330,12 +331,12 @@ Validate Design: *Validation successful. There are no errors or critical warning
 
 ### Скриншоты
 
-Папка `docs/System simulation/`, конфигурация диаграммы — `vivado/Metronome/tb_metronome_system_behav.wcfg`:
+Папка `docs/3. System simulation/`, конфигурация диаграммы — `vivado/Metronome/tb_metronome_system_behav.wcfg`:
 
-- [`Full.png`](<docs/System simulation/Full.png>) — вся работа программы: четыре записи, три чтения, импульсы `tick`, `ticks_reg` от 0 до 15, `bpm_reg` 120 → 240, `enable_reg`;
-- [`1.png`](<docs/System simulation/1.png>) — запись `BPM` = 120, чтение `BPM` = 120, запись `ENABLE` = 1;
-- [`3.png`](<docs/System simulation/3.png>) — чтение `TICKS` = 5, запись `BPM` = 240, импульсы становятся чаще;
-- [`4.png`](<docs/System simulation/4.png>) — запись `ENABLE` = 0, импульсы прекратились, чтение `TICKS` = 15.
+- [`Full.png`](<docs/3. System simulation/Full.png>) — вся работа программы: четыре записи, три чтения, импульсы `tick`, `ticks_reg` от 0 до 15, `bpm_reg` 120 → 240, `enable_reg`;
+- [`1.png`](<docs/3. System simulation/1.png>) — запись `BPM` = 120, чтение `BPM` = 120, запись `ENABLE` = 1;
+- [`3.png`](<docs/3. System simulation/3.png>) — чтение `TICKS` = 5, запись `BPM` = 240, импульсы становятся чаще;
+- [`4.png`](<docs/3. System simulation/4.png>) — запись `ENABLE` = 0, импульсы прекратились, чтение `TICKS` = 15.
 
 ## Ресурсы и время (шаг 7)
 
@@ -365,7 +366,28 @@ DSP нет, потому что в модуле нет умножения: ко�
 
 **Вывод.** Проект укладывается во время на 100 МГц: все ограничения выполнены, WNS положительный (+1,8 нс). Худший путь всего проекта проходит в MicroBlaze (к локальной памяти), а у нашего модуля запас больше — 3,8 нс, то есть он работал бы и примерно на 160 МГц.
 
-Скриншоты: [`Utilization.png`](<docs/Implementation/Utilization.png>) (по иерархии, строка `axi_metronome_0`), [`Utilization summary.png`](<docs/Implementation/Utilization summary.png>) (весь проект), [`Timing summary.png`](<docs/Implementation/Timing summary.png>). В проекте нет ни одного DSP, поэтому Vivado не показывает для них ни столбца, ни строки; в текстовом отчёте `Metronome_wrapper_utilization_placed.rpt` — `DSPs | 0`.
+Скриншоты: [`Utilization.png`](<docs/4. Implementation/Utilization.png>) (по иерархии, строка `axi_metronome_0`), [`Utilization summary.png`](<docs/4. Implementation/Utilization summary.png>) (весь проект), [`Timing summary.png`](<docs/4. Implementation/Timing summary.png>). В проекте нет ни одного DSP, поэтому Vivado не показывает для них ни столбца, ни строки; в текстовом отчёте `Metronome_wrapper_utilization_placed.rpt` — `DSPs | 0`.
+
+## Воспроизведение проекта из Tcl
+
+Проект Vivado с Block Design и системной симуляцией можно создать заново скриптом, без папки `vivado/Metronome/`:
+
+| Файл | Что делает |
+|---|---|
+| [`scripts/create_project.tcl`](scripts/create_project.tcl) | Создаёт проект для `xc7z020clg400-1`, подключает репозиторий `ip_repo/`, строит Block Design, задаёт `CLK_HZ` = 1000, проверяет дизайн (Validate), создаёт обёртку `Metronome_wrapper`, генерирует выходные файлы BD, добавляет системный тестбенч, конфигурацию диаграмм и ELF |
+| [`scripts/Metronome_bd.tcl`](scripts/Metronome_bd.tcl) | Block Design: блоки, их настройки, соединения и адреса. Создан командой `write_bd_tcl` из готового проекта |
+
+Запуск из командной строки, из корня курсового проекта (Vivado 2025.2):
+
+```
+vivado -mode batch -source scripts/create_project.tcl
+```
+
+или в Tcl-консоли Vivado: `source <путь>/scripts/create_project.tcl`. Проект создаётся в `vivado_tcl/Metronome/` (папка в `.gitignore`, рабочий проект `vivado/Metronome/` не затрагивается); другую папку можно передать аргументом: `-tclargs <папка>`.
+
+Исходники не копируются, а подключаются из репозитория. ELF берётся из `vitis/app_metronome/build/`; если его ещё нет, сначала нужно собрать приложение в Vitis (платформа — из `vivado/Metronome/Metronome_wrapper.xsa`).
+
+**Проверка.** Проект, созданный скриптом с нуля, запущен в пакетном режиме (`launch_simulation`, `run all`): системная симуляция даёт тот же результат — те же семь транзакций в те же моменты времени, 15 импульсов, `RESULT: PASS`.
 
 ## Проблемы и как они решены
 

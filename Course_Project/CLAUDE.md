@@ -4,26 +4,26 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## What this is
 
-FPGA course project (branch `Courese_Project` — the typo is the real branch name): a custom Verilog IP with an AXI4-Lite register interface, driven by a C program on MicroBlaze. The chosen topic is **Тема 5, Метроном**. The full assignment, including the grading table, is `Doc/Task.md` (Ukrainian) — read section 5 (required steps and evidence) and the "Тема 5" part of section 6 before designing anything.
+FPGA course project (branch `Courese_Project` — the typo is the real branch name): a custom Verilog IP with an AXI4-Lite register interface, driven by a C program on MicroBlaze. The chosen topic is **Тема 5, Метроном**. The full assignment, including the grading table, is `Task/Task.md` (Ukrainian) — read section 5 (required steps and evidence) and the "Тема 5" part of section 6 before designing anything.
 
 It is one sub-project of the `HT1` git repository: the git root and the only `.gitignore` are one level up, and the sibling directories (`../htL12_dma/`, `../ht_l14_debug/`, ...) are independent earlier home tasks. `../htL12_dma/` is the closest precedent (MicroBlaze + packaged custom IP + Vitis app + system simulation) and has its own `CLAUDE.md` worth consulting for flow details.
 
-**Graded in simulation, also run on a PYNQ-Z1.** Everything graded is done in simulation, but the user has the board and wants the design to work on it too (beyond the assignment). Planned board I/O, wired with spare capacity: 4 buttons, 4 LEDs, 2 switches. LED3/LED2 flash alternately on each beat with duty below 0.5, LED0 is their OR (main output, possibly driving a sounder), BTN3/BTN2 raise/lower the tempo, SW1 stops, zeroes and restarts the count. The user wants to proceed in small steps — do one stage at a time and do not build ahead. **Board support comes last**, after all seven graded steps: the user decided (2026-10-14) that the Block Design for steps 5–7 is strictly what the task asks for (MicroBlaze + clock/reset + the IP + external `tick`), with no GPIO or LED indicator; the board additions are an optional extra at the very end.
+**Simulation only.** Everything graded is done in simulation. The user has a PYNQ-Z1 and originally planned board extras (buttons, LEDs, switches), but on 2026-10-19 decided not to do the board at all — it is optional and not interesting to them. Do not propose board support, GPIO, pin constraints or bitstreams. The user wants to proceed in small steps — do one stage at a time and do not build ahead.
 
 ## Current state
 
-All seven graded steps are done (implementation: IP 186 LUT / 209 FF / 0 DSP; WNS +1.818 ns at 100 MHz, worst path in MicroBlaze; worst IP-internal path +3.821 ns, `cnt` → `ticks_reg` CE). Remaining: README final review, then the optional PYNQ-Z1 board support.
+All seven graded steps are done (implementation: IP 186 LUT / 209 FF / 0 DSP; WNS +1.818 ns at 100 MHz, worst path in MicroBlaze; worst IP-internal path +3.821 ns, `cnt` → `ticks_reg` CE). README reviewed. `scripts/create_project.tcl` recreates the `Metronome` project (verified: rebuilt from scratch, system sim PASS).
 
 | Path | State |
 |---|---|
-| `Doc/Task.md` | Assignment text |
+| `Task/Task.md` | Assignment text |
 | `vivado/Metronome/Metronome.xpr` | Vivado 2025.2 project, part `xc7z020clg400-1`, no board part |
 | `vivado/Metronome/Metronome.srcs/sources_1/bd/Metronome/Metronome.bd` | Block design `Metronome`, validated. `microblaze_0` (no cache/interrupts, debug on) + 32K local memory + `mdm_1` + `clk_wiz_1` (single-ended `sys_clk` 125 MHz in → `clk_out1` 100 MHz, everything on it) + `rst_clk_wiz_1_100M` + `axi_smc` → `axi_metronome_0` (`CLK_HZ`=1000). External ports `sys_clk`, `reset_n` (active low), `tick`. Metronome `reg0` at **`0x0001_0000`**, 4K (Data space only). Wrapper `Metronome_wrapper` (Vivado-managed, in ignored `.gen/`) is the top |
-| `vivado/Metronome/Metronome_wrapper.xsa` | Hardware export, *Pre-synthesis* (needs *Generate Output Products* first). Re-export with bitstream for the board |
+| `vivado/Metronome/Metronome_wrapper.xsa` | Hardware export, *Pre-synthesis* (needs *Generate Output Products* first). |
 | `vitis/Metronome_platform/` | Vitis platform from that XSA, standalone on `microblaze_0`. `XPAR_AXI_METRONOME_0_BASEADDR` = `0x10000` |
 | `vitis/app_metronome/src/main.c` | The C program: BPM=120, read BPM, ENABLE=1, `delay(200)`, read TICKS, BPM=240, `delay(200)`, ENABLE=0, read TICKS. Raw `Xil_Out32`/`Xil_In32`. `-O0`; one delay iteration is ~13 cycles, so 200 loops ≈ 2700 cycles ≈ 5 ticks at BPM=120. `src/.clangd` has `-D__MICROBLAZE__` added by hand to silence false clangd errors |
 | `vivado/Metronome/Metronome.srcs/sim_1/new/tb_metronome_system.v` | System testbench, top of `sim_1`: 125 MHz `sys_clk`, `reset_n`; watches `dut.Metronome_i.axi_metronome_0.inst` and checks the 7-transaction sequence, BPM readback, every TICKS read against its own tick count, 1-cycle ticks, intervals 500 → 250 (first interval after the tempo write still 500), no ticks after disable. Passes (`RESULT: PASS`, 15 ticks, ends at 83.5 µs). ELF associated from `vitis/app_metronome/build/app_metronome.elf`; wave config `vivado/Metronome/tb_metronome_system_behav.wcfg` |
-| `docs/` | The screenshots folder the task requires (renamed from `Матеріали для сдачі/` at the user's request): testbench PASS/FAIL and waveforms under `Simulation testbench/`, IP Catalog, Block design, Address editor, BD validate OK. README links to each file. `Doc/` (assignment text) is a separate folder |
+| `docs/` | The screenshots folder the task requires (renamed from `Матеріали для сдачі/` at the user's request). README links to each file. `Task/` (assignment text) is a separate folder. Screenshots are grouped in numbered subfolders: `1. Simulation testbench/` (steps 2–3), `2. IP and Block Design/` (steps 4–5), `3. System simulation/` (step 6), `4. Implementation/` (step 7) |
 
 | `ip_repo/axi_metronome/axi_metronome.v` | The graded module, written and smoke-tested standalone in XSim; not yet packaged as IP |
 
@@ -31,6 +31,8 @@ All seven graded steps are done (implementation: IP 186 LUT / 209 FF / 0 DSP; WN
 
 | `vivado/Metronome_testbench/` | The user's separate Vivado project for simulating the module with its testbench; references the two files above in place, plus a saved `.wcfg` |
 | `README.md` | The graded README, in Russian (as in the sibling projects). Has a status table and placeholder sections for steps 3–7 — keep it in sync as each step is finished |
+| `scripts/create_project.tcl` | Recreates the `Metronome` project in `vivado_tcl/Metronome` (ignored) or `-tclargs <dir>`: ip_repo, sources `Metronome_bd.tcl`, sets `CLK_HZ`=1000 explicitly (write_bd_tcl omits defaults), validate, wrapper, `generate_target all` (batch mode does not do it on its own), sim_1 with the testbench, wcfg and ELF (`SCOPED_TO_REF`/`SCOPED_TO_CELLS`). Do not set `simulator_language Verilog`: MicroBlaze and other IP sim models are VHDL |
+| `scripts/Metronome_bd.tcl` | `write_bd_tcl -no_ip_version` output; regenerate after any BD change. Open the project normally, not `-read_only`, or the script gets a "generated from a locked design" critical warning |
 | `.gitignore` | Project-local additions to `../.gitignore` (XSim CLI output, editor lock files, Vitis build output) |
 
 | `tb/axi_metronome_broken.v` | Step 3 broken copy, module `axi_metronome_broken`: identical to the module except `last_cnt <= quo_next` (no `- 1`), so every interval is one cycle too long. Testbench gives `RESULT: FAIL (15 errors)`. It was generated from the module with `sed`; if the module changes, regenerate it so the two differ only in the header, the module name and that one line |
@@ -49,7 +51,7 @@ xelab tb_axi_metronome -s sim
 xsim sim -runall
 ```
 
-**The graded module follows `Doc/Task.md` literally — the user insisted on this.** Board extras stay outside it: buttons and switches go through AXI GPIO and the C program (which writes `BPM`/`ENABLE`), and LED stretching/alternation goes in a separate indicator module fed by `tick`.
+**The graded module follows `Task/Task.md` literally — the user insisted on this.**
 
 Design decisions made in `axi_metronome.v` (they must be repeated in the README and matched by the testbench):
 
@@ -65,7 +67,7 @@ The task text says Vivado/Vitis 2026.1, but the installed and used version is **
 
 ## What has to be delivered
 
-Seven graded steps (`Doc/Task.md` §5), each counted only with its evidence file or screenshot:
+Seven graded steps (`Task/Task.md` §5), each counted only with its evidence file or screenshot:
 
 1. IP with the AXI4-Lite registers + module logic; register table in the README.
 2. Self-checking module testbench printing PASS/FAIL, at least three scenarios, one of them a boundary/error case. Expected values are computed by hand *before* the run and written in the README.
@@ -75,7 +77,7 @@ Seven graded steps (`Doc/Task.md` §5), each counted only with its evidence file
 6. System simulation: the real C program on MicroBlaze writes and reads the IP's registers; AXI4-Lite transactions and `tick` are visible on the waveform.
 7. Implementation: LUT / FF / DSP used by the IP and the WNS, with a one-line verdict on timing.
 
-Section 7 of the task also requires a `README.md` (topic, register table, hand-computed expected results, step 7 numbers, 2–5 problems hit and how they were solved) and a `docs/` folder with the screenshots (it exists; `Doc/` holds only the assignment text).
+Section 7 of the task also requires a `README.md` (topic, register table, hand-computed expected results, step 7 numbers, 2–5 problems hit and how they were solved) and a `docs/` folder with the screenshots (it exists; `Task/` holds the assignment text and its Russian translation).
 
 ## Metronome specification (Тема 5)
 
@@ -113,6 +115,8 @@ xsim sim -runall
 ```
 
 Swap the module file for the broken copy to reproduce the step 3 FAIL with the same testbench.
+
+Batch project simulation from Claude's shells (e.g. to check `scripts/create_project.tcl`): `launch_simulation` fails with `Spawn failed` because the shell environment sets `NoDefaultCurrentDirectoryInExePath=1`, so `cmd` cannot run the relative `compile.bat`. In PowerShell: `Remove-Item Env:NoDefaultCurrentDirectoryInExePath`, then `cmd /c "vivado.bat -mode batch -source run.tcl"`. A full rebuild + system sim takes a few minutes.
 
 Project simulation from the GUI: *Run Simulation → Run Behavioral Simulation*, then `run all` in the Tcl console; the log lands in `vivado/Metronome/Metronome.sim/sim_1/behav/xsim/simulate.log`.
 
